@@ -53,8 +53,8 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .choice-btn[disabled] { opacity:0.55; cursor:default; }
 .choice-btn.sel-a { background:rgba(59,130,246,0.2); border-color:rgba(59,130,246,0.65); }
 .choice-btn.sel-a .cl { color:#93c5fd; } .choice-btn.sel-a .cd { color:rgba(147,197,253,0.72); }
-.choice-btn.sel-b { background:rgba(99,102,241,0.2); border-color:rgba(99,102,241,0.65); }
-.choice-btn.sel-b .cl { color:#a5b4fc; } .choice-btn.sel-b .cd { color:rgba(165,180,252,0.72); }
+.choice-btn.sel-b { background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.65); }
+.choice-btn.sel-b .cl { color:#fcd34d; } .choice-btn.sel-b .cd { color:rgba(252,211,77,0.72); }
 .comment-input { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:10px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; resize:none; height:78px; line-height:1.5; margin-bottom:1.3rem; }
 .comment-input::placeholder { color:rgba(255,255,255,0.22); }
 .comment-input:focus { border-color:rgba(100,180,255,0.5); }
@@ -73,15 +73,15 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .refresh-btn:hover { color:#93c5fd; }
 .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
 .bar-label { font-size:13px; font-weight:700; width:20px; flex-shrink:0; }
-.bar-label-a { color:#93c5fd; } .bar-label-b { color:#a5b4fc; }
+.bar-label-a { color:#93c5fd; } .bar-label-b { color:#fcd34d; }
 .bar-track { flex:1; height:8px; border-radius:4px; background:rgba(255,255,255,0.07); overflow:hidden; }
 .bar-fill-a { height:100%; background:rgba(59,130,246,0.6); border-radius:4px; transition:width 0.5s; }
-.bar-fill-b { height:100%; background:rgba(99,102,241,0.6); border-radius:4px; transition:width 0.5s; }
+.bar-fill-b { height:100%; background:rgba(251,191,36,0.6); border-radius:4px; transition:width 0.5s; }
 .bar-pct { font-size:12px; color:rgba(255,255,255,0.45); width:70px; text-align:right; flex-shrink:0; }
 .reason-list { display:flex; flex-direction:column; gap:6px; max-height:200px; overflow-y:auto; margin-top:0.8rem; }
 .reason-item { background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 10px; }
 .reason-meta { font-size:11px; margin-bottom:3px; }
-.reason-meta-a { color:rgba(147,197,253,0.8); } .reason-meta-b { color:rgba(165,180,252,0.8); }
+.reason-meta-a { color:rgba(147,197,253,0.8); } .reason-meta-b { color:rgba(252,211,77,0.8); }
 .reason-text { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.45; }
 .success-check { width:54px; height:54px; border-radius:50%; background:rgba(16,185,129,0.12); border:1.5px solid rgba(16,185,129,0.38); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:24px; color:#6ee7b7; }
 .success-title { font-size:17px; font-weight:600; color:#fff; margin-bottom:0.4rem; text-align:center; }
@@ -89,14 +89,14 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .learn-grid { display:flex; flex-direction:column; gap:6px; margin-bottom:1.3rem; max-height:380px; overflow-y:auto; }
 .learn-btn { padding:10px 14px; border-radius:9px; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.75); cursor:pointer; font-family:inherit; text-align:left; font-size:13px; line-height:1.4; transition:all 0.15s; }
 .learn-btn:hover { background:rgba(255,255,255,0.1); }
-.learn-btn.selected { background:rgba(99,102,241,0.2); border-color:rgba(99,102,241,0.65); color:#a5b4fc; }
+.learn-btn.selected { background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.65); color:#fcd34d; }
 .learn-btn .lsub { display:block; font-size:11px; color:rgba(255,255,255,0.3); margin-top:2px; }
 .select-hint { font-size:12px; color:rgba(251,191,36,0.7); margin-bottom:1rem; }
 .learn-result-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:0.5px solid rgba(255,255,255,0.05); }
 .learn-result-num { font-size:11px; color:rgba(100,180,255,0.75); width:24px; flex-shrink:0; font-weight:600; }
 .learn-result-text { flex:1; font-size:13px; color:rgba(255,255,255,0.8); }
 .learn-result-bar { width:80px; height:6px; border-radius:3px; background:rgba(255,255,255,0.07); overflow:hidden; }
-.learn-result-fill { height:100%; background:rgba(99,102,241,0.6); border-radius:3px; }
+.learn-result-fill { height:100%; background:rgba(251,191,36,0.6); border-radius:3px; }
 .learn-result-count { font-size:12px; color:rgba(255,255,255,0.35); width:32px; text-align:right; flex-shrink:0; }
 .divider { height:0.5px; background:rgba(255,255,255,0.08); margin:1.3rem 0; }
 .msg-input { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:11px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; margin-bottom:1rem; }
@@ -128,7 +128,7 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .rtable td { padding:8px 8px; color:rgba(255,255,255,0.78); border-bottom:0.5px solid rgba(255,255,255,0.05); vertical-align:top; }
 .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; }
 .badge-a { background:rgba(59,130,246,0.18); color:#93c5fd; border:0.5px solid rgba(59,130,246,0.35); }
-.badge-b { background:rgba(99,102,241,0.18); color:#a5b4fc; border:0.5px solid rgba(99,102,241,0.35); }
+.badge-b { background:rgba(251,191,36,0.18); color:#fcd34d; border:0.5px solid rgba(251,191,36,0.35); }
 .cpill { display:inline-block; padding:1px 7px; border-radius:20px; font-size:11px; background:rgba(59,130,246,0.12); color:rgba(147,197,253,0.82); border:0.5px solid rgba(59,130,246,0.25); }
 .empty-state { text-align:center; padding:2.5rem; color:rgba(255,255,255,0.22); font-size:14px; }
 .msg-card { background:rgba(251,191,36,0.06); border:0.5px solid rgba(251,191,36,0.2); border-radius:10px; padding:0.9rem 1.1rem; margin-bottom:8px; }
@@ -143,7 +143,7 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 <canvas id="gc"></canvas>
 <div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
 <div class="overlay">
-  <div class="logo-line">EDUSQUARE</div>
+  <div class="logo-line">EDUSQUARE 2026</div>
   <div class="subtitle">철학포럼</div>
   <div class="main-title">고승재 되기 선택 게임</div>
 
@@ -554,7 +554,15 @@ async function loadPublic() {
   if (!rows) { document.getElementById('publicView').innerHTML='<div class="empty-state">데이터를 불러올 수 없습니다</div>'; return; }
   const votes = rows.filter(r=>String(r[0])==='vote');
   let html='';
-  QS.forEach(q=>{
+  // 응답된 문항만 추려서 마지막 응답 문항이 위로
+  const answeredNums = [...new Set(votes.map(v=>String(v[4])))];
+  const sortedQS = [...QS].filter(q=>answeredNums.includes(String(q.num)))
+    .sort((a,b)=>{
+      const lastA = votes.filter(v=>String(v[4])===String(a.num)).length ? votes.map((v,i)=>String(v[4])===String(a.num)?i:-1).filter(x=>x>=0).pop() : -1;
+      const lastB = votes.filter(v=>String(v[4])===String(b.num)).length ? votes.map((v,i)=>String(v[4])===String(b.num)?i:-1).filter(x=>x>=0).pop() : -1;
+      return lastB - lastA;
+    });
+  sortedQS.forEach(q=>{
     const qv=votes.filter(v=>String(v[4])===String(q.num));
     if(!qv.length) return;
     const aC=qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
@@ -568,7 +576,7 @@ async function loadPublic() {
     html+='<span style="font-size:12px;color:rgba(147,197,253,0.8);">A '+aC+'('+ap+'%)</span>';
     html+='<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
     html+='<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>';
-    html+='<div style="width:'+(100-ap)+'%;background:rgba(99,102,241,0.55);"></div></div>';
+    html+='<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>';
     html+='<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>';
     const reasons=qv.filter(v=>v[8]);
     if(reasons.length){
@@ -612,7 +620,14 @@ async function loadAdmin() {
 
   // 요약
   let sh='';
-  QS.forEach(q=>{
+  const answeredNumsA = [...new Set(votes.map(v=>String(v[4])))];
+  const sortedQSA = [...QS].filter(q=>answeredNumsA.includes(String(q.num)))
+    .sort((a,b)=>{
+      const lastA = votes.map((v,i)=>String(v[4])===String(a.num)?i:-1).filter(x=>x>=0).pop()||0;
+      const lastB = votes.map((v,i)=>String(v[4])===String(b.num)?i:-1).filter(x=>x>=0).pop()||0;
+      return lastB - lastA;
+    });
+  sortedQSA.forEach(q=>{
     const qv=votes.filter(v=>String(v[4])===String(q.num)); if(!qv.length) return;
     const aC=qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
     const ap=Math.round(aC/qv.length*100);
@@ -626,10 +641,10 @@ async function loadAdmin() {
       '<span style="font-size:12px;color:rgba(147,197,253,0.8);">A '+aC+'('+ap+'%)</span>'+
       '<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">'+
       '<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>'+
-      '<div style="width:'+(100-ap)+'%;background:rgba(99,102,241,0.55);"></div></div>'+
+      '<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>'+
       '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>'+
       '<div class="answer-box" style="margin-left:46px;margin-top:8px;">'+
-      '<div class="answer-label">고승재의 선택</div>'+
+      '<div class="answer-label">CEO 고승재가 내린 선택은...</div>'+
       '<div class="answer-val">'+ansLabel+'</div>'+
       '<div class="answer-desc">'+q.ansDesc+'</div></div></div>';
   });
@@ -637,7 +652,13 @@ async function loadAdmin() {
 
   // 개별
   let dh='<table class="rtable"><thead><tr><th>이름</th><th>기수</th><th>문항</th><th>선택</th><th>이유</th><th>시간</th></tr></thead><tbody>';
-  [...votes].reverse().forEach(v=>{
+  const sortedVotes = [...votes].sort((a,b)=>{
+    const nameA = String(a[2]||''), nameB = String(b[2]||'');
+    if(nameA < nameB) return -1;
+    if(nameA > nameB) return 1;
+    return Number(a[4]||0) - Number(b[4]||0);
+  });
+  sortedVotes.forEach(v=>{
     dh+='<tr><td>'+v[2]+'</td><td><span class="cpill">'+v[3]+'</span></td><td>'+v[4]+'번 '+v[5]+'</td>'+
       '<td><span class="badge badge-'+v[6].toLowerCase()+'">'+v[6]+' '+v[7]+'</span></td>'+
       '<td style="font-size:12px;color:rgba(255,255,255,0.42);">'+(v[8]||'—')+'</td>'+
