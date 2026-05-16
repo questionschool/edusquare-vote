@@ -378,7 +378,7 @@ const PW = "edusquare0517";
 let cQ = 0, selChoice = null;
 let user = JSON.parse(localStorage.getItem('es_user') || 'null');
 let localVotes = JSON.parse(localStorage.getItem('es_local_votes') || '[]');
-let sheetUrl = localStorage.getItem('es_sheet_url') || '';
+let sheetUrl = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf6uq4OCY1BYnkEIEYRF4j6iA67uvrP8NotcltzpQF-UA/exec';
 
 // ─── Google Sheets 연동 ───────────────────────────────
 function saveSheetUrl() {
@@ -420,7 +420,7 @@ function showLoading(v) {
 
 // ─── 초기 세팅 ───────────────────────────────────────
 window.addEventListener('load', () => {
-  if (!sheetUrl) document.getElementById('setupGuide').style.display = 'block';
+  document.getElementById('setupGuide').style.display = 'none';
   if (user) showVoteCard();
   initGlobe();
 });
@@ -466,7 +466,6 @@ function resetUser() {
   document.getElementById('loginCard').style.display = 'block';
   document.getElementById('voteCard').style.display = 'none';
   document.getElementById('successCard').style.display = 'none';
-  if (!sheetUrl) document.getElementById('setupGuide').style.display = 'block';
 }
 
 // ─── 문항 렌더링 ─────────────────────────────────────
