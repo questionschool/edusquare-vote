@@ -13,15 +13,15 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .subtitle { font-size:15px; color:rgba(255,255,255,0.55); margin-bottom:0.4rem; text-align:center; }
 .main-title { font-size:26px; font-weight:700; color:#fff; margin-bottom:2.2rem; text-align:center; }
 .card { background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.14); border-radius:18px; padding:1.6rem; width:100%; max-width:520px; backdrop-filter:blur(16px); }
-.section-label { font-size:10px; font-weight:600; letter-spacing:0.14em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:0.7rem; }
+.slabel { font-size:10px; font-weight:600; letter-spacing:0.14em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:0.7rem; }
 .cohort-grid { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-bottom:1.3rem; }
 .cohort-btn { padding:12px 10px; border-radius:11px; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.7); cursor:pointer; font-family:inherit; transition:all 0.15s; text-align:center; }
 .cohort-btn .cn { display:block; font-size:15px; font-weight:600; margin-bottom:3px; }
 .cohort-btn .cy { display:block; font-size:11px; color:rgba(255,255,255,0.38); }
 .cohort-btn:hover { background:rgba(255,255,255,0.1); }
-.cohort-btn.selected { background:rgba(59,130,246,0.2); border-color:rgba(59,130,246,0.6); }
-.cohort-btn.selected .cn { color:#93c5fd; }
-.cohort-btn.selected .cy { color:rgba(147,197,253,0.65); }
+.cohort-btn.sel { background:rgba(59,130,246,0.2); border-color:rgba(59,130,246,0.6); }
+.cohort-btn.sel .cn { color:#93c5fd; }
+.cohort-btn.sel .cy { color:rgba(147,197,253,0.65); }
 .notice-box { background:rgba(251,191,36,0.08); border:0.5px solid rgba(251,191,36,0.3); border-radius:10px; padding:0.9rem 1.1rem; margin-bottom:1.3rem; font-size:13px; color:rgba(251,191,36,0.9); line-height:1.6; }
 .name-row { display:flex; gap:8px; margin-bottom:1.3rem; }
 .name-input { flex:1; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:11px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; }
@@ -30,117 +30,117 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .start-btn { padding:11px 20px; background:rgba(59,130,246,0.32); border:1px solid rgba(59,130,246,0.6); border-radius:9px; color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; white-space:nowrap; }
 .start-btn:hover { background:rgba(59,130,246,0.48); }
 .start-btn:disabled { opacity:0.3; cursor:not-allowed; }
-.user-badge { display:flex; align-items:center; gap:10px; background:rgba(59,130,246,0.1); border:0.5px solid rgba(59,130,246,0.28); border-radius:11px; padding:10px 14px; margin-bottom:1.3rem; }
+.ubadge { display:flex; align-items:center; gap:10px; background:rgba(59,130,246,0.1); border:0.5px solid rgba(59,130,246,0.28); border-radius:11px; padding:10px 14px; margin-bottom:1.3rem; }
 .avatar { width:34px; height:34px; border-radius:50%; background:rgba(59,130,246,0.25); border:0.5px solid rgba(59,130,246,0.45); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; color:#93c5fd; flex-shrink:0; }
-.badge-info { flex:1; }
-.badge-name { font-size:14px; font-weight:600; color:#fff; }
-.badge-cohort { font-size:12px; color:rgba(147,197,253,0.7); margin-top:1px; }
-.badge-change { font-size:11px; color:rgba(255,255,255,0.22); cursor:pointer; text-decoration:underline; }
-.badge-change:hover { color:rgba(255,255,255,0.5); }
-.q-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
-.q-progress { font-size:12px; color:rgba(255,255,255,0.38); }
-.nav-btn { padding:6px 15px; border-radius:7px; border:0.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.62); font-size:13px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
-.nav-btn:disabled { opacity:0.22; cursor:not-allowed; }
-.nav-btn:not(:disabled):hover { background:rgba(255,255,255,0.1); }
-.q-box { background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.07); border-radius:11px; padding:1.1rem 1.3rem; margin-bottom:1.3rem; }
-.q-num { font-size:11px; color:rgba(100,180,255,0.82); font-weight:600; letter-spacing:0.1em; margin-bottom:7px; }
-.q-main { font-size:14px; color:rgba(255,255,255,0.9); line-height:1.6; }
-.choice-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:1.3rem; }
-.choice-btn { padding:13px 10px; border-radius:11px; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); cursor:pointer; font-family:inherit; transition:all 0.15s; text-align:center; }
-.choice-btn .cl { display:block; font-size:17px; font-weight:700; margin-bottom:5px; color:rgba(255,255,255,0.8); }
-.choice-btn .cd { display:block; font-size:12px; color:rgba(255,255,255,0.42); line-height:1.38; }
-.choice-btn:hover:not([disabled]) { background:rgba(255,255,255,0.1); }
-.choice-btn[disabled] { opacity:0.55; cursor:default; }
-.choice-btn.sel-a { background:rgba(59,130,246,0.2); border-color:rgba(59,130,246,0.65); }
-.choice-btn.sel-a .cl { color:#93c5fd; } .choice-btn.sel-a .cd { color:rgba(147,197,253,0.72); }
-.choice-btn.sel-b { background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.65); }
-.choice-btn.sel-b .cl { color:#fcd34d; } .choice-btn.sel-b .cd { color:rgba(252,211,77,0.72); }
-.comment-input { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:10px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; resize:none; height:78px; line-height:1.5; margin-bottom:1.3rem; }
-.comment-input::placeholder { color:rgba(255,255,255,0.22); }
-.comment-input:focus { border-color:rgba(100,180,255,0.5); }
-.comment-input:disabled { opacity:0.5; }
-.submit-btn { width:100%; padding:13px; background:rgba(59,130,246,0.3); border:1px solid rgba(59,130,246,0.58); border-radius:11px; color:#fff; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
-.submit-btn:hover:not(:disabled) { background:rgba(59,130,246,0.48); }
-.submit-btn:disabled { opacity:0.3; cursor:not-allowed; }
-.vote-msg { font-size:12px; color:rgba(239,120,120,0.9); text-align:center; margin-top:10px; display:none; }
-.my-choice-box { background:rgba(59,130,246,0.08); border:0.5px solid rgba(59,130,246,0.25); border-radius:10px; padding:0.9rem 1.1rem; margin-top:1.3rem; display:none; }
-.my-choice-label { font-size:10px; font-weight:600; letter-spacing:0.12em; color:rgba(147,197,253,0.7); text-transform:uppercase; margin-bottom:6px; }
-.my-choice-val { font-size:13px; color:#93c5fd; font-weight:600; margin-bottom:4px; }
-.my-choice-comment { font-size:12px; color:rgba(147,197,253,0.65); line-height:1.5; }
-.result-box { background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.08); border-radius:11px; padding:1.1rem 1.3rem; margin-top:0.8rem; display:none; }
-.result-title { font-size:11px; font-weight:600; letter-spacing:0.1em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:0.9rem; display:flex; justify-content:space-between; align-items:center; }
-.refresh-btn { font-size:12px; color:rgba(100,180,255,0.7); cursor:pointer; background:none; border:none; font-family:inherit; }
-.refresh-btn:hover { color:#93c5fd; }
-.bar-row { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
-.bar-label { font-size:13px; font-weight:700; width:20px; flex-shrink:0; }
-.bar-label-a { color:#93c5fd; } .bar-label-b { color:#fcd34d; }
-.bar-track { flex:1; height:8px; border-radius:4px; background:rgba(255,255,255,0.07); overflow:hidden; }
-.bar-fill-a { height:100%; background:rgba(59,130,246,0.6); border-radius:4px; transition:width 0.5s; }
-.bar-fill-b { height:100%; background:rgba(251,191,36,0.6); border-radius:4px; transition:width 0.5s; }
-.bar-pct { font-size:12px; color:rgba(255,255,255,0.45); width:70px; text-align:right; flex-shrink:0; }
-.reason-list { display:flex; flex-direction:column; gap:6px; max-height:200px; overflow-y:auto; margin-top:0.8rem; }
-.reason-item { background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 10px; }
-.reason-meta { font-size:11px; margin-bottom:3px; }
-.reason-meta-a { color:rgba(147,197,253,0.8); } .reason-meta-b { color:rgba(252,211,77,0.8); }
-.reason-text { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.45; }
-.success-check { width:54px; height:54px; border-radius:50%; background:rgba(16,185,129,0.12); border:1.5px solid rgba(16,185,129,0.38); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:24px; color:#6ee7b7; }
-.success-title { font-size:17px; font-weight:600; color:#fff; margin-bottom:0.4rem; text-align:center; }
-.success-sub { font-size:13px; color:rgba(255,255,255,0.42); margin-bottom:1.3rem; text-align:center; line-height:1.5; }
-.learn-grid { display:flex; flex-direction:column; gap:6px; margin-bottom:1.3rem; max-height:380px; overflow-y:auto; }
-.learn-btn { padding:10px 14px; border-radius:9px; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.75); cursor:pointer; font-family:inherit; text-align:left; font-size:13px; line-height:1.4; transition:all 0.15s; }
-.learn-btn:hover { background:rgba(255,255,255,0.1); }
-.learn-btn.selected { background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.65); color:#fcd34d; }
-.learn-btn .lsub { display:block; font-size:11px; color:rgba(255,255,255,0.3); margin-top:2px; }
-.select-hint { font-size:12px; color:rgba(251,191,36,0.7); margin-bottom:1rem; }
-.learn-result-item { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:0.5px solid rgba(255,255,255,0.05); }
-.learn-result-num { font-size:11px; color:rgba(100,180,255,0.75); width:24px; flex-shrink:0; font-weight:600; }
-.learn-result-text { flex:1; font-size:13px; color:rgba(255,255,255,0.8); }
-.learn-result-bar { width:80px; height:6px; border-radius:3px; background:rgba(255,255,255,0.07); overflow:hidden; }
-.learn-result-fill { height:100%; background:rgba(251,191,36,0.6); border-radius:3px; }
-.learn-result-count { font-size:12px; color:rgba(255,255,255,0.35); width:32px; text-align:right; flex-shrink:0; }
+.binfo { flex:1; }
+.bname { font-size:14px; font-weight:600; color:#fff; }
+.bcohort { font-size:12px; color:rgba(147,197,253,0.7); margin-top:1px; }
+.bchange { font-size:11px; color:rgba(255,255,255,0.22); cursor:pointer; text-decoration:underline; }
+.bchange:hover { color:rgba(255,255,255,0.5); }
+.qnav { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+.qprog { font-size:12px; color:rgba(255,255,255,0.38); }
+.nbtn { padding:6px 15px; border-radius:7px; border:0.5px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.62); font-size:13px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.nbtn:disabled { opacity:0.22; cursor:not-allowed; }
+.nbtn:not(:disabled):hover { background:rgba(255,255,255,0.1); }
+.qbox { background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.07); border-radius:11px; padding:1.1rem 1.3rem; margin-bottom:1.3rem; }
+.qnum { font-size:11px; color:rgba(100,180,255,0.82); font-weight:600; letter-spacing:0.1em; margin-bottom:7px; }
+.qmain { font-size:14px; color:rgba(255,255,255,0.9); line-height:1.6; }
+.crow { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:1.3rem; }
+.cbtn { padding:13px 10px; border-radius:11px; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); cursor:pointer; font-family:inherit; transition:all 0.15s; text-align:center; }
+.cbtn .cl { display:block; font-size:17px; font-weight:700; margin-bottom:5px; color:rgba(255,255,255,0.8); }
+.cbtn .cd { display:block; font-size:12px; color:rgba(255,255,255,0.42); line-height:1.38; }
+.cbtn:hover:not([disabled]) { background:rgba(255,255,255,0.1); }
+.cbtn[disabled] { opacity:0.55; cursor:default; }
+.cbtn.sa { background:rgba(59,130,246,0.2); border-color:rgba(59,130,246,0.65); }
+.cbtn.sa .cl { color:#93c5fd; } .cbtn.sa .cd { color:rgba(147,197,253,0.72); }
+.cbtn.sb { background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.65); }
+.cbtn.sb .cl { color:#fcd34d; } .cbtn.sb .cd { color:rgba(252,211,77,0.72); }
+.cinput { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:10px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; resize:none; height:78px; line-height:1.5; margin-bottom:1.3rem; }
+.cinput::placeholder { color:rgba(255,255,255,0.22); }
+.cinput:focus { border-color:rgba(100,180,255,0.5); }
+.cinput:disabled { opacity:0.5; }
+.sbtn { width:100%; padding:13px; background:rgba(59,130,246,0.3); border:1px solid rgba(59,130,246,0.58); border-radius:11px; color:#fff; font-size:15px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.sbtn:hover:not(:disabled) { background:rgba(59,130,246,0.48); }
+.sbtn:disabled { opacity:0.3; cursor:not-allowed; }
+.mychbox { background:rgba(59,130,246,0.08); border:0.5px solid rgba(59,130,246,0.25); border-radius:10px; padding:0.9rem 1.1rem; margin-top:1.3rem; display:none; }
+.myclabel { font-size:10px; font-weight:600; letter-spacing:0.12em; color:rgba(147,197,253,0.7); text-transform:uppercase; margin-bottom:6px; }
+.mycval { font-size:13px; color:#93c5fd; font-weight:600; margin-bottom:4px; }
+.myccmt { font-size:12px; color:rgba(147,197,253,0.65); line-height:1.5; }
+.rbox { background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.08); border-radius:11px; padding:1.1rem 1.3rem; margin-top:0.8rem; display:none; }
+.rtitle { font-size:11px; font-weight:600; letter-spacing:0.1em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:0.9rem; display:flex; justify-content:space-between; align-items:center; }
+.rfbtn { font-size:12px; color:rgba(100,180,255,0.7); cursor:pointer; background:none; border:none; font-family:inherit; }
+.rfbtn:hover { color:#93c5fd; }
+.barrow { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.barlbl { font-size:13px; font-weight:700; width:20px; flex-shrink:0; }
+.barlbl-a { color:#93c5fd; } .barlbl-b { color:#fcd34d; }
+.bartrack { flex:1; height:8px; border-radius:4px; background:rgba(255,255,255,0.07); overflow:hidden; }
+.barfill-a { height:100%; background:rgba(59,130,246,0.6); border-radius:4px; transition:width 0.5s; }
+.barfill-b { height:100%; background:rgba(251,191,36,0.6); border-radius:4px; transition:width 0.5s; }
+.barpct { font-size:12px; color:rgba(255,255,255,0.45); width:70px; text-align:right; flex-shrink:0; }
+.rlist { display:flex; flex-direction:column; gap:6px; max-height:200px; overflow-y:auto; margin-top:0.8rem; }
+.ritem { background:rgba(255,255,255,0.04); border-radius:8px; padding:8px 10px; }
+.rmeta { font-size:11px; margin-bottom:3px; }
+.rmeta-a { color:rgba(147,197,253,0.8); } .rmeta-b { color:rgba(252,211,77,0.8); }
+.rtext { font-size:12px; color:rgba(255,255,255,0.6); line-height:1.45; }
+.okcheck { width:54px; height:54px; border-radius:50%; background:rgba(16,185,129,0.12); border:1.5px solid rgba(16,185,129,0.38); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:24px; color:#6ee7b7; }
+.oktitle { font-size:17px; font-weight:600; color:#fff; margin-bottom:0.4rem; text-align:center; }
+.oksub { font-size:13px; color:rgba(255,255,255,0.42); margin-bottom:1.3rem; text-align:center; line-height:1.5; }
+.lgrid { display:flex; flex-direction:column; gap:6px; margin-bottom:1.3rem; max-height:380px; overflow-y:auto; }
+.lbtn { padding:10px 14px; border-radius:9px; border:1.5px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.75); cursor:pointer; font-family:inherit; text-align:left; font-size:13px; line-height:1.4; transition:all 0.15s; }
+.lbtn:hover { background:rgba(255,255,255,0.1); }
+.lbtn.lsel { background:rgba(251,191,36,0.15); border-color:rgba(251,191,36,0.65); color:#fcd34d; }
+.lbtn .lsub { display:block; font-size:11px; color:rgba(255,255,255,0.3); margin-top:2px; }
+.lhint { font-size:12px; color:rgba(251,191,36,0.7); margin-bottom:1rem; }
+.lritem { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:0.5px solid rgba(255,255,255,0.05); }
+.lrnum { font-size:11px; color:rgba(100,180,255,0.75); width:24px; flex-shrink:0; font-weight:600; }
+.lrtext { flex:1; font-size:13px; color:rgba(255,255,255,0.8); }
+.lrbar { width:80px; height:6px; border-radius:3px; background:rgba(255,255,255,0.07); overflow:hidden; }
+.lrfill { height:100%; background:rgba(251,191,36,0.6); border-radius:3px; }
+.lrcnt { font-size:12px; color:rgba(255,255,255,0.35); width:32px; text-align:right; flex-shrink:0; }
 .divider { height:0.5px; background:rgba(255,255,255,0.08); margin:1.3rem 0; }
-.msg-input { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:11px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; margin-bottom:1rem; }
-.msg-input::placeholder { color:rgba(255,255,255,0.22); }
-.msg-input:focus { border-color:rgba(100,180,255,0.5); }
-.msg-input:disabled { opacity:0.5; }
-.sent-box { background:rgba(16,185,129,0.08); border:0.5px solid rgba(16,185,129,0.25); border-radius:10px; padding:1rem; text-align:center; font-size:13px; color:rgba(110,231,183,0.85); margin-top:1rem; display:none; }
-.admin-link { margin-top:1.6rem; font-size:12px; color:rgba(255,255,255,0.16); text-align:center; cursor:pointer; text-decoration:underline; }
-.admin-link:hover { color:rgba(255,255,255,0.42); }
-.admin-panel { display:none; width:100%; max-width:700px; margin-top:1.5rem; }
-.admin-card { background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.14); border-radius:18px; padding:1.6rem; backdrop-filter:blur(16px); }
-.admin-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.3rem; }
-.admin-title { font-size:16px; font-weight:600; color:#fff; }
-.pw-row { display:flex; gap:8px; margin-bottom:0.5rem; }
-.pw-input { flex:1; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:10px 12px; font-size:14px; color:#fff; outline:none; font-family:inherit; }
-.pw-input::placeholder { color:rgba(255,255,255,0.22); }
-.pw-btn { padding:10px 16px; background:rgba(255,255,255,0.08); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; color:#fff; font-size:14px; cursor:pointer; font-family:inherit; }
-.pw-error { font-size:12px; color:rgba(239,110,110,0.88); display:none; margin-top:4px; }
-.tab-row { display:flex; gap:6px; margin-bottom:1rem; flex-wrap:wrap; }
-.tab-btn { padding:6px 15px; border-radius:7px; border:0.5px solid rgba(255,255,255,0.12); background:transparent; color:rgba(255,255,255,0.38); font-size:13px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
-.tab-btn.active { background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.25); }
-.answer-box { background:rgba(16,185,129,0.08); border:0.5px solid rgba(16,185,129,0.25); border-radius:10px; padding:0.9rem 1.1rem; margin-top:8px; }
-.answer-label { font-size:10px; font-weight:600; letter-spacing:0.12em; color:rgba(110,231,183,0.7); text-transform:uppercase; margin-bottom:6px; }
-.answer-val { font-size:13px; color:#6ee7b7; font-weight:600; margin-bottom:6px; }
-.answer-desc { font-size:12px; color:rgba(110,231,183,0.65); line-height:1.55; }
-.rtable { width:100%; border-collapse:collapse; font-family:inherit; font-size:13px; }
-.rtable th { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.28); font-weight:600; padding:6px 8px; text-align:left; border-bottom:0.5px solid rgba(255,255,255,0.08); }
-.rtable td { padding:8px 8px; color:rgba(255,255,255,0.78); border-bottom:0.5px solid rgba(255,255,255,0.05); vertical-align:top; }
+.minput { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:11px 14px; font-size:14px; color:#fff; outline:none; font-family:inherit; margin-bottom:1rem; }
+.minput::placeholder { color:rgba(255,255,255,0.22); }
+.minput:focus { border-color:rgba(100,180,255,0.5); }
+.minput:disabled { opacity:0.5; }
+.sentbox { background:rgba(16,185,129,0.08); border:0.5px solid rgba(16,185,129,0.25); border-radius:10px; padding:1rem; text-align:center; font-size:13px; color:rgba(110,231,183,0.85); margin-top:1rem; display:none; }
+.alink { font-size:12px; color:rgba(255,255,255,0.16); cursor:pointer; text-decoration:underline; }
+.alink:hover { color:rgba(255,255,255,0.42); }
+.apanel { display:none; width:100%; max-width:700px; margin-top:1.5rem; }
+.acard { background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.14); border-radius:18px; padding:1.6rem; backdrop-filter:blur(16px); }
+.aheader { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.3rem; }
+.atitle { font-size:16px; font-weight:600; color:#fff; }
+.pwrow { display:flex; gap:8px; margin-bottom:0.5rem; }
+.pwinput { flex:1; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:10px 12px; font-size:14px; color:#fff; outline:none; font-family:inherit; }
+.pwinput::placeholder { color:rgba(255,255,255,0.22); }
+.pwbtn { padding:10px 16px; background:rgba(255,255,255,0.08); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; color:#fff; font-size:14px; cursor:pointer; font-family:inherit; }
+.pwerr { font-size:12px; color:rgba(239,110,110,0.88); display:none; margin-top:4px; }
+.tabrow { display:flex; gap:6px; margin-bottom:1rem; flex-wrap:wrap; }
+.tbtn { padding:6px 15px; border-radius:7px; border:0.5px solid rgba(255,255,255,0.12); background:transparent; color:rgba(255,255,255,0.38); font-size:13px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.tbtn.act { background:rgba(255,255,255,0.1); color:#fff; border-color:rgba(255,255,255,0.25); }
+.ansbox { background:rgba(16,185,129,0.08); border:0.5px solid rgba(16,185,129,0.25); border-radius:10px; padding:0.9rem 1.1rem; margin-top:8px; }
+.anslabel { font-size:10px; font-weight:600; letter-spacing:0.12em; color:rgba(110,231,183,0.7); text-transform:uppercase; margin-bottom:6px; }
+.ansval { font-size:13px; color:#6ee7b7; font-weight:600; margin-bottom:6px; }
+.ansdesc { font-size:12px; color:rgba(110,231,183,0.65); line-height:1.55; }
+.dtable { width:100%; border-collapse:collapse; font-family:inherit; font-size:13px; }
+.dtable th { font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.28); font-weight:600; padding:6px 8px; text-align:left; border-bottom:0.5px solid rgba(255,255,255,0.08); }
+.dtable td { padding:8px; color:rgba(255,255,255,0.78); border-bottom:0.5px solid rgba(255,255,255,0.05); vertical-align:top; }
 .badge { display:inline-block; padding:2px 8px; border-radius:20px; font-size:11px; font-weight:600; }
-.badge-a { background:rgba(59,130,246,0.18); color:#93c5fd; border:0.5px solid rgba(59,130,246,0.35); }
-.badge-b { background:rgba(251,191,36,0.18); color:#fcd34d; border:0.5px solid rgba(251,191,36,0.35); }
+.ba { background:rgba(59,130,246,0.18); color:#93c5fd; border:0.5px solid rgba(59,130,246,0.35); }
+.bb { background:rgba(251,191,36,0.18); color:#fcd34d; border:0.5px solid rgba(251,191,36,0.35); }
 .cpill { display:inline-block; padding:1px 7px; border-radius:20px; font-size:11px; background:rgba(59,130,246,0.12); color:rgba(147,197,253,0.82); border:0.5px solid rgba(59,130,246,0.25); }
-.empty-state { text-align:center; padding:2.5rem; color:rgba(255,255,255,0.22); font-size:14px; }
-.msg-card { background:rgba(251,191,36,0.06); border:0.5px solid rgba(251,191,36,0.2); border-radius:10px; padding:0.9rem 1.1rem; margin-bottom:8px; }
-.msg-from { font-size:11px; color:rgba(251,191,36,0.6); margin-bottom:4px; }
-.msg-text { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.55; }
-.loading-overlay { position:fixed; top:0; left:0; width:100%; height:100%; z-index:999; background:rgba(10,14,26,0.7); display:none; align-items:center; justify-content:center; }
-.loading-spinner { width:36px; height:36px; border:3px solid rgba(255,255,255,0.1); border-top-color:#93c5fd; border-radius:50%; animation:spin 0.8s linear infinite; }
+.empty { text-align:center; padding:2.5rem; color:rgba(255,255,255,0.22); font-size:14px; }
+.msgcard { background:rgba(251,191,36,0.06); border:0.5px solid rgba(251,191,36,0.2); border-radius:10px; padding:0.9rem 1.1rem; margin-bottom:8px; }
+.msgfrom { font-size:11px; color:rgba(251,191,36,0.6); margin-bottom:4px; }
+.msgtxt { font-size:13px; color:rgba(255,255,255,0.85); line-height:1.55; }
+.loader { position:fixed; top:0; left:0; width:100%; height:100%; z-index:999; background:rgba(10,14,26,0.7); display:none; align-items:center; justify-content:center; }
+.spinner { width:36px; height:36px; border:3px solid rgba(255,255,255,0.1); border-top-color:#93c5fd; border-radius:50%; animation:spin 0.8s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 </style>
 </head>
 <body>
 <canvas id="gc"></canvas>
-<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
+<div class="loader" id="loader"><div class="spinner"></div></div>
+
 <div class="overlay">
   <div class="logo-line">EDUSQUARE 2026</div>
   <div class="subtitle">철학포럼</div>
@@ -148,141 +148,142 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
   <!-- 로그인 -->
   <div class="card" id="loginCard">
-    <div class="section-label">기수 선택</div>
+    <div class="slabel">기수 선택</div>
     <div class="cohort-grid">
-      <button class="cohort-btn" onclick="selCohort('1기')" id="c1"><span class="cn">1기</span><span class="cy">2024년 입교</span></button>
-      <button class="cohort-btn" onclick="selCohort('2기')" id="c2"><span class="cn">2기</span><span class="cy">2025년 입교</span></button>
-      <button class="cohort-btn" onclick="selCohort('3기')" id="c3"><span class="cn">3기</span><span class="cy">2026년 입교</span></button>
-      <button class="cohort-btn" onclick="selCohort('운영팀')" id="c4"><span class="cn">운영팀</span><span class="cy">EDUSQUARE</span></button>
+      <button class="cohort-btn" id="c1" onclick="pickCohort('1기')"><span class="cn">1기</span><span class="cy">2024년 입교</span></button>
+      <button class="cohort-btn" id="c2" onclick="pickCohort('2기')"><span class="cn">2기</span><span class="cy">2025년 입교</span></button>
+      <button class="cohort-btn" id="c3" onclick="pickCohort('3기')"><span class="cn">3기</span><span class="cy">2026년 입교</span></button>
+      <button class="cohort-btn" id="c4" onclick="pickCohort('운영팀')"><span class="cn">운영팀</span><span class="cy">EDUSQUARE</span></button>
     </div>
-    <div class="section-label">학우 이름 입력</div>
+    <div class="slabel">학우 이름 입력</div>
     <div class="name-row">
-      <input class="name-input" id="nameInput" type="text" placeholder="성함을 입력해주세요 (예: 박영준)" />
-      <button class="start-btn" id="startBtn" onclick="startVoting()" disabled>시작 →</button>
+      <input class="name-input" id="nameIn" type="text" placeholder="성함을 입력해주세요 (예: 박영준)" oninput="chkStart()">
+      <button class="start-btn" id="startBtn" onclick="doStart()" disabled>시작 →</button>
     </div>
     <div class="notice-box">📌 학장님의 안내 후 다음 문항으로 넘어가 주세요. 함께 진도를 맞춰 진행합니다.</div>
   </div>
 
   <!-- 투표 -->
   <div class="card" id="voteCard" style="display:none;">
-    <div class="user-badge">
-      <div class="avatar" id="avatarEl"></div>
-      <div class="badge-info">
-        <div class="badge-name" id="badgeName"></div>
-        <div class="badge-cohort" id="badgeCohort"></div>
+    <div class="ubadge">
+      <div class="avatar" id="ava"></div>
+      <div class="binfo">
+        <div class="bname" id="bname"></div>
+        <div class="bcohort" id="bcohort"></div>
       </div>
-      <div class="badge-change" onclick="resetUser()">변경</div>
+      <div class="bchange" onclick="doReset()">변경</div>
     </div>
-    <div class="q-nav">
-      <button class="nav-btn" id="prevBtn" onclick="changeQ(-1)" disabled>← 이전</button>
-      <span class="q-progress" id="qProgress">1 / 15</span>
-      <button class="nav-btn" id="nextBtn" onclick="changeQ(1)">다음 →</button>
+    <div class="qnav">
+      <button class="nbtn" id="prevBtn" onclick="moveQ(-1)" disabled>← 이전</button>
+      <span class="qprog" id="qprog">1 / 15</span>
+      <button class="nbtn" id="nextBtn" onclick="moveQ(1)">다음 →</button>
     </div>
-    <div class="q-box">
-      <div class="q-num" id="qNum"></div>
-      <div class="q-main" id="qMain"></div>
+    <div class="qbox">
+      <div class="qnum" id="qnum"></div>
+      <div class="qmain" id="qmain"></div>
     </div>
-    <div class="section-label" id="choiceLabel">① 선택</div>
-    <div class="choice-row" id="choiceRow"></div>
-    <div class="section-label">② 선택 이유 (Why) — 선택사항</div>
-    <textarea class="comment-input" id="commentInput" placeholder="왜 그렇게 선택하셨나요?"></textarea>
-    <button class="submit-btn" id="submitBtn" onclick="submitVote()" disabled>투표하기</button>
-    <div class="vote-msg" id="voteMsg"></div>
-    <div class="my-choice-box" id="myChoiceBox">
-      <div class="my-choice-label">나의 선택</div>
-      <div class="my-choice-val" id="myChoiceVal"></div>
-      <div class="my-choice-comment" id="myChoiceComment"></div>
+    <div class="slabel">① 선택</div>
+    <div class="crow" id="crow"></div>
+    <div class="slabel">② 선택 이유 (Why) — 선택사항</div>
+    <textarea class="cinput" id="cinput" placeholder="왜 그렇게 선택하셨나요?"></textarea>
+    <button class="sbtn" id="voteBtn" onclick="doVote()" disabled>투표하기</button>
+    <div class="mychbox" id="mychbox">
+      <div class="myclabel">나의 선택</div>
+      <div class="mycval" id="mycval"></div>
+      <div class="myccmt" id="myccmt"></div>
     </div>
-    <div class="result-box" id="resultBox">
-      <div class="result-title">
+    <div class="rbox" id="rbox">
+      <div class="rtitle">
         <span>실시간 투표 현황</span>
-        <button class="refresh-btn" onclick="loadResult()">↻ 새로고침</button>
+        <button class="rfbtn" onclick="loadResult()">↻ 새로고침</button>
       </div>
-      <div id="barSection"></div>
-      <div class="section-label" style="margin-bottom:0.6rem;margin-top:0.8rem;">선택 이유</div>
-      <div class="reason-list" id="reasonList"></div>
+      <div id="bars"></div>
+      <div class="slabel" style="margin:0.8rem 0 0.5rem;">선택 이유</div>
+      <div class="rlist" id="rlist"></div>
     </div>
   </div>
 
-  <!-- 중간 완료 -->
-  <div class="card" id="successCard" style="display:none; text-align:center; padding:2rem 1.6rem;">
-    <div class="success-check">✓</div>
-    <div class="success-title" id="successTitle"></div>
-    <div class="success-sub" id="successSub"></div>
-    <button class="nav-btn" id="successNextBtn" onclick="goNext()" style="padding:11px 28px;">다음 문항 →</button>
+  <!-- 문항 완료 -->
+  <div class="card" id="doneCard" style="display:none; text-align:center; padding:2rem 1.6rem;">
+    <div class="okcheck">✓</div>
+    <div class="oktitle" id="doneTitle"></div>
+    <div class="oksub" id="doneSub"></div>
+    <button class="nbtn" id="doneNext" onclick="goNext()" style="padding:11px 28px;">다음 문항 →</button>
   </div>
 
-  <!-- 최종: 배움 투표 + 메시지 -->
+  <!-- 마무리 -->
   <div class="card" id="finalCard" style="display:none;">
-    <div class="user-badge">
-      <div class="avatar" id="finalAvatarEl"></div>
-      <div class="badge-info">
-        <div class="badge-name" id="finalBadgeName"></div>
-        <div class="badge-cohort" id="finalBadgeCohort"></div>
+    <div class="ubadge">
+      <div class="avatar" id="fava"></div>
+      <div class="binfo">
+        <div class="bname" id="fname"></div>
+        <div class="bcohort" id="fcohort"></div>
       </div>
     </div>
-
-    <div id="learnVoteSection">
-      <div class="success-check">🎉</div>
-      <div class="success-title" style="margin-bottom:0.5rem;">모든 문항 완료!</div>
-      <div class="success-sub">경영자/리더로서 가장 큰 배움이 있었던 문항을 3개 선택해주세요.</div>
-      <div class="select-hint" id="selectHint" style="margin-top:1rem;">0 / 3개 선택됨</div>
-      <div class="learn-grid" id="learnGrid" style="margin-top:0.6rem;"></div>
-      <button class="submit-btn" id="learnSubmitBtn" onclick="submitLearn()" disabled>선택 완료</button>
+    <div id="learnSec">
+      <div class="okcheck">🎉</div>
+      <div class="oktitle" style="margin-bottom:0.5rem;">모든 문항 완료!</div>
+      <div class="oksub">경영자/리더로서 가장 큰 배움이 있었던 문항을 3개 선택해주세요.</div>
+      <div class="lhint" id="lhint" style="margin-top:1rem;">0 / 3개 선택됨</div>
+      <div class="lgrid" id="lgrid" style="margin-top:0.6rem;"></div>
+      <button class="sbtn" id="lsubBtn" onclick="doLearn()" disabled>선택 완료</button>
     </div>
-
-    <div id="learnResultSection" style="display:none;">
+    <div id="learnRes" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.9rem;">
-        <div class="section-label" style="margin-bottom:0;">배움 투표 결과</div>
-        <button class="refresh-btn" onclick="loadLearnResult()">↻ 새로고침</button>
+        <div class="slabel" style="margin-bottom:0;">배움 투표 결과</div>
+        <button class="rfbtn" onclick="loadLearnRes()">↻ 새로고침</button>
       </div>
-      <div id="learnResultList"></div>
+      <div id="lreslist"></div>
       <div class="divider"></div>
-      <div id="msgSection">
-        <div class="section-label" style="margin-bottom:0.7rem;">교장님께 한 줄 메시지</div>
-        <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1rem;line-height:1.6;">철학포럼이 끝나고 고승재 교장님께 전하고 싶은 마음을 한 줄 남겨주세요.</div>
-        <input class="msg-input" id="msgInput" type="text" placeholder="교장님께 전하고 싶은 한 마디..." />
-        <button class="submit-btn" id="msgSubmitBtn" onclick="submitMsg()">전달하기 💌</button>
-        <div class="sent-box" id="sentBox">소중한 마음 잘 전달하겠습니다 💙</div>
-      </div>
+      <div class="slabel" style="margin-bottom:0.7rem;">교장님께 한 줄 메시지</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1rem;line-height:1.6;">철학포럼이 끝나고 고승재 교장님께 전하고 싶은 마음을 한 줄 남겨주세요.</div>
+      <input class="minput" id="msgin" type="text" placeholder="교장님께 전하고 싶은 한 마디...">
+      <button class="sbtn" id="msgBtn" onclick="doMsg()">전달하기 💌</button>
+      <div class="sentbox" id="sentbox">소중한 마음 잘 전달하겠습니다 💙</div>
     </div>
   </div>
 
-  <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:1.6rem;"><div class="admin-link" onclick="togglePublic()">집계 확인 (참가자)</div><div class="admin-link" onclick="toggleAdmin()">집계 확인 (관리자)</div></div>
-  <div class="admin-panel" id="publicPanel">
-    <div class="admin-card">
-      <div class="admin-header"><div class="admin-title">참가자 집계</div></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.9rem;">
-        <div class="section-label" style="margin-bottom:0;">문항별 현황</div>
-        <button class="refresh-btn" onclick="loadPublic()">↻ 새로고침</button>
+  <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:1.6rem;">
+    <div class="alink" onclick="togPub()">집계 확인 (참가자)</div>
+    <div class="alink" onclick="togAdmin()">집계 확인 (관리자)</div>
+  </div>
+
+  <!-- 참가자 집계 -->
+  <div class="apanel" id="pubPanel">
+    <div class="acard">
+      <div class="aheader">
+        <div class="atitle">참가자 집계</div>
+        <button class="rfbtn" onclick="loadPub()">↻ 새로고침</button>
       </div>
-      <div id="publicView"><div class="empty-state">로딩 중...</div></div>
+      <div id="pubView"><div class="empty">로딩 중...</div></div>
     </div>
   </div>
-  <div class="admin-panel" id="adminPanel">
-    <div class="admin-card">
-      <div class="admin-header">
-        <div class="admin-title">관리자 집계</div>
-        <button class="refresh-btn" onclick="loadAdmin()" style="font-size:13px;">↻ 새로고침</button>
+
+  <!-- 관리자 집계 -->
+  <div class="apanel" id="adminPanel">
+    <div class="acard">
+      <div class="aheader">
+        <div class="atitle">관리자 집계</div>
+        <button class="rfbtn" onclick="loadAdmin()" style="font-size:13px;">↻ 새로고침</button>
       </div>
       <div id="adminLock">
-        <div class="pw-row">
-          <input class="pw-input" id="pwInput" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPw()" />
-          <button class="pw-btn" onclick="checkPw()">확인</button>
+        <div class="pwrow">
+          <input class="pwinput" id="pwin" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')chkPw()">
+          <button class="pwbtn" onclick="chkPw()">확인</button>
         </div>
-        <div class="pw-error" id="pwError">비밀번호가 틀렸습니다</div>
+        <div class="pwerr" id="pwerr">비밀번호가 틀렸습니다</div>
       </div>
-      <div id="adminContent" style="display:none;">
-        <div class="tab-row">
-          <button class="tab-btn active" id="tabS" onclick="switchTab('s')">문항별 요약</button>
-          <button class="tab-btn" id="tabD" onclick="switchTab('d')">개별 응답</button>
-          <button class="tab-btn" id="tabL" onclick="switchTab('l')">배움 투표</button>
-          <button class="tab-btn" id="tabM" onclick="switchTab('m')">교장님 메시지</button>
+      <div id="adminCon" style="display:none;">
+        <div class="tabrow">
+          <button class="tbtn act" id="tab-s" onclick="swTab('s')">문항별 요약</button>
+          <button class="tbtn" id="tab-d" onclick="swTab('d')">개별 응답</button>
+          <button class="tbtn" id="tab-l" onclick="swTab('l')">배움 투표</button>
+          <button class="tbtn" id="tab-m" onclick="swTab('m')">교장님 메시지</button>
         </div>
-        <div id="summaryView"></div>
-        <div id="detailView" style="display:none;"></div>
-        <div id="learnView" style="display:none;"></div>
-        <div id="msgView" style="display:none;"></div>
+        <div id="sv"></div>
+        <div id="dv" style="display:none;"></div>
+        <div id="lv" style="display:none;"></div>
+        <div id="mv" style="display:none;"></div>
       </div>
     </div>
   </div>
@@ -290,440 +291,399 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf6uq4OCY1BYnkEIEYRF4j6iA67uvrP8NotcltzpQF-UA/exec';
-const PW = 'edusquare0517';
+const SURL = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf6uq4OCY1BYnkEIEYRF4j6iA67uvrP8NotcltzpQF-UA/exec';
+const PWKEY = 'edusquare0517';
 
 const QS = [
-  {num:'1', label:'연습문제', main:'고승재 교장님이 에듀플렉스의 의사결정구조를 AI로 만들 프로젝트, \'경영철학 탐구 TFT\'를 만들고 싶어한다. 에듀스퀘어 학우로서 당신의 선택은?', a:'참여한다', b:'참여하지 않는다', ans:'A', ansDesc:'함께 만들어가는 것이 에듀스퀘어의 정신입니다.'},
-  {num:'2', label:'인사발령 방식', main:'조직의 효율성을 위해 반드시 필요한 핵심 인재에 대한 발령이다. 해당 직원은 현재 맡은 업무에 만족하고 있으나, 새 직무가 회사 전체에는 훨씬 더 중요한 역할을 맡게 되는 상황이다.', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다', ans:'B', ansDesc:'직원을 조직의 도구가 아닌 파트너로 대우해야 장기적 신뢰를 얻을 수 있다.'},
-  {num:'3', label:'업무비 비용청구', main:'회사 업무용도로 돈을 쓰고는 비용청구를 하지 않는다.', a:'칭찬한다', b:'혼낸다', ans:'B', ansDesc:'이것은 내 돈이 회사돈이고 회사돈이 내 돈이라는 식으로 흘러가게 된다. 회사돈과 개인 돈은 철저히 분리해야 한다.'},
-  {num:'4', label:'국가기관 인허가 불가', main:'인허가 관련, 국가기관에서 안 된다는 답변이 왔다.', a:'국가의 법이니 받아들인다', b:'끝까지 방법을 찾아낸다', ans:'B', ansDesc:'2007년 메이코 개별지도 도입 시, 강남교육청의 불허 통보를 받고 서울시교육청까지 직접 찾아가 설득해 인허가를 받아냈다.'},
-  {num:'5', label:'지사 구조 도입', main:'지점이 200개가 넘어가면서 "관리 효율을 위해 권역별 지사를 두자"는 제안이 나왔다.', a:'관리 효율을 위해 지사 구조를 도입한다', b:'지사를 두지 않는 현재 체제를 계속 유지한다', ans:'B', ansDesc:'에듀플렉스·메이코 모두 지사를 두지 않는 전략으로 성공. 지사 구조는 점주와 본사 사이를 멀어지게 해 브랜드 수명을 단축시킨다.'},
-  {num:'6', label:'유능한 리더 겸임', main:'유능한 리더는 겸임을 시키면 인건비도 절약되고 사업도 잘 진행된다.', a:'맞다', b:'틀리다', ans:'B', ansDesc:'계속 겸임을 시키는 것은 경험상 결코 이득이 아니었다. 리더가 온전히 집중해서 제대로 결과를 내길 바란다면 겸임은 최대한 지양해야 한다.'},
-  {num:'7', label:'5대5 동업 가맹', main:'5대5 동업으로 지점을 개설하겠다는 2명의 가맹문의자가 나타났다.', a:'승인한다', b:'5대5는 안된다고 이야기한다', ans:'B', ansDesc:'5:5 구조는 의사결정 시 갈등 가능성이 매우 높다. 잘 되면 내 탓, 안 되면 니 탓이 되기 때문이다.'},
-  {num:'8', label:'본사 직원 FC 지점 개설', main:'본사직원이 FC지점들이 잘 되는 것을 보고, 투자는 본인이 100% 해서 FC지점을 개설·소유하며 본사에서 계속 근무하고 싶다고 한다.', a:'허락한다', b:'허락하지 않는다', ans:'B', ansDesc:'본사 직원들이 자신이 소유한 지점에만 집중하고 FC 지점들을 공정하게 대하지 않아 결국 조직이 무너진 사례들이 있다.'},
-  {num:'9', label:'적자 상황 가맹문의자', main:'적자가 예상되는 상황에서 가맹문의자 면접에 별로인 분이 문의를 했다.', a:'합격시킨다', b:'불합격시킨다', ans:'A', ansDesc:'22년간 철학과 원칙을 지키려 했지만, 절대절명의 위기에서 어쩔 수 없었던 경우가 아주 옛날에 한 번 있었다. 이런 상황이 되지 않게 만드는 것이 올바른 경영자의 역할이다.'},
-  {num:'10', label:'원장연합회 협박', main:'원장연합회에서 매니저 기본봉 하한선을 낮추자고 주장하며, 거부 시 단체행동이나 대거 탈퇴를 하겠다고 협박한다.', a:'받아들인다', b:'거부한다', ans:'B', ansDesc:'에듀플렉스 전체 역사에서 가장 후회하는 순간. 2005년. 지금도 꿈에 나올 정도로 후회된다. 단기 압박에 굴복하지 않고 원칙을 지켰으면 한다.'},
-  {num:'11', label:'팀워크 안 되는 멤버', main:'역량은 뛰어나나 동료들과 합심이 안되는 멤버는?', a:'내보낸다', b:'둔다', ans:'A', ansDesc:'기회는 여러 번 주겠지만, 그래도 개선되지 않는다면 결국 조직을 떠나는 수 밖에 없다. 조직은 개인의 역량으로만 성과가 나는 곳이 결코 아니기 때문이다.'},
-  {num:'12', label:'정책 위반 최우수 지점', main:'어느 FC 지점에서 표준 운영 방식에 위배되는 운영이 밝혀졌다. 그런데 이 지점은 매출, 이익, 매니저 근속 등 모든 지표가 상위권이다.', a:'가맹계약서에 준하여 조치한다', b:'예외를 허용한다', ans:'C', ansDesc:'의도성을 본다. 나쁜 의도는 엄벌. 좋은 의도로 표준에서 벗어난 시도는 예외를 두기도 한다. 단 표준 위반은 명확히 고지하고 파일럿 승인을 받도록 유도한다.'},
-  {num:'13', label:'마이크로 매니지먼트', main:'어느 본부장이 대표이사에게 왜 이렇게 마이크로 매니지먼트를 하냐면서, 좀 믿고 맡겨달라고 한다.', a:'믿고 맡긴다', b:'계속 마이크로 매니징을 한다', ans:'C', ansDesc:'믿고 맡겨달라고 해서 그냥 맡기는 것은 올바르지 않다. 맡겨도 된다는 판단이 설 때부터 믿고 맡긴다.'},
-  {num:'14', label:'재무위기 공개', main:'회사 재무 상황이 심각하다. 지금 공개하면 핵심 인재들이 먼저 이직할 수도 있다. 말해야 하는가?', a:'지금은 말하지 않는다. 해결 후 투명하게 공유한다', b:'지금 말한다. 투명성의 원칙에는 편할 때만이라는 조건이 없다', ans:'B', ansDesc:'참모들에게 사실을 숨기지 않는 것이 좋다. 이런 상황에서 진짜와 가짜가 갈린다. 솔직하게 공유하고 같이 해결하자고 이야기한 것이 언제나 더 나았다.'},
-  {num:'15', label:'어제 내린 결정 번복', main:'어제 본부장 전체 회의에서 확신을 가지고 의사결정을 내렸다. 자기 전 곰곰이 생각해보니 내 의사결정이 잘못되었다는 생각이 들었다.', a:'그대로 밀어붙인다', b:'의사결정이 잘못되었음을 인정하고 결정을 번복한다', ans:'B', ansDesc:'중요한 것은 대표이사의 권위가 아니라 일이 올바른 방향으로 행해지는 것이다. 조변석개 하는 것을 두려워하지 않는 리더가 이런 AI 시대에 살아남을 수 있다.'}
+  {n:'1',  lb:'연습문제',          q:'고승재 교장님이 에듀플렉스의 의사결정구조를 AI로 만들 프로젝트, \'경영철학 탐구 TFT\'를 만들고 싶어한다. 에듀스퀘어 학우로서 당신의 선택은?', a:'참여한다', b:'참여하지 않는다', ans:'A', desc:'함께 만들어가는 것이 에듀스퀘어의 정신입니다.'},
+  {n:'2',  lb:'인사발령 방식',      q:'조직의 효율성을 위해 반드시 필요한 핵심 인재에 대한 발령이다. 해당 직원은 현재 맡은 업무에 만족하고 있으나, 새 직무가 회사 전체에는 훨씬 더 중요한 역할을 맡게 되는 상황이다.', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다', ans:'B', desc:'직원을 조직의 도구가 아닌 파트너로 대우해야 장기적 신뢰를 얻을 수 있다.'},
+  {n:'3',  lb:'업무비 비용청구',    q:'회사 업무용도로 돈을 쓰고는 비용청구를 하지 않는다.', a:'칭찬한다', b:'혼낸다', ans:'B', desc:'이것은 내 돈이 회사돈이고 회사돈이 내 돈이라는 식으로 흘러가게 된다. 회사돈과 개인 돈은 철저히 분리해야 한다.'},
+  {n:'4',  lb:'국가기관 인허가 불가', q:'인허가 관련, 국가기관에서 안 된다는 답변이 왔다.', a:'국가의 법이니 받아들인다', b:'끝까지 방법을 찾아낸다', ans:'B', desc:'2007년 메이코 개별지도 도입 시, 강남교육청의 불허 통보를 받고 서울시교육청까지 직접 찾아가 설득해 인허가를 받아냈다.'},
+  {n:'5',  lb:'지사 구조 도입',     q:'지점이 200개가 넘어가면서 "관리 효율을 위해 권역별 지사를 두자"는 제안이 나왔다.', a:'관리 효율을 위해 지사 구조를 도입한다', b:'지사를 두지 않는 현재 체제를 계속 유지한다', ans:'B', desc:'에듀플렉스·메이코 모두 지사를 두지 않는 전략으로 성공. 지사 구조는 점주와 본사 사이를 멀어지게 해 브랜드 수명을 단축시킨다.'},
+  {n:'6',  lb:'유능한 리더 겸임',   q:'유능한 리더는 겸임을 시키면 인건비도 절약되고 사업도 잘 진행된다.', a:'맞다', b:'틀리다', ans:'B', desc:'계속 겸임을 시키는 것은 경험상 결코 이득이 아니었다. 리더가 온전히 집중해서 제대로 결과를 내길 바란다면 겸임은 최대한 지양해야 한다.'},
+  {n:'7',  lb:'5대5 동업 가맹',    q:'5대5 동업으로 지점을 개설하겠다는 2명의 가맹문의자가 나타났다.', a:'승인한다', b:'5대5는 안된다고 이야기한다', ans:'B', desc:'5:5 구조는 의사결정 시 갈등 가능성이 매우 높다. 잘 되면 내 탓, 안 되면 니 탓이 되기 때문이다.'},
+  {n:'8',  lb:'본사 직원 FC 지점',  q:'본사직원이 FC지점들이 잘 되는 것을 보고, 투자는 본인이 100% 해서 FC지점을 개설·소유하며 본사에서 계속 근무하고 싶다고 한다.', a:'허락한다', b:'허락하지 않는다', ans:'B', desc:'본사 직원들이 자신이 소유한 지점에만 집중하고 FC 지점들을 공정하게 대하지 않아 결국 조직이 무너진 사례들이 있다.'},
+  {n:'9',  lb:'적자 상황 가맹문의자', q:'적자가 예상되는 상황에서 가맹문의자 면접에 별로인 분이 문의를 했다.', a:'합격시킨다', b:'불합격시킨다', ans:'A', desc:'22년간 철학과 원칙을 지키려 했지만, 절대절명의 위기에서 어쩔 수 없었던 경우가 아주 옛날에 한 번 있었다. 이런 상황이 되지 않게 만드는 것이 올바른 경영자의 역할이다.'},
+  {n:'10', lb:'원장연합회 협박',    q:'원장연합회에서 매니저 기본봉 하한선을 낮추자고 주장하며, 거부 시 단체행동이나 대거 탈퇴를 하겠다고 협박한다.', a:'받아들인다', b:'거부한다', ans:'B', desc:'에듀플렉스 전체 역사에서 가장 후회하는 순간. 2005년. 지금도 꿈에 나올 정도로 후회된다. 단기 압박에 굴복하지 않고 원칙을 지켰으면 한다.'},
+  {n:'11', lb:'팀워크 안 되는 멤버', q:'역량은 뛰어나나 동료들과 합심이 안되는 멤버는?', a:'내보낸다', b:'둔다', ans:'A', desc:'기회는 여러 번 주겠지만, 그래도 개선되지 않는다면 결국 조직을 떠나는 수 밖에 없다. 조직은 개인의 역량으로만 성과가 나는 곳이 결코 아니기 때문이다.'},
+  {n:'12', lb:'정책 위반 최우수 지점', q:'어느 FC 지점에서 표준 운영 방식에 위배되는 운영이 밝혀졌다. 그런데 이 지점은 매출, 이익, 매니저 근속 등 모든 지표가 상위권이다.', a:'가맹계약서에 준하여 조치한다', b:'예외를 허용한다', ans:'C', desc:'의도성을 본다. 나쁜 의도는 엄벌. 좋은 의도로 표준에서 벗어난 시도는 예외를 두기도 한다. 단 표준 위반은 명확히 고지하고 파일럿 승인을 받도록 유도한다.'},
+  {n:'13', lb:'마이크로 매니지먼트', q:'어느 본부장이 대표이사에게 왜 이렇게 마이크로 매니지먼트를 하냐면서, 좀 믿고 맡겨달라고 한다.', a:'믿고 맡긴다', b:'계속 마이크로 매니징을 한다', ans:'C', desc:'믿고 맡겨달라고 해서 그냥 맡기는 것은 올바르지 않다. 맡겨도 된다는 판단이 설 때부터 믿고 맡긴다.'},
+  {n:'14', lb:'재무위기 공개',      q:'회사 재무 상황이 심각하다. 지금 공개하면 핵심 인재들이 먼저 이직할 수도 있다. 말해야 하는가?', a:'지금은 말하지 않는다. 해결 후 투명하게 공유한다', b:'지금 말한다. 투명성의 원칙에는 편할 때만이라는 조건이 없다', ans:'B', desc:'참모들에게 사실을 숨기지 않는 것이 좋다. 이런 상황에서 진짜와 가짜가 갈린다. 솔직하게 공유하고 같이 해결하자고 이야기한 것이 언제나 더 나았다.'},
+  {n:'15', lb:'어제 내린 결정 번복', q:'어제 본부장 전체 회의에서 확신을 가지고 의사결정을 내렸다. 자기 전 곰곰이 생각해보니 내 의사결정이 잘못되었다는 생각이 들었다.', a:'그대로 밀어붙인다', b:'의사결정이 잘못되었음을 인정하고 결정을 번복한다', ans:'B', desc:'중요한 것은 대표이사의 권위가 아니라 일이 올바른 방향으로 행해지는 것이다. 조변석개 하는 것을 두려워하지 않는 리더가 이런 AI 시대에 살아남을 수 있다.'}
 ];
 
-const PW_KEY = 'edusquare0517';
-let cQ = 0, selChoice = null;
-let user = JSON.parse(localStorage.getItem('es_user') || 'null');
-let localVotes = JSON.parse(localStorage.getItem('es_votes4') || '[]');
-let localLearn = JSON.parse(localStorage.getItem('es_learn4') || 'null');
-let localMsg = localStorage.getItem('es_msg4') || '';
-let selLearn = [];
-
-function showLoading(v) { document.getElementById('loadingOverlay').style.display = v ? 'flex' : 'none'; }
-
-async function sendToSheet(data) {
-  try { await fetch(SHEET_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)}); } catch(e) {}
-}
-
-async function fetchFromSheet() {
-  try { const r = await fetch(SHEET_URL + '?t=' + Date.now()); return await r.json(); } catch(e) { return null; }
-}
-
-window.addEventListener('load', () => { if (user) showVoteCard(); initGlobe(); });
-
-let selCohortVal = null;
-function selCohort(c) {
-  selCohortVal = c;
-  ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).className = 'cohort-btn');
-  const map = {'1기':'c1','2기':'c2','3기':'c3','운영팀':'c4'};
-  document.getElementById(map[c]).className = 'cohort-btn selected';
-  checkStart();
-}
-document.getElementById('nameInput').addEventListener('input', checkStart);
-function checkStart() { document.getElementById('startBtn').disabled = !(document.getElementById('nameInput').value.trim() && selCohortVal); }
-
-function startVoting() {
-  const name = document.getElementById('nameInput').value.trim();
-  if (!name || !selCohortVal) return;
-  user = {name, cohort:selCohortVal};
-  localStorage.setItem('es_user', JSON.stringify(user));
-  showVoteCard();
-}
-
-function resetUser() {
-  user = null; localStorage.removeItem('es_user');
-  selCohortVal = null;
-  ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).className = 'cohort-btn');
-  document.getElementById('nameInput').value = '';
-  document.getElementById('startBtn').disabled = true;
-  hideAll(); document.getElementById('loginCard').style.display = 'block';
-}
-
-function hideAll() { ['loginCard','voteCard','successCard','finalCard'].forEach(id => document.getElementById(id).style.display = 'none'); }
-
-function showVoteCard() {
-  hideAll();
-  const allDone = QS.every(q => localVotes.find(v => v.qNum === q.num && v.name === user.name));
-  if (allDone) { showFinalCard(); return; }
-  const firstPending = QS.findIndex(q => !localVotes.find(v => v.qNum === q.num && v.name === user.name));
-  if (firstPending >= 0) cQ = firstPending;
-  document.getElementById('voteCard').style.display = 'block';
-  document.getElementById('avatarEl').textContent = user.name.slice(0,1);
-  document.getElementById('badgeName').textContent = user.name;
-  document.getElementById('badgeCohort').textContent = user.cohort + ' · EDUSQUARE';
-  renderQ();
-}
-
-function renderQ() {
-  const q = QS[cQ];
-  document.getElementById('qNum').textContent = q.num + '번 — ' + q.label;
-  document.getElementById('qMain').textContent = q.main;
-  document.getElementById('qProgress').textContent = (cQ+1) + ' / ' + QS.length;
-  document.getElementById('prevBtn').disabled = cQ === 0;
-  document.getElementById('nextBtn').disabled = cQ === QS.length-1;
-  const done = localVotes.find(v => v.qNum === q.num && v.name === user.name);
-  const cr = document.getElementById('choiceRow');
-  cr.innerHTML =
-    '<button class="choice-btn" id="btnA"' + (done?' disabled':'') + ' onclick="selC(\'A\')">' +
-    '<span class="cl">A</span><span class="cd">' + q.a + '</span></button>' +
-    '<button class="choice-btn" id="btnB"' + (done?' disabled':'') + ' onclick="selC(\'B\')">' +
-    '<span class="cl">B</span><span class="cd">' + q.b + '</span></button>';
-  selChoice = null;
-  document.getElementById('commentInput').value = done ? done.comment : '';
-  document.getElementById('commentInput').disabled = !!done;
-  document.getElementById('submitBtn').disabled = true;
-  document.getElementById('submitBtn').style.display = done ? 'none' : 'block';
-  document.getElementById('voteMsg').style.display = 'none';
-  document.getElementById('myChoiceBox').style.display = 'none';
-  document.getElementById('resultBox').style.display = 'none';
-  if (done) {
-    document.getElementById('btnA').className = 'choice-btn' + (done.choice==='A' ? ' sel-a' : '');
-    document.getElementById('btnB').className = 'choice-btn' + (done.choice==='B' ? ' sel-b' : '');
-    document.getElementById('myChoiceBox').style.display = 'block';
-    document.getElementById('myChoiceVal').textContent = done.choice + '. ' + done.choiceDesc;
-    document.getElementById('myChoiceComment').textContent = done.comment ? '💬 ' + done.comment : '';
-    loadResult();
-  }
-}
-
-function selC(c) {
-  selChoice = c;
-  document.getElementById('btnA').className = 'choice-btn' + (c==='A' ? ' sel-a' : '');
-  document.getElementById('btnB').className = 'choice-btn' + (c==='B' ? ' sel-b' : '');
-  document.getElementById('submitBtn').disabled = false;
-}
-
-function changeQ(d) { cQ = Math.max(0, Math.min(QS.length-1, cQ+d)); renderQ(); }
-
-async function submitVote() {
-  if (!selChoice) return;
-  const q = QS[cQ];
-  if (localVotes.find(v => v.qNum===q.num && v.name===user.name)) return;
-  const data = {
-    type:'vote', time:new Date().toLocaleString('ko-KR'),
-    name:user.name, cohort:user.cohort,
-    qNum:q.num, qLabel:q.label,
-    choice:selChoice, choiceDesc:selChoice==='A'?q.a:q.b,
-    comment:document.getElementById('commentInput').value.trim()
-  };
-  localVotes.push(data);
-  localStorage.setItem('es_votes4', JSON.stringify(localVotes));
-  showLoading(true); await sendToSheet(data); showLoading(false);
-  const allDone = QS.every(q => localVotes.find(v => v.qNum===q.num && v.name===user.name));
-  if (allDone) { showFinalCard(); return; }
-  hideAll();
-  document.getElementById('successCard').style.display = 'block';
-  document.getElementById('successTitle').textContent = user.name + '님 · ' + q.num + '번 완료';
-  document.getElementById('successSub').textContent = selChoice + '. ' + data.choiceDesc;
-  document.getElementById('successNextBtn').style.display = cQ < QS.length-1 ? 'inline-block' : 'none';
-}
-
-function goNext() { if (cQ < QS.length-1) { cQ++; showVoteCard(); } }
-
-async function loadResult() {
-  const q = QS[cQ];
-  document.getElementById('resultBox').style.display = 'block';
-  const rows = await fetchFromSheet();
-  if (!rows) return;
-  const votes = rows.filter(r => String(r[0])==='vote' && String(r[4])===String(q.num));
-  const aC = votes.filter(v=>String(v[5])==='A').length;
-  const bC = votes.filter(v=>v[5]==='B').length;
-  const tot = votes.length;
-  const ap = tot ? Math.round(aC/tot*100) : 0;
-  document.getElementById('barSection').innerHTML =
-    '<div class="bar-row"><span class="bar-label bar-label-a">A</span><div class="bar-track"><div class="bar-fill-a" style="width:'+ap+'%"></div></div><span class="bar-pct">'+ap+'% ('+aC+'명)</span></div>' +
-    '<div class="bar-row"><span class="bar-label bar-label-b">B</span><div class="bar-track"><div class="bar-fill-b" style="width:'+(100-ap)+'%"></div></div><span class="bar-pct">'+(100-ap)+'% ('+bC+'명)</span></div>';
-  const reasons = votes.filter(v=>v[8]);
-  document.getElementById('reasonList').innerHTML = reasons.length ?
-    reasons.map(v => '<div class="reason-item"><div class="reason-meta reason-meta-'+v[5].toLowerCase()+'">'+v[3]+' · '+v[5]+'. '+v[6]+'</div><div class="reason-text">'+v[8]+'</div></div>').join('') :
-    '<div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;padding:0.8rem;">아직 선택 이유가 없습니다</div>';
-}
-
-function showFinalCard() {
-  hideAll();
-  document.getElementById('finalCard').style.display = 'block';
-  document.getElementById('finalAvatarEl').textContent = user.name.slice(0,1);
-  document.getElementById('finalBadgeName').textContent = user.name;
-  document.getElementById('finalBadgeCohort').textContent = user.cohort + ' · EDUSQUARE';
-  if (localLearn) { showLearnResult(); return; }
-  const grid = document.getElementById('learnGrid');
-  grid.innerHTML = QS.map(q =>
-    '<button class="learn-btn" id="lb'+q.num+'" onclick="toggleLearn(\''+q.num+'\')">'+
-    '<strong>'+q.num+'번</strong> '+q.label+
-    '<span class="lsub">'+q.main.slice(0,40)+'...</span></button>'
-  ).join('');
-}
-
-function toggleLearn(num) {
-  const idx = selLearn.indexOf(num);
-  if (idx>=0) { selLearn.splice(idx,1); document.getElementById('lb'+num).className='learn-btn'; }
-  else {
-    if (selLearn.length>=3) return;
-    selLearn.push(num);
-    document.getElementById('lb'+num).className='learn-btn selected';
-  }
-  document.getElementById('selectHint').textContent = selLearn.length + ' / 3개 선택됨';
-  document.getElementById('learnSubmitBtn').disabled = selLearn.length!==3;
-}
-
-async function submitLearn() {
-  if (selLearn.length!==3) return;
-  const data = {type:'learn', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, selections:selLearn.join(',')};
-  localLearn = data;
-  localStorage.setItem('es_learn4', JSON.stringify(data));
-  showLoading(true); await sendToSheet(data); showLoading(false);
-  showLearnResult();
-}
-
-async function showLearnResult() {
-  document.getElementById('learnVoteSection').style.display = 'none';
-  document.getElementById('learnResultSection').style.display = 'block';
-  if (localMsg) {
-    document.getElementById('msgInput').value = localMsg;
-    document.getElementById('msgInput').disabled = true;
-    document.getElementById('msgSubmitBtn').style.display = 'none';
-    document.getElementById('sentBox').style.display = 'block';
-  }
-  await loadLearnResult();
-}
-
-async function loadLearnResult() {
-  const rows = await fetchFromSheet();
-  if (!rows) return;
-  const learns = rows.filter(r=>String(r[0])==='learn');
-  const counts = {};
-  QS.forEach(q=>counts[q.num]=0);
-  learns.forEach(r=>{(r[4]||'').split(',').forEach(n=>{if(counts[n]!==undefined)counts[n]++;});});
-  const sorted = QS.map(q=>({...q,count:counts[q.num]})).sort((a,b)=>b.count-a.count);
-  const max = sorted[0]?.count||1;
-  document.getElementById('learnResultList').innerHTML = sorted.map(q=>
-    '<div class="learn-result-item">'+
-    '<div class="learn-result-num">'+q.num+'</div>'+
-    '<div class="learn-result-text">'+q.label+'</div>'+
-    '<div class="learn-result-bar"><div class="learn-result-fill" style="width:'+Math.round(q.count/max*100)+'%"></div></div>'+
-    '<div class="learn-result-count">'+q.count+'표</div></div>'
-  ).join('');
-}
-
-async function submitMsg() {
-  const msg = document.getElementById('msgInput').value.trim();
-  if (!msg) return;
-  const data = {type:'message', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, message:msg};
-  localMsg = msg;
-  localStorage.setItem('es_msg4', msg);
-  showLoading(true); await sendToSheet(data); showLoading(false);
-  document.getElementById('msgInput').disabled = true;
-  document.getElementById('msgSubmitBtn').style.display = 'none';
-  document.getElementById('sentBox').style.display = 'block';
-}
-
-function toggleAdmin() { const p=document.getElementById('adminPanel'); p.style.display=(p.style.display==='none'||p.style.display==='')?'block':'none'; }
-
-function togglePublic() {
-  const p=document.getElementById('publicPanel');
-  const isHidden=(p.style.display==='none'||p.style.display==='');
-  p.style.display=isHidden?'block':'none';
-  if(isHidden) loadPublic();
-}
-
-async function loadPublic() {
-  document.getElementById('publicView').innerHTML='<div class="empty-state">불러오는 중...</div>';
-  const rows = await fetchFromSheet();
-  if (!rows) { document.getElementById('publicView').innerHTML='<div class="empty-state">데이터를 불러올 수 없습니다</div>'; return; }
-  const votes = rows.filter(r=>String(r[0])==='vote');
-  let html='';
-  // 응답된 문항만 추려서 마지막 응답 문항이 위로
-  const answeredNums = [...new Set(votes.map(v=>String(v[4])))];
-  const sortedQS = [...QS].filter(q=>answeredNums.includes(String(q.num)))
-    .sort((a,b)=>{
-      const lastA = votes.filter(v=>String(v[4])===String(a.num)).length ? votes.map((v,i)=>String(v[4])===String(a.num)?i:-1).filter(x=>x>=0).pop() : -1;
-      const lastB = votes.filter(v=>String(v[4])===String(b.num)).length ? votes.map((v,i)=>String(v[4])===String(b.num)?i:-1).filter(x=>x>=0).pop() : -1;
-      return lastB - lastA;
-    });
-  sortedQS.forEach(q=>{
-    const qv=votes.filter(v=>String(v[4])===String(q.num));
-    if(!qv.length) return;
-    const aC=qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
-    const ap=qv.length?Math.round(aC/qv.length*100):0;
-    html+='<div style="padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);">';
-    html+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
-    html+='<span style="font-size:11px;color:rgba(100,180,255,0.78);font-weight:600;width:36px;">'+q.num+'번</span>';
-    html+='<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;">'+q.label+'</span>';
-    html+='<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>';
-    html+='<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">';
-    html+='<span style="font-size:12px;color:rgba(147,197,253,0.8);">A '+aC+'('+ap+'%)</span>';
-    html+='<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
-    html+='<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>';
-    html+='<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>';
-    html+='<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>';
-    const reasons=qv.filter(v=>v[8]);
-    if(reasons.length){
-      html+='<div style="margin-top:6px;margin-left:46px;display:flex;flex-direction:column;gap:4px;">';
-      reasons.forEach(v=>{
-        html+='<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:6px 10px;">';
-        html+='<div style="font-size:11px;color:rgba(147,197,253,0.75);margin-bottom:2px;">'+v[3]+' · '+String(v[5])+'. '+String(v[6])+'</div>';
-        html+='<div style="font-size:12px;color:rgba(255,255,255,0.6);">'+v[8]+'</div></div>';
-      });
-      html+='</div>';
-    }
-    html+='</div>';
-  });
-  document.getElementById('publicView').innerHTML=html||'<div class="empty-state">아직 투표 데이터가 없습니다</div>';
-}
-
-function checkPw() {
-  if (document.getElementById('pwInput').value===PW_KEY) {
-    document.getElementById('adminLock').style.display='none';
-    document.getElementById('adminContent').style.display='block';
-    loadAdmin();
-  } else { document.getElementById('pwError').style.display='block'; }
-}
-function switchTab(t) {
-  ['s','d','l','m'].forEach(x=>{document.getElementById('tab'+x.toUpperCase()).className='tab-btn'+(t===x?' active':'');});
-  document.getElementById('summaryView').style.display=t==='s'?'block':'none';
-  document.getElementById('detailView').style.display=t==='d'?'block':'none';
-  document.getElementById('learnView').style.display=t==='l'?'block':'none';
-  document.getElementById('msgView').style.display=t==='m'?'block':'none';
-}
-
-async function loadAdmin() {
-  showLoading(true);
-  const rows = await fetchFromSheet();
-  showLoading(false);
-  if (!rows) { document.getElementById('summaryView').innerHTML='<div class="empty-state">데이터를 불러올 수 없습니다</div>'; return; }
-  const votes = rows.filter(r=>String(r[0])==='vote');
-  const learns = rows.filter(r=>String(r[0])==='learn');
-  const messages = rows.filter(r=>String(r[0])==='message');
-
-  // 요약
-  let sh='';
-  const answeredNumsA = [...new Set(votes.map(v=>String(v[4])))];
-  const sortedQSA = [...QS].filter(q=>answeredNumsA.includes(String(q.num)))
-    .sort((a,b)=>{
-      const lastA = votes.map((v,i)=>String(v[4])===String(a.num)?i:-1).filter(x=>x>=0).pop()||0;
-      const lastB = votes.map((v,i)=>String(v[4])===String(b.num)?i:-1).filter(x=>x>=0).pop()||0;
-      return lastB - lastA;
-    });
-  sortedQSA.forEach(q=>{
-    const qv=votes.filter(v=>String(v[4])===String(q.num)); if(!qv.length) return;
-    const aC=qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
-    const ap=Math.round(aC/qv.length*100);
-    const ansLabel = q.ans==='A'?'A. '+q.a : q.ans==='B'?'B. '+q.b : 'C. 경우에 따라 다르다';
-    sh+='<div style="padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);">'+
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">'+
-      '<span style="font-size:11px;color:rgba(100,180,255,0.78);font-weight:600;width:36px;">'+q.num+'번</span>'+
-      '<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;font-weight:500;">'+q.label+'</span>'+
-      '<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>'+
-      '<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">'+
-      '<span style="font-size:12px;color:'+ansTxtColor(q.ans,'A')+';font-weight:'+ansFW(q.ans,'A')+';">A '+aC+'('+ap+'%)</span>'+
-      '<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">'+
-      '<div style="width:'+ap+'%;background:'+(q.ans==='A'?'rgba(251,191,36,0.75)':q.ans==='C'?'rgba(251,120,36,0.75)':'rgba(59,130,246,0.55)')+';"></div>'+
-      '<div style="width:'+(100-ap)+'%;background:'+(q.ans==='B'?'rgba(251,191,36,0.75)':q.ans==='C'?'rgba(251,191,36,0.75)':'rgba(59,130,246,0.55)')+';"></div></div>'+
-      '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>'+
-      '<div class="answer-box" style="margin-left:46px;margin-top:8px;">'+
-      '<div class="answer-label">CEO 고승재가 내린 선택은...</div>'+
-      '<div class="answer-val">'+ansLabel+'</div>'+
-      '<div class="answer-desc">'+q.ansDesc+'</div></div></div>';
-  });
-  document.getElementById('summaryView').innerHTML=sh||'<div class="empty-state">아직 투표 데이터가 없습니다</div>';
-
-  // 개별
-  let dh='<table class="rtable"><thead><tr><th>이름</th><th>기수</th><th>문항</th><th>선택</th><th>이유</th><th>시간</th></tr></thead><tbody>';
-  const sortedVotes = [...votes].sort((a,b)=>{
-    const nameA = String(a[2]||''), nameB = String(b[2]||'');
-    if(nameA < nameB) return -1;
-    if(nameA > nameB) return 1;
-    return Number(a[4]||0) - Number(b[4]||0);
-  });
-  sortedVotes.forEach(v=>{
-    dh+='<tr><td>'+v[2]+'</td><td><span class="cpill">'+v[3]+'</span></td><td>'+v[4]+'번 '+v[5]+'</td>'+
-      '<td><span class="badge badge-'+v[6].toLowerCase()+'">'+v[6]+' '+v[7]+'</span></td>'+
-      '<td style="font-size:12px;color:rgba(255,255,255,0.42);">'+(v[8]||'—')+'</td>'+
-      '<td style="font-size:11px;color:rgba(255,255,255,0.26);">'+v[1]+'</td></tr>';
-  });
-  dh+='</tbody></table>';
-  document.getElementById('detailView').innerHTML=dh;
-
-  // 배움
-  const counts={};
-  QS.forEach(q=>counts[q.num]=0);
-  learns.forEach(r=>{(r[4]||'').split(',').forEach(n=>{if(counts[n]!==undefined)counts[n]++;});});
-  const sorted=QS.map(q=>({...q,count:counts[q.num]})).sort((a,b)=>b.count-a.count);
-  const max=sorted[0]?.count||1;
-  document.getElementById('learnView').innerHTML=
-    '<div style="margin-bottom:0.8rem;font-size:12px;color:rgba(255,255,255,0.4);">총 '+learns.length+'명 참여</div>'+
-    sorted.map(q=>
-      '<div class="learn-result-item">'+
-      '<div class="learn-result-num">'+q.num+'</div>'+
-      '<div class="learn-result-text">'+q.label+'</div>'+
-      '<div class="learn-result-bar"><div class="learn-result-fill" style="width:'+Math.round(q.count/max*100)+'%"></div></div>'+
-      '<div class="learn-result-count">'+q.count+'표</div></div>'
-    ).join('');
-
-  // 메시지
-  document.getElementById('msgView').innerHTML=messages.length?
-    messages.map(m=>'<div class="msg-card"><div class="msg-from">'+m[2]+' · '+m[3]+' · '+m[1]+'</div><div class="msg-text">'+m[5]+'</div></div>').join(''):
-    '<div class="empty-state">아직 메시지가 없습니다</div>';
-}
-
-
-
-function ansColor(ans, side) {
+// 정답 기반 색상 헬퍼
+function barColor(ans, side) {
   if (ans === 'A') return side === 'A' ? 'rgba(251,191,36,0.75)' : 'rgba(59,130,246,0.55)';
   if (ans === 'B') return side === 'B' ? 'rgba(251,191,36,0.75)' : 'rgba(59,130,246,0.55)';
   if (ans === 'C') return side === 'A' ? 'rgba(251,120,36,0.75)' : 'rgba(251,191,36,0.75)';
   return 'rgba(59,130,246,0.55)';
 }
-function ansTxtColor(ans, side) {
+function txtColor(ans, side) {
   if (ans === 'A' && side === 'A') return 'rgba(251,191,36,0.95)';
   if (ans === 'B' && side === 'B') return 'rgba(251,191,36,0.95)';
   if (ans === 'C') return side === 'A' ? 'rgba(251,120,36,0.95)' : 'rgba(251,191,36,0.95)';
   return side === 'A' ? 'rgba(147,197,253,0.8)' : 'rgba(165,180,252,0.8)';
 }
-function ansFW(ans, side) {
+function txtW(ans, side) {
   if (ans === 'C') return '700';
   return ans === side ? '700' : '400';
 }
 
+// 상태
+let cQ = 0, picked = null, selLearn = [];
+let user = JSON.parse(localStorage.getItem('es_user') || 'null');
+let lVotes = JSON.parse(localStorage.getItem('es_v5') || '[]');
+let lLearn = JSON.parse(localStorage.getItem('es_l5') || 'null');
+let lMsg = localStorage.getItem('es_m5') || '';
+let cohortPick = null;
+
+function load(v) { document.getElementById('loader').style.display = v ? 'flex' : 'none'; }
+async function post(d) { try { await fetch(SURL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}); } catch(e) {} }
+async function get() { try { const r = await fetch(SURL + '?t=' + Date.now()); return await r.json(); } catch(e) { return null; } }
+
+function hideAll() { ['loginCard','voteCard','doneCard','finalCard'].forEach(id => document.getElementById(id).style.display = 'none'); }
+
+window.addEventListener('load', () => { if (user) showVote(); initGlobe(); });
+
+// 로그인
+function pickCohort(c) {
+  cohortPick = c;
+  const map = {'1기':'c1','2기':'c2','3기':'c3','운영팀':'c4'};
+  Object.values(map).forEach(id => document.getElementById(id).className = 'cohort-btn');
+  document.getElementById(map[c]).className = 'cohort-btn sel';
+  chkStart();
+}
+function chkStart() {
+  const n = document.getElementById('nameIn').value.trim();
+  document.getElementById('startBtn').disabled = !(n && cohortPick);
+}
+function doStart() {
+  const name = document.getElementById('nameIn').value.trim();
+  if (!name || !cohortPick) return;
+  user = {name, cohort: cohortPick};
+  localStorage.setItem('es_user', JSON.stringify(user));
+  showVote();
+}
+function doReset() {
+  user = null; localStorage.removeItem('es_user');
+  cohortPick = null;
+  ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).className = 'cohort-btn');
+  document.getElementById('nameIn').value = '';
+  document.getElementById('startBtn').disabled = true;
+  hideAll(); document.getElementById('loginCard').style.display = 'block';
+}
+
+// 투표 화면
+function showVote() {
+  hideAll();
+  const allDone = QS.every(q => lVotes.find(v => v.n === q.n && v.name === user.name));
+  if (allDone) { showFinal(); return; }
+  const first = QS.findIndex(q => !lVotes.find(v => v.n === q.n && v.name === user.name));
+  if (first >= 0) cQ = first;
+  document.getElementById('voteCard').style.display = 'block';
+  document.getElementById('ava').textContent = user.name.slice(0,1);
+  document.getElementById('bname').textContent = user.name;
+  document.getElementById('bcohort').textContent = user.cohort + ' · EDUSQUARE';
+  renderQ();
+}
+
+function renderQ() {
+  const q = QS[cQ];
+  document.getElementById('qnum').textContent = q.n + '번 — ' + q.lb;
+  document.getElementById('qmain').textContent = q.q;
+  document.getElementById('qprog').textContent = (cQ+1) + ' / ' + QS.length;
+  document.getElementById('prevBtn').disabled = cQ === 0;
+  document.getElementById('nextBtn').disabled = cQ === QS.length - 1;
+  const done = lVotes.find(v => v.n === q.n && v.name === user.name);
+  const dis = done ? ' disabled' : '';
+  document.getElementById('crow').innerHTML =
+    '<button class="cbtn" id="btnA"' + dis + ' onclick="pickAns(\'A\')">' +
+    '<span class="cl">A</span><span class="cd">' + q.a + '</span></button>' +
+    '<button class="cbtn" id="btnB"' + dis + ' onclick="pickAns(\'B\')">' +
+    '<span class="cl">B</span><span class="cd">' + q.b + '</span></button>';
+  picked = null;
+  document.getElementById('cinput').value = done ? (done.comment || '') : '';
+  document.getElementById('cinput').disabled = !!done;
+  document.getElementById('voteBtn').disabled = true;
+  document.getElementById('voteBtn').style.display = done ? 'none' : 'block';
+  document.getElementById('mychbox').style.display = 'none';
+  document.getElementById('rbox').style.display = 'none';
+  if (done) {
+    document.getElementById('btnA').className = 'cbtn' + (done.choice === 'A' ? ' sa' : '');
+    document.getElementById('btnB').className = 'cbtn' + (done.choice === 'B' ? ' sb' : '');
+    document.getElementById('mychbox').style.display = 'block';
+    document.getElementById('mycval').textContent = done.choice + '. ' + done.choiceDesc;
+    document.getElementById('myccmt').textContent = done.comment ? '💬 ' + done.comment : '';
+    loadResult();
+  }
+}
+
+function pickAns(c) {
+  picked = c;
+  document.getElementById('btnA').className = 'cbtn' + (c === 'A' ? ' sa' : '');
+  document.getElementById('btnB').className = 'cbtn' + (c === 'B' ? ' sb' : '');
+  document.getElementById('voteBtn').disabled = false;
+}
+function moveQ(d) { cQ = Math.max(0, Math.min(QS.length-1, cQ+d)); renderQ(); }
+
+async function doVote() {
+  if (!picked) return;
+  const q = QS[cQ];
+  if (lVotes.find(v => v.n === q.n && v.name === user.name)) return;
+  const data = {
+    type:'vote', time:new Date().toLocaleString('ko-KR'),
+    name:user.name, cohort:user.cohort,
+    qNum:q.n, qLabel:q.lb,
+    choice:picked, choiceDesc:picked==='A'?q.a:q.b,
+    comment:document.getElementById('cinput').value.trim()
+  };
+  lVotes.push({n:q.n, name:user.name, choice:picked, choiceDesc:data.choiceDesc, comment:data.comment});
+  localStorage.setItem('es_v5', JSON.stringify(lVotes));
+  load(true); await post(data); load(false);
+  const allDone = QS.every(q => lVotes.find(v => v.n === q.n && v.name === user.name));
+  if (allDone) { showFinal(); return; }
+  hideAll();
+  document.getElementById('doneCard').style.display = 'block';
+  document.getElementById('doneTitle').textContent = user.name + '님 · ' + q.n + '번 완료';
+  document.getElementById('doneSub').textContent = picked + '. ' + data.choiceDesc;
+  document.getElementById('doneNext').style.display = cQ < QS.length-1 ? 'inline-block' : 'none';
+}
+function goNext() { if (cQ < QS.length-1) { cQ++; showVote(); } }
+
+async function loadResult() {
+  const q = QS[cQ];
+  document.getElementById('rbox').style.display = 'block';
+  const rows = await get();
+  if (!rows) return;
+  const vs = rows.filter(r => String(r[0])==='vote' && String(r[4])===String(q.n));
+  const aC = vs.filter(v => String(v[5])==='A').length;
+  const bC = vs.length - aC;
+  const ap = vs.length ? Math.round(aC/vs.length*100) : 0;
+  document.getElementById('bars').innerHTML =
+    '<div class="barrow"><span class="barlbl barlbl-a">A</span><div class="bartrack"><div class="barfill-a" style="width:'+ap+'%"></div></div><span class="barpct">'+ap+'% ('+aC+'명)</span></div>' +
+    '<div class="barrow"><span class="barlbl barlbl-b">B</span><div class="bartrack"><div class="barfill-b" style="width:'+(100-ap)+'%"></div></div><span class="barpct">'+(100-ap)+'% ('+bC+'명)</span></div>';
+  const reasons = vs.filter(v => v[8]);
+  document.getElementById('rlist').innerHTML = reasons.length
+    ? reasons.map(v => '<div class="ritem"><div class="rmeta rmeta-'+String(v[5]).toLowerCase()+'">'+v[3]+' · '+v[5]+'. '+v[6]+'</div><div class="rtext">'+v[8]+'</div></div>').join('')
+    : '<div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;padding:0.8rem;">아직 선택 이유가 없습니다</div>';
+}
+
+// 마무리
+function showFinal() {
+  hideAll();
+  document.getElementById('finalCard').style.display = 'block';
+  document.getElementById('fava').textContent = user.name.slice(0,1);
+  document.getElementById('fname').textContent = user.name;
+  document.getElementById('fcohort').textContent = user.cohort + ' · EDUSQUARE';
+  if (lLearn) { showLearnRes(); return; }
+  document.getElementById('lgrid').innerHTML = QS.map(q =>
+    '<button class="lbtn" id="lb'+q.n+'" onclick="togLearn(\''+q.n+'\')"><strong>'+q.n+'번</strong> '+q.lb+'<span class="lsub">'+q.q.slice(0,40)+'...</span></button>'
+  ).join('');
+}
+function togLearn(n) {
+  const idx = selLearn.indexOf(n);
+  if (idx >= 0) { selLearn.splice(idx,1); document.getElementById('lb'+n).className='lbtn'; }
+  else { if (selLearn.length >= 3) return; selLearn.push(n); document.getElementById('lb'+n).className='lbtn lsel'; }
+  document.getElementById('lhint').textContent = selLearn.length + ' / 3개 선택됨';
+  document.getElementById('lsubBtn').disabled = selLearn.length !== 3;
+}
+async function doLearn() {
+  if (selLearn.length !== 3) return;
+  const data = {type:'learn', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, selections:selLearn.join(',')};
+  lLearn = data; localStorage.setItem('es_l5', JSON.stringify(data));
+  load(true); await post(data); load(false);
+  showLearnRes();
+}
+function showLearnRes() {
+  document.getElementById('learnSec').style.display = 'none';
+  document.getElementById('learnRes').style.display = 'block';
+  if (lMsg) {
+    document.getElementById('msgin').value = lMsg;
+    document.getElementById('msgin').disabled = true;
+    document.getElementById('msgBtn').style.display = 'none';
+    document.getElementById('sentbox').style.display = 'block';
+  }
+  loadLearnRes();
+}
+async function loadLearnRes() {
+  const rows = await get();
+  if (!rows) return;
+  const learns = rows.filter(r => String(r[0])==='learn');
+  const cnt = {}; QS.forEach(q => cnt[q.n]=0);
+  learns.forEach(r => { (r[4]||'').split(',').forEach(n => { if(cnt[n]!==undefined) cnt[n]++; }); });
+  const sorted = QS.map(q => ({...q, c:cnt[q.n]})).sort((a,b) => b.c-a.c);
+  const mx = sorted[0]?.c || 1;
+  document.getElementById('lreslist').innerHTML = sorted.map(q =>
+    '<div class="lritem"><div class="lrnum">'+q.n+'</div><div class="lrtext">'+q.lb+'</div>' +
+    '<div class="lrbar"><div class="lrfill" style="width:'+Math.round(q.c/mx*100)+'%"></div></div>' +
+    '<div class="lrcnt">'+q.c+'표</div></div>'
+  ).join('');
+}
+async function doMsg() {
+  const msg = document.getElementById('msgin').value.trim();
+  if (!msg) return;
+  const data = {type:'message', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, message:msg};
+  lMsg = msg; localStorage.setItem('es_m5', msg);
+  load(true); await post(data); load(false);
+  document.getElementById('msgin').disabled = true;
+  document.getElementById('msgBtn').style.display = 'none';
+  document.getElementById('sentbox').style.display = 'block';
+}
+
+// 집계
+function togPub() { const p=document.getElementById('pubPanel'); const h=p.style.display==='none'||p.style.display===''; p.style.display=h?'block':'none'; if(h) loadPub(); }
+function togAdmin() { const p=document.getElementById('adminPanel'); p.style.display=(p.style.display==='none'||p.style.display==='')?'block':'none'; }
+function chkPw() {
+  if (document.getElementById('pwin').value === PWKEY) {
+    document.getElementById('adminLock').style.display='none';
+    document.getElementById('adminCon').style.display='block';
+    loadAdmin();
+  } else { document.getElementById('pwerr').style.display='block'; }
+}
+function swTab(t) {
+  ['s','d','l','m'].forEach(x => { document.getElementById('tab-'+x).className='tbtn'+(t===x?' act':''); });
+  document.getElementById('sv').style.display=t==='s'?'block':'none';
+  document.getElementById('dv').style.display=t==='d'?'block':'none';
+  document.getElementById('lv').style.display=t==='l'?'block':'none';
+  document.getElementById('mv').style.display=t==='m'?'block':'none';
+}
+
+async function loadPub() {
+  document.getElementById('pubView').innerHTML = '<div class="empty">불러오는 중...</div>';
+  const rows = await get();
+  if (!rows) { document.getElementById('pubView').innerHTML='<div class="empty">데이터를 불러올 수 없습니다</div>'; return; }
+  const votes = rows.filter(r => String(r[0])==='vote');
+  const ansNums = [...new Set(votes.map(v => String(v[4])))];
+  const sorted = [...QS].filter(q => ansNums.includes(String(q.n))).sort((a,b) => {
+    const la = votes.map((v,i) => String(v[4])===String(a.n)?i:-1).filter(x=>x>=0).pop()||0;
+    const lb = votes.map((v,i) => String(v[4])===String(b.n)?i:-1).filter(x=>x>=0).pop()||0;
+    return lb - la;
+  });
+  let h = '';
+  sorted.forEach(q => {
+    const qv = votes.filter(v => String(v[4])===String(q.n));
+    if (!qv.length) return;
+    const aC = qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
+    const ap = qv.length ? Math.round(aC/qv.length*100) : 0;
+    h += '<div style="padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);">';
+    h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
+    h += '<span style="font-size:11px;color:rgba(100,180,255,0.78);font-weight:600;width:36px;">'+q.n+'번</span>';
+    h += '<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;">'+q.lb+'</span>';
+    h += '<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>';
+    h += '<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">';
+    h += '<span style="font-size:12px;color:rgba(147,197,253,0.8);">A '+aC+'('+ap+'%)</span>';
+    h += '<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
+    h += '<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>';
+    h += '<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>';
+    h += '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>';
+    const rs = qv.filter(v=>v[8]);
+    if (rs.length) {
+      h += '<div style="margin-top:6px;margin-left:46px;display:flex;flex-direction:column;gap:4px;">';
+      rs.forEach(v => {
+        h += '<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:6px 10px;">';
+        h += '<div style="font-size:11px;color:rgba(147,197,253,0.75);margin-bottom:2px;">'+v[3]+' · '+String(v[5])+'. '+String(v[6])+'</div>';
+        h += '<div style="font-size:12px;color:rgba(255,255,255,0.6);">'+v[8]+'</div></div>';
+      });
+      h += '</div>';
+    }
+    h += '</div>';
+  });
+  document.getElementById('pubView').innerHTML = h || '<div class="empty">아직 투표 데이터가 없습니다</div>';
+}
+
+async function loadAdmin() {
+  load(true);
+  const rows = await get();
+  load(false);
+  if (!rows) { document.getElementById('sv').innerHTML='<div class="empty">데이터를 불러올 수 없습니다</div>'; return; }
+  const votes = rows.filter(r=>String(r[0])==='vote');
+  const learns = rows.filter(r=>String(r[0])==='learn');
+  const msgs = rows.filter(r=>String(r[0])==='message');
+
+  // 요약
+  const ansNums = [...new Set(votes.map(v=>String(v[4])))];
+  const sorted = [...QS].filter(q=>ansNums.includes(String(q.n))).sort((a,b)=>{
+    const la=votes.map((v,i)=>String(v[4])===String(a.n)?i:-1).filter(x=>x>=0).pop()||0;
+    const lb=votes.map((v,i)=>String(v[4])===String(b.n)?i:-1).filter(x=>x>=0).pop()||0;
+    return lb-la;
+  });
+  let sh='';
+  sorted.forEach(q => {
+    const qv=votes.filter(v=>String(v[4])===String(q.n)); if(!qv.length) return;
+    const aC=qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
+    const ap=Math.round(aC/qv.length*100);
+    const al=q.ans==='A'?'A. '+q.a:q.ans==='B'?'B. '+q.b:'C. 경우에 따라 다르다';
+    sh+='<div style="padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);">';
+    sh+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
+    sh+='<span style="font-size:11px;color:rgba(100,180,255,0.78);font-weight:600;width:36px;">'+q.n+'번</span>';
+    sh+='<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;font-weight:500;">'+q.lb+'</span>';
+    sh+='<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>';
+    sh+='<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">';
+    sh+='<span style="font-size:12px;color:'+txtColor(q.ans,'A')+';font-weight:'+txtW(q.ans,'A')+';">A '+aC+'('+ap+'%)</span>';
+    sh+='<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
+    sh+='<div style="width:'+ap+'%;background:'+barColor(q.ans,'A')+';">&nbsp;</div>';
+    sh+='<div style="width:'+(100-ap)+'%;background:'+barColor(q.ans,'B')+';">&nbsp;</div></div>';
+    sh+='<span style="font-size:12px;color:'+txtColor(q.ans,'B')+';font-weight:'+txtW(q.ans,'B')+';">B '+bC+' ('+(100-ap)+'%)</span></div>';
+    sh+='<div class="ansbox" style="margin-left:46px;margin-top:8px;">';
+    sh+='<div class="anslabel">CEO 고승재가 내린 선택은...</div>';
+    sh+='<div class="ansval">'+al+'</div>';
+    sh+='<div class="ansdesc">'+q.desc+'</div></div></div>';
+  });
+  document.getElementById('sv').innerHTML=sh||'<div class="empty">아직 투표 데이터가 없습니다</div>';
+
+  // 개별 응답
+  const sv=[...votes].sort((a,b)=>{
+    const na=String(a[2]||''),nb=String(b[2]||'');
+    if(na<nb)return -1; if(na>nb)return 1;
+    return Number(a[4]||0)-Number(b[4]||0);
+  });
+  let dh='<table class="dtable"><thead><tr><th>이름</th><th>기수</th><th>문항</th><th>선택</th><th>이유</th><th>시간</th></tr></thead><tbody>';
+  sv.forEach(v=>{
+    const bc=String(v[6]||'').toLowerCase()==='a'?'ba':'bb';
+    dh+='<tr><td>'+v[2]+'</td><td><span class="cpill">'+v[3]+'</span></td><td>'+v[4]+'번</td>';
+    dh+='<td><span class="badge '+bc+'">'+v[6]+' '+v[7]+'</span></td>';
+    dh+='<td style="font-size:12px;color:rgba(255,255,255,0.42);">'+(v[8]||'—')+'</td>';
+    dh+='<td style="font-size:11px;color:rgba(255,255,255,0.26);">'+v[1]+'</td></tr>';
+  });
+  dh+='</tbody></table>';
+  document.getElementById('dv').innerHTML=dh;
+
+  // 배움 투표
+  const cnt={}; QS.forEach(q=>cnt[q.n]=0);
+  learns.forEach(r=>{(r[4]||'').split(',').forEach(n=>{if(cnt[n]!==undefined)cnt[n]++;});});
+  const ls=QS.map(q=>({...q,c:cnt[q.n]})).sort((a,b)=>b.c-a.c);
+  const mx=ls[0]?.c||1;
+  document.getElementById('lv').innerHTML=
+    '<div style="margin-bottom:0.8rem;font-size:12px;color:rgba(255,255,255,0.4);">총 '+learns.length+'명 참여</div>'+
+    ls.map(q=>'<div class="lritem"><div class="lrnum">'+q.n+'</div><div class="lrtext">'+q.lb+'</div><div class="lrbar"><div class="lrfill" style="width:'+Math.round(q.c/mx*100)+'%"></div></div><div class="lrcnt">'+q.c+'표</div></div>').join('');
+
+  // 메시지
+  document.getElementById('mv').innerHTML=msgs.length
+    ? msgs.map(m=>'<div class="msgcard"><div class="msgfrom">'+m[2]+' · '+m[3]+' · '+m[1]+'</div><div class="msgtxt">'+m[5]+'</div></div>').join('')
+    : '<div class="empty">아직 메시지가 없습니다</div>';
+}
+
+// 지구본
 function initGlobe() {
-  const canvas=document.getElementById('gc');
-  const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-  renderer.setPixelRatio(window.devicePixelRatio); renderer.setClearColor(0x0a0e1a,1);
-  const scene=new THREE.Scene(), camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
-  camera.position.z=2.8;
-  scene.add(new THREE.Mesh(new THREE.SphereGeometry(1,64,64),new THREE.MeshPhongMaterial({color:0x0d3a6e,transparent:true,opacity:0.85,shininess:60})));
-  scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.01,24,24),new THREE.MeshBasicMaterial({color:0x1a6abf,wireframe:true,transparent:true,opacity:0.1})));
-  scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.08,32,32),new THREE.MeshBasicMaterial({color:0x1a5abf,transparent:true,opacity:0.05,side:THREE.BackSide})));
+  const cv=document.getElementById('gc');
+  const re=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+  re.setPixelRatio(window.devicePixelRatio); re.setClearColor(0x0a0e1a,1);
+  const sc=new THREE.Scene(), ca=new THREE.PerspectiveCamera(45,1,0.1,1000);
+  ca.position.z=2.8;
+  sc.add(new THREE.Mesh(new THREE.SphereGeometry(1,64,64),new THREE.MeshPhongMaterial({color:0x0d3a6e,transparent:true,opacity:0.85,shininess:60})));
+  sc.add(new THREE.Mesh(new THREE.SphereGeometry(1.01,24,24),new THREE.MeshBasicMaterial({color:0x1a6abf,wireframe:true,transparent:true,opacity:0.1})));
+  sc.add(new THREE.Mesh(new THREE.SphereGeometry(1.08,32,32),new THREE.MeshBasicMaterial({color:0x1a5abf,transparent:true,opacity:0.05,side:THREE.BackSide})));
   const dg=new THREE.BufferGeometry(),dp=[];
   for(let i=0;i<800;i++){const phi=Math.acos(-1+2*i/800),th=Math.sqrt(800*Math.PI)*phi;dp.push(1.015*Math.sin(phi)*Math.cos(th),1.015*Math.sin(phi)*Math.sin(th),1.015*Math.cos(phi));}
   dg.setAttribute('position',new THREE.Float32BufferAttribute(dp,3));
-  scene.add(new THREE.Points(dg,new THREE.PointsMaterial({color:0x4da6ff,size:0.016,transparent:true,opacity:0.65})));
-  scene.add(Object.assign(new THREE.DirectionalLight(0x4488ff,1.2),{position:new THREE.Vector3(5,3,5)}));
-  scene.add(new THREE.AmbientLight(0x112244,2));
-  scene.add(Object.assign(new THREE.PointLight(0x0066ff,0.8),{position:new THREE.Vector3(-3,-2,-3)}));
-  function resize(){renderer.setSize(window.innerWidth,window.innerHeight);camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();}
-  resize(); window.addEventListener('resize',resize);
-  (function anim(){requestAnimationFrame(anim);scene.children.forEach(c=>{if(c.isMesh||c.isPoints)c.rotation.y+=0.0018;});renderer.render(scene,camera);})();
+  sc.add(new THREE.Points(dg,new THREE.PointsMaterial({color:0x4da6ff,size:0.016,transparent:true,opacity:0.65})));
+  sc.add(Object.assign(new THREE.DirectionalLight(0x4488ff,1.2),{position:new THREE.Vector3(5,3,5)}));
+  sc.add(new THREE.AmbientLight(0x112244,2));
+  sc.add(Object.assign(new THREE.PointLight(0x0066ff,0.8),{position:new THREE.Vector3(-3,-2,-3)}));
+  function rsz(){re.setSize(window.innerWidth,window.innerHeight);ca.aspect=window.innerWidth/window.innerHeight;ca.updateProjectionMatrix();}
+  rsz(); window.addEventListener('resize',rsz);
+  (function anim(){requestAnimationFrame(anim);sc.children.forEach(c=>{if(c.isMesh||c.isPoints)c.rotation.y+=0.0018;});re.render(sc,ca);})();
 }
 </script>
 </body>
