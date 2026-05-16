@@ -578,7 +578,7 @@ async function loadPub() {
     h += '<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>';
     h += '<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>';
     h += '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>';
-    const rs = qv.filter(v=>v[8]);
+    const rs = qv.filter(v=>v[8]).sort((a,b)=>String(a[5])<String(b[5])?-1:String(a[5])>String(b[5])?1:0);
     if (rs.length) {
       h += '<div style="margin-top:6px;margin-left:46px;display:flex;flex-direction:column;gap:4px;">';
       rs.forEach(v => {
