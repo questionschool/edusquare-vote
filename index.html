@@ -110,7 +110,6 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
 .admin-card { background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.14); border-radius:18px; padding:1.6rem; backdrop-filter:blur(16px); }
 .admin-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1.3rem; }
 .admin-title { font-size:16px; font-weight:600; color:#fff; }
-.clear-btn { padding:6px 12px; border-radius:7px; border:0.5px solid rgba(239,68,68,0.35); background:rgba(239,68,68,0.08); color:rgba(239,110,110,0.85); font-size:12px; cursor:pointer; font-family:inherit; display:none; }
 .pw-row { display:flex; gap:8px; margin-bottom:0.5rem; }
 .pw-input { flex:1; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:10px 12px; font-size:14px; color:#fff; outline:none; font-family:inherit; }
 .pw-input::placeholder { color:rgba(255,255,255,0.22); }
@@ -264,7 +263,7 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
     <div class="admin-card">
       <div class="admin-header">
         <div class="admin-title">관리자 집계</div>
-        <button class="clear-btn" id="clearBtn" onclick="clearData()">초기화</button>
+        <button class="refresh-btn" onclick="loadAdmin()" style="font-size:13px;">↻ 새로고침</button>
       </div>
       <div id="adminLock">
         <div class="pw-row">
@@ -284,7 +283,6 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
         <div id="detailView" style="display:none;"></div>
         <div id="learnView" style="display:none;"></div>
         <div id="msgView" style="display:none;"></div>
-        <button onclick="loadAdmin()" style="margin-top:1rem;padding:7px 16px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.14);border-radius:7px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">↻ 새로고침</button>
       </div>
     </div>
   </div>
@@ -638,10 +636,10 @@ async function loadAdmin() {
       '<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;font-weight:500;">'+q.label+'</span>'+
       '<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>'+
       '<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">'+
-      '<span style="font-size:12px;color:rgba(147,197,253,0.8);">A '+aC+'('+ap+'%)</span>'+
+      '<span style="font-size:12px;color:'+(q.ans==="A"?"rgba(251,191,36,0.95)":(q.ans==="C"?"rgba(251,120,36,0.95)":"rgba(147,197,253,0.8)"))+";font-weight:"+(q.ans==="A"||q.ans==="C"?"700":"400")+";">A "+aC+"("+ap+"%)</span>"+
       '<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">'+
-      '<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>'+
-      '<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>'+
+      '<div style="width:'+ap+'%;background:'+(q.ans==='A'?'rgba(251,191,36,0.75)':q.ans==='C'?'rgba(251,120,36,0.75)':'rgba(59,130,246,0.55)')+';"></div>'+
+      '<div style="width:'+(100-ap)+'%;background:'+(q.ans==='B'?'rgba(251,191,36,0.75)':q.ans==='C'?'rgba(251,191,36,0.75)':'rgba(59,130,246,0.55)')+';"></div></div>'+
       '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>'+
       '<div class="answer-box" style="margin-left:46px;margin-top:8px;">'+
       '<div class="answer-label">CEO 고승재가 내린 선택은...</div>'+
@@ -689,13 +687,6 @@ async function loadAdmin() {
     '<div class="empty-state">아직 메시지가 없습니다</div>';
 }
 
-function clearData() {
-  if (confirm('로컬 데이터를 초기화할까요?\n(구글 시트는 직접 삭제해주세요)')) {
-    localVotes=[]; localLearn=null; localMsg='';
-    localStorage.removeItem('es_votes4'); localStorage.removeItem('es_learn4'); localStorage.removeItem('es_msg4');
-    loadAdmin();
-  }
-}
 
 function initGlobe() {
   const canvas=document.getElementById('gc');
