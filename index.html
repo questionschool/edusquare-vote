@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고승재 되기 선택 게임 — EDUSQUARE 철학포럼</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0e1a; min-height: 100vh; }
+
+canvas#gc { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
+
+.overlay {
+  position: relative; z-index: 1;
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; padding: 2.5rem 1rem 5rem;
+}
+
+.logo-line { font-size: 11px; font-weight: 500; letter-spacing: 0.2em; color: rgba(255,255,255,0.35); text-transform: uppercase; margin-bottom: 0.3rem; text-align: center; }
+.subtitle { font-size: 15px; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; text-align: center; letter-spacing: 0.05em; }
+.main-title { font-size: 26px; font-weight: 700; color: #ffffff; margin-bottom: 2.2rem; text-align: center; letter-spacing: -0.01em; }
+
+.card {
+  background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14);
+  border-radius: 18px; padding: 1.6rem; width: 100%; max-width: 500px;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+
+.section-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 0.7rem;
+}
+
+/* 기수 선택 */
+.cohort-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 1.3rem; }
+.cohort-btn {
+  padding: 12px 10px; border-radius: 11px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.7); cursor: pointer;
+  font-family: inherit; transition: all 0.15s; text-align: center;
+}
+.cohort-btn .cn { display: block; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+.cohort-btn .cy { display: block; font-size: 11px; color: rgba(255,255,255,0.38); }
+.cohort-btn:hover { background: rgba(255,255,255,0.1); }
+.cohort-btn.selected { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.6); }
+.cohort-btn.selected .cn { color: #93c5fd; }
+.cohort-btn.selected .cy { color: rgba(147,197,253,0.65); }
+
+/* 이름 입력 */
+.name-row { display: flex; gap: 8px; }
+.name-input {
+  flex: 1; background: rgba(255,255,255,0.07);
+  border: 0.5px solid rgba(255,255,255,0.18); border-radius: 9px;
+  padding: 11px 14px; font-size: 15px; color: #fff; outline: none;
+  font-family: inherit;
+}
+.name-input::placeholder { color: rgba(255,255,255,0.22); }
+.name-input:focus { border-color: rgba(100,180,255,0.5); }
+.start-btn {
+  padding: 11px 20px;
+  background: rgba(59,130,246,0.32); border: 1px solid rgba(59,130,246,0.6);
+  border-radius: 9px; color: #fff; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap;
+}
+.start-btn:hover { background: rgba(59,130,246,0.48); }
+.start-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* 사용자 뱃지 */
+.user-badge {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(59,130,246,0.1); border: 0.5px solid rgba(59,130,246,0.28);
+  border-radius: 11px; padding: 10px 14px; margin-bottom: 1.3rem;
+}
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(59,130,246,0.25); border: 0.5px solid rgba(59,130,246,0.45);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: #93c5fd; flex-shrink: 0;
+}
+.badge-info { flex: 1; }
+.badge-name { font-size: 14px; font-weight: 600; color: #fff; }
+.badge-cohort { font-size: 12px; color: rgba(147,197,253,0.7); margin-top: 1px; }
+.badge-change { font-size: 11px; color: rgba(255,255,255,0.22); cursor: pointer; text-decoration: underline; }
+.badge-change:hover { color: rgba(255,255,255,0.5); }
+
+/* 문항 네비 */
+.q-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.q-progress { font-size: 12px; color: rgba(255,255,255,0.38); }
+.nav-btn {
+  padding: 6px 15px; border-radius: 7px;
+  border: 0.5px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.62); font-size: 13px; cursor: pointer;
+  font-family: inherit; transition: all 0.15s;
+}
+.nav-btn:disabled { opacity: 0.22; cursor: not-allowed; }
+.nav-btn:not(:disabled):hover { background: rgba(255,255,255,0.1); }
+
+/* 질문 박스 */
+.q-box {
+  background: rgba(255,255,255,0.04); border: 0.5px solid rgba(255,255,255,0.07);
+  border-radius: 11px; padding: 1.1rem 1.3rem; margin-bottom: 1.3rem;
+}
+.q-num { font-size: 11px; color: rgba(100,180,255,0.82); font-weight: 600; letter-spacing: 0.1em; margin-bottom: 7px; }
+.q-main { font-size: 14px; color: rgba(255,255,255,0.9); line-height: 1.6; }
+
+/* A/B 선택 */
+.choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.3rem; }
+.choice-btn {
+  padding: 13px 10px; border-radius: 11px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  cursor: pointer; font-family: inherit; transition: all 0.15s; text-align: center;
+}
+.choice-btn .cl { display: block; font-size: 17px; font-weight: 700; margin-bottom: 5px; color: rgba(255,255,255,0.8); }
+.choice-btn .cd { display: block; font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.38; }
+.choice-btn:hover { background: rgba(255,255,255,0.1); }
+.choice-btn.sel-a { background: rgba(59,130,246,0.2); border-color: rgba(59,130,246,0.65); }
+.choice-btn.sel-a .cl { color: #93c5fd; } .choice-btn.sel-a .cd { color: rgba(147,197,253,0.72); }
+.choice-btn.sel-b { background: rgba(99,102,241,0.2); border-color: rgba(99,102,241,0.65); }
+.choice-btn.sel-b .cl { color: #a5b4fc; } .choice-btn.sel-b .cd { color: rgba(165,180,252,0.72); }
+
+/* 코멘트 */
+.comment-input {
+  width: 100%; background: rgba(255,255,255,0.07);
+  border: 0.5px solid rgba(255,255,255,0.18); border-radius: 9px;
+  padding: 10px 14px; font-size: 14px; color: #fff; outline: none;
+  font-family: inherit; resize: none; height: 78px; line-height: 1.5;
+  margin-bottom: 1.3rem;
+}
+.comment-input::placeholder { color: rgba(255,255,255,0.22); }
+.comment-input:focus { border-color: rgba(100,180,255,0.5); }
+
+/* 제출 */
+.submit-btn {
+  width: 100%; padding: 13px;
+  background: rgba(59,130,246,0.3); border: 1px solid rgba(59,130,246,0.58);
+  border-radius: 11px; color: #fff; font-size: 15px; font-weight: 600;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.submit-btn:hover:not(:disabled) { background: rgba(59,130,246,0.48); }
+.submit-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.vote-msg { font-size: 12px; color: rgba(239,120,120,0.9); text-align: center; margin-top: 10px; display: none; }
+.already-msg { font-size: 12px; color: rgba(100,200,130,0.9); text-align: center; margin-top: 6px; display: none; }
+
+/* 완료 */
+.success-card { display: none; text-align: center; padding: 2.5rem 1.5rem; }
+.success-check {
+  width: 54px; height: 54px; border-radius: 50%;
+  background: rgba(16,185,129,0.12); border: 1.5px solid rgba(16,185,129,0.38);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 1rem; font-size: 24px; color: #6ee7b7;
+}
+.success-title { font-size: 17px; font-weight: 600; color: #fff; margin-bottom: 0.4rem; }
+.success-sub { font-size: 13px; color: rgba(255,255,255,0.42); margin-bottom: 1.6rem; line-height: 1.5; }
+
+/* 관리자 */
+.admin-link { margin-top: 1.6rem; font-size: 12px; color: rgba(255,255,255,0.16); text-align: center; cursor: pointer; text-decoration: underline; }
+.admin-link:hover { color: rgba(255,255,255,0.42); }
+.admin-panel { display: none; width: 100%; max-width: 700px; margin-top: 1.5rem; }
+.admin-card {
+  background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.14);
+  border-radius: 18px; padding: 1.6rem; backdrop-filter: blur(16px);
+}
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.3rem; }
+.admin-title { font-size: 16px; font-weight: 600; color: #fff; }
+.clear-btn {
+  padding: 6px 12px; border-radius: 7px;
+  border: 0.5px solid rgba(239,68,68,0.35); background: rgba(239,68,68,0.08);
+  color: rgba(239,110,110,0.85); font-size: 12px; cursor: pointer; font-family: inherit; display: none;
+}
+.pw-row { display: flex; gap: 8px; margin-bottom: 0.5rem; }
+.pw-input {
+  flex: 1; background: rgba(255,255,255,0.07); border: 0.5px solid rgba(255,255,255,0.18);
+  border-radius: 9px; padding: 10px 12px; font-size: 14px; color: #fff; outline: none; font-family: inherit;
+}
+.pw-input::placeholder { color: rgba(255,255,255,0.22); }
+.pw-btn {
+  padding: 10px 16px; background: rgba(255,255,255,0.08); border: 0.5px solid rgba(255,255,255,0.18);
+  border-radius: 9px; color: #fff; font-size: 14px; cursor: pointer; font-family: inherit;
+}
+.pw-error { font-size: 12px; color: rgba(239,110,110,0.88); display: none; margin-top: 4px; }
+.tab-row { display: flex; gap: 6px; margin-bottom: 1rem; }
+.tab-btn {
+  padding: 6px 15px; border-radius: 7px; border: 0.5px solid rgba(255,255,255,0.12);
+  background: transparent; color: rgba(255,255,255,0.38); font-size: 13px;
+  cursor: pointer; font-family: inherit; transition: all 0.15s;
+}
+.tab-btn.active { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.25); }
+
+.q-summary-row { padding: 10px 0; border-bottom: 0.5px solid rgba(255,255,255,0.05); }
+.q-summary-top { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+.q-tag { font-size: 11px; color: rgba(100,180,255,0.78); font-weight: 600; width: 32px; flex-shrink: 0; }
+.q-counts { font-size: 12px; color: rgba(255,255,255,0.48); flex: 1; }
+.q-total { font-size: 12px; color: rgba(255,255,255,0.28); }
+.bar-wrap { display: flex; height: 5px; border-radius: 3px; overflow: hidden; background: rgba(255,255,255,0.07); margin-left: 42px; }
+.bar-a { background: rgba(59,130,246,0.58); } .bar-b { background: rgba(99,102,241,0.58); }
+
+table.rtable { width: 100%; border-collapse: collapse; font-family: inherit; font-size: 13px; }
+table.rtable th { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.28); font-weight: 600; padding: 6px 8px; text-align: left; border-bottom: 0.5px solid rgba(255,255,255,0.08); }
+table.rtable td { padding: 8px 8px; color: rgba(255,255,255,0.78); border-bottom: 0.5px solid rgba(255,255,255,0.05); vertical-align: top; }
+
+.badge { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.badge-a { background: rgba(59,130,246,0.18); color: #93c5fd; border: 0.5px solid rgba(59,130,246,0.35); }
+.badge-b { background: rgba(99,102,241,0.18); color: #a5b4fc; border: 0.5px solid rgba(99,102,241,0.35); }
+.cpill { display: inline-block; padding: 1px 7px; border-radius: 20px; font-size: 11px; background: rgba(59,130,246,0.12); color: rgba(147,197,253,0.82); border: 0.5px solid rgba(59,130,246,0.25); }
+.empty-state { text-align: center; padding: 2.5rem; color: rgba(255,255,255,0.22); font-size: 14px; }
+
+.loading-overlay {
+  position: fixed; top:0; left:0; width:100%; height:100%; z-index:999;
+  background: rgba(10,14,26,0.7); display:flex; align-items:center; justify-content:center;
+  display:none;
+}
+.loading-spinner {
+  width:36px; height:36px; border:3px solid rgba(255,255,255,0.1);
+  border-top-color:#93c5fd; border-radius:50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.setup-box {
+  background: rgba(255,200,50,0.08); border: 0.5px solid rgba(255,200,50,0.25);
+  border-radius: 11px; padding: 1rem 1.2rem; margin-bottom: 1.3rem;
+  font-size: 13px; color: rgba(255,220,100,0.85); line-height: 1.65;
+}
+.setup-box strong { color: rgba(255,220,100,1); }
+.setup-box code {
+  background: rgba(255,255,255,0.08); border-radius: 4px;
+  padding: 1px 6px; font-size: 12px; font-family: monospace;
+  color: #fff;
+}
+</style>
+</head>
+<body>
+
+<canvas id="gc"></canvas>
+<div class="loading-overlay" id="loadingOverlay"><div class="loading-spinner"></div></div>
+
+<div class="overlay">
+  <div class="logo-line">EDUSQUARE</div>
+  <div class="subtitle">철학포럼</div>
+  <div class="main-title">고승재 되기 선택 게임</div>
+
+  <!-- ① 로그인 -->
+  <div class="card" id="loginCard">
+
+    <!-- Google Sheets 미연동 시 안내 -->
+    <div class="setup-box" id="setupGuide" style="display:none;">
+      <strong>⚙️ Google Sheets 연동 필요</strong><br><br>
+      아래 순서대로 설정해주세요:<br><br>
+      <strong>1.</strong> <a href="https://sheets.new" target="_blank" style="color:#93c5fd;">sheets.new</a> 에서 새 구글 시트 생성<br>
+      <strong>2.</strong> 시트 이름을 <code>투표결과</code> 로 변경<br>
+      <strong>3.</strong> 확장 프로그램 → Apps Script 열기<br>
+      <strong>4.</strong> 아래 코드 붙여넣기 후 저장 (💾)<br><br>
+      <code style="display:block;white-space:pre-wrap;font-size:11px;line-height:1.6;">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('투표결과');
+  if (!sheet.getLastRow()) {
+    sheet.appendRow(['시간','이름','기수','문항','선택','선택내용','이유']);
+  }
+  var d = JSON.parse(e.postData.contents);
+  sheet.appendRow([d.time,d.name,d.cohort,d.qNum,d.choice,d.choiceDesc,d.comment]);
+  return ContentService.createTextOutput(JSON.stringify({result:'ok'})).setMimeType(ContentService.MimeType.JSON);
+}
+function doGet(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('투표결과');
+  var rows = sheet.getDataRange().getValues();
+  return ContentService.createTextOutput(JSON.stringify(rows)).setMimeType(ContentService.MimeType.JSON);
+}</code><br>
+      <strong>5.</strong> 배포 → 새 배포 → 웹 앱 선택<br>
+      &nbsp;&nbsp;&nbsp;• 실행 계정: <code>나(thomas@questionschool.net)</code><br>
+      &nbsp;&nbsp;&nbsp;• 액세스 권한: <code>모든 사용자</code><br>
+      <strong>6.</strong> 배포 후 URL을 복사하여 아래에 입력<br><br>
+      <input id="sheetUrlInput" type="text" placeholder="https://script.google.com/macros/s/..." style="width:100%;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,220,100,0.3);border-radius:6px;padding:8px 10px;font-size:12px;color:#fff;outline:none;font-family:monospace;">
+      <button onclick="saveSheetUrl()" style="margin-top:8px;width:100%;padding:8px;background:rgba(255,200,50,0.2);border:0.5px solid rgba(255,200,50,0.4);border-radius:6px;color:#ffd;font-size:13px;cursor:pointer;font-family:inherit;">URL 저장 후 시작</button>
+    </div>
+
+    <div class="section-label">기수 선택</div>
+    <div class="cohort-grid">
+      <button class="cohort-btn" onclick="selCohort('1기')" id="c1"><span class="cn">1기</span><span class="cy">2024년 입교</span></button>
+      <button class="cohort-btn" onclick="selCohort('2기')" id="c2"><span class="cn">2기</span><span class="cy">2025년 입교</span></button>
+      <button class="cohort-btn" onclick="selCohort('3기')" id="c3"><span class="cn">3기</span><span class="cy">2026년 입교</span></button>
+      <button class="cohort-btn" onclick="selCohort('운영팀')" id="c4"><span class="cn">운영팀</span><span class="cy">EDUSQUARE</span></button>
+    </div>
+    <div class="section-label">이름 입력</div>
+    <div class="name-row">
+      <input class="name-input" id="nameInput" type="text" placeholder="성함을 입력해주세요 (예: 박영준)" />
+      <button class="start-btn" id="startBtn" onclick="startVoting()" disabled>시작 →</button>
+    </div>
+    <div class="vote-msg" id="loginMsg"></div>
+  </div>
+
+  <!-- ② 투표 -->
+  <div class="card" id="voteCard" style="display:none;">
+    <div class="user-badge">
+      <div class="avatar" id="avatarEl"></div>
+      <div class="badge-info">
+        <div class="badge-name" id="badgeName"></div>
+        <div class="badge-cohort" id="badgeCohort"></div>
+      </div>
+      <div class="badge-change" onclick="resetUser()">변경</div>
+    </div>
+    <div class="q-nav">
+      <button class="nav-btn" id="prevBtn" onclick="changeQ(-1)" disabled>← 이전</button>
+      <span class="q-progress" id="qProgress">1 / 14</span>
+      <button class="nav-btn" id="nextBtn" onclick="changeQ(1)">다음 →</button>
+    </div>
+    <div class="q-box">
+      <div class="q-num" id="qNum"></div>
+      <div class="q-main" id="qMain"></div>
+    </div>
+    <div class="section-label">① 선택</div>
+    <div class="choice-row" id="choiceRow"></div>
+    <div class="section-label">② 선택 이유 (Why) — 선택사항</div>
+    <textarea class="comment-input" id="commentInput" placeholder="왜 그렇게 선택하셨나요?"></textarea>
+    <button class="submit-btn" id="submitBtn" onclick="submitVote()" disabled>투표하기</button>
+    <div class="vote-msg" id="voteMsg"></div>
+    <div class="already-msg" id="alreadyMsg"></div>
+  </div>
+
+  <!-- ③ 완료 -->
+  <div class="card success-card" id="successCard">
+    <div class="success-check">✓</div>
+    <div class="success-title" id="successTitle"></div>
+    <div class="success-sub" id="successSub"></div>
+    <button class="nav-btn" id="successNextBtn" onclick="goNext()" style="padding:11px 28px;">다음 문항 →</button>
+  </div>
+
+  <div class="admin-link" onclick="toggleAdmin()">집계 확인 (관리자)</div>
+
+  <div class="admin-panel" id="adminPanel">
+    <div class="admin-card">
+      <div class="admin-header">
+        <div class="admin-title">집계 현황</div>
+        <button class="clear-btn" id="clearBtn" onclick="clearSheetData()">시트 초기화</button>
+      </div>
+      <div id="adminLock">
+        <div class="pw-row">
+          <input class="pw-input" id="pwInput" type="password" placeholder="비밀번호" onkeydown="if(event.key==='Enter')checkPw()" />
+          <button class="pw-btn" onclick="checkPw()">확인</button>
+        </div>
+        <div class="pw-error" id="pwError">비밀번호가 틀렸습니다</div>
+      </div>
+      <div id="adminContent" style="display:none;">
+        <div class="tab-row">
+          <button class="tab-btn active" id="tabS" onclick="switchTab('s')">문항별 요약</button>
+          <button class="tab-btn" id="tabD" onclick="switchTab('d')">개별 응답</button>
+        </div>
+        <div id="summaryView"></div>
+        <div id="detailView" style="display:none;"></div>
+        <button onclick="loadAdmin()" style="margin-top:1rem;padding:7px 16px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.14);border-radius:7px;color:rgba(255,255,255,0.6);font-size:12px;cursor:pointer;font-family:inherit;">새로고침</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ─── 문항 데이터 ───────────────────────────────────────
+const QS = [
+  {num:"Q4",  main:"회사 업무용도로 돈을 쓰고는 비용청구를 하지 않는다.", a:"칭찬한다", b:"혼낸다"},
+  {num:"Q1",  main:"인사발령 시 어떻게 해야 하는가?", a:"인사발령은 회사의 권리이므로 그냥 공지한다", b:"인사발령 전 해당 직원과 사전에 충분히 논의한다"},
+  {num:"Q7",  main:"유능한 리더는 겸임을 시키면 인건비도 절약되고 사업도 잘 진행된다.", a:"맞다", b:"틀리다"},
+  {num:"Q5",  main:"5대5 동업으로 지점을 개설하겠다는 2명의 가맹문의자가 나타났다.", a:"승인한다", b:"5대5는 안된다고 이야기한다"},
+  {num:"Q2",  main:"적자가 예상되는 상황에서 가맹문의자 면접에 별로인 분이 문의를 했다.", a:"합격시킨다", b:"불합격시킨다"},
+  {num:"Q14", main:"인허가 관련, 국가기관에서 안 된다는 답변이 왔다.", a:"국가의 법이니 받아들인다", b:"끝까지 방법을 찾아낸다"},
+  {num:"Q11", main:"지점이 200개가 넘어가면서 권역별 지사를 두자는 제안이 나왔다.", a:"관리 효율을 위해 지사 구조를 도입한다", b:"지사를 두지 않는 현재 체제를 유지한다"},
+  {num:"Q12", main:"본사 직원이 FC지점을 개설·소유하며 본사에서 계속 근무하고 싶다고 한다.", a:"허락한다", b:"허락하지 않는다"},
+  {num:"Q3",  main:"원장연합회에서 매니저 기본봉 하한선을 낮추자고 주장하며 단체행동을 협박한다.", a:"받아들인다", b:"거부한다"},
+  {num:"Q6",  main:"역량은 뛰어나나 동료들과 합심이 안 되는 멤버는?", a:"내보낸다", b:"둔다"},
+  {num:"Q10", main:"어제 본부장 회의에서 확신을 가지고 내린 결정이 잘못됐음을 깨달았다.", a:"그대로 밀어붙인다", b:"잘못됐음을 인정하고 결정을 번복한다"},
+  {num:"Q9",  main:"FC 지점에서 표준 운영 방식에 위배되는 운영이 밝혀졌다. 이 지점은 모든 지표가 상위권이다.", a:"가맹계약서에 준하여 조치한다", b:"예외를 허용한다"},
+  {num:"Q13", main:"본부장이 왜 이렇게 마이크로 매니지먼트를 하냐면서 좀 믿고 맡겨달라고 한다.", a:"믿고 맡긴다", b:"계속 마이크로 매니징을 한다"},
+  {num:"Q8",  main:"회사 재무 상황이 심각하다. 지금 공개하면 핵심 인재들이 이직할 수 있다. 말해야 하는가?", a:"지금은 말하지 않는다. 해결 후 투명하게 공유한다", b:"지금 말한다. 투명성의 원칙에는 '편할 때만'이라는 조건이 없다"}
+];
+
+const PW = "edusquare0517";
+let cQ = 0, selChoice = null;
+let user = JSON.parse(localStorage.getItem('es_user') || 'null');
+let localVotes = JSON.parse(localStorage.getItem('es_local_votes') || '[]');
+let sheetUrl = localStorage.getItem('es_sheet_url') || '';
+
+// ─── Google Sheets 연동 ───────────────────────────────
+function saveSheetUrl() {
+  const url = document.getElementById('sheetUrlInput').value.trim();
+  if (!url.startsWith('https://script.google.com')) {
+    alert('올바른 Apps Script URL을 입력해주세요'); return;
+  }
+  sheetUrl = url;
+  localStorage.setItem('es_sheet_url', url);
+  document.getElementById('setupGuide').style.display = 'none';
+  alert('저장되었습니다! 이제 투표 데이터가 구글 시트에 기록됩니다.');
+}
+
+async function sendToSheet(data) {
+  if (!sheetUrl) return;
+  showLoading(true);
+  try {
+    await fetch(sheetUrl, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+  } catch(e) { console.warn('Sheet sync error', e); }
+  showLoading(false);
+}
+
+async function fetchFromSheet() {
+  if (!sheetUrl) return null;
+  try {
+    const r = await fetch(sheetUrl + '?t=' + Date.now());
+    const data = await r.json();
+    return data;
+  } catch(e) { return null; }
+}
+
+function showLoading(v) {
+  document.getElementById('loadingOverlay').style.display = v ? 'flex' : 'none';
+}
+
+// ─── 초기 세팅 ───────────────────────────────────────
+window.addEventListener('load', () => {
+  if (!sheetUrl) document.getElementById('setupGuide').style.display = 'block';
+  if (user) showVoteCard();
+  initGlobe();
+});
+
+// ─── 기수 선택 ───────────────────────────────────────
+let selCohortVal = null;
+function selCohort(c) {
+  selCohortVal = c;
+  ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).className = 'cohort-btn');
+  const map = {'1기':'c1','2기':'c2','3기':'c3','운영팀':'c4'};
+  document.getElementById(map[c]).className = 'cohort-btn selected';
+  checkStart();
+}
+document.getElementById('nameInput').addEventListener('input', checkStart);
+function checkStart() {
+  document.getElementById('startBtn').disabled = !(document.getElementById('nameInput').value.trim() && selCohortVal);
+}
+
+function startVoting() {
+  const name = document.getElementById('nameInput').value.trim();
+  if (!name || !selCohortVal) return;
+  user = { name, cohort: selCohortVal };
+  localStorage.setItem('es_user', JSON.stringify(user));
+  showVoteCard();
+}
+
+function showVoteCard() {
+  document.getElementById('loginCard').style.display = 'none';
+  document.getElementById('successCard').style.display = 'none';
+  document.getElementById('voteCard').style.display = 'block';
+  document.getElementById('avatarEl').textContent = user.name.slice(0, 1);
+  document.getElementById('badgeName').textContent = user.name;
+  document.getElementById('badgeCohort').textContent = user.cohort + ' · EDUSQUARE';
+  renderQ();
+}
+
+function resetUser() {
+  user = null; localStorage.removeItem('es_user');
+  selCohortVal = null;
+  ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).className = 'cohort-btn');
+  document.getElementById('nameInput').value = '';
+  document.getElementById('startBtn').disabled = true;
+  document.getElementById('loginCard').style.display = 'block';
+  document.getElementById('voteCard').style.display = 'none';
+  document.getElementById('successCard').style.display = 'none';
+  if (!sheetUrl) document.getElementById('setupGuide').style.display = 'block';
+}
+
+// ─── 문항 렌더링 ─────────────────────────────────────
+function renderQ() {
+  const q = QS[cQ];
+  document.getElementById('qNum').textContent = q.num;
+  document.getElementById('qMain').textContent = q.main;
+  document.getElementById('qProgress').textContent = (cQ + 1) + ' / ' + QS.length;
+  document.getElementById('prevBtn').disabled = cQ === 0;
+  document.getElementById('nextBtn').disabled = cQ === QS.length - 1;
+  document.getElementById('choiceRow').innerHTML =
+    '<button class="choice-btn" id="btnA" onclick="selC(\'A\')">' +
+      '<span class="cl">A</span><span class="cd">' + q.a + '</span></button>' +
+    '<button class="choice-btn" id="btnB" onclick="selC(\'B\')">' +
+      '<span class="cl">B</span><span class="cd">' + q.b + '</span></button>';
+  selChoice = null;
+  document.getElementById('commentInput').value = '';
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('voteMsg').style.display = 'none';
+  document.getElementById('alreadyMsg').style.display = 'none';
+  const done = localVotes.find(v => v.qNum === q.num && v.name === user.name);
+  if (done) {
+    document.getElementById('alreadyMsg').textContent = '이미 투표하셨습니다 (' + done.choice + '. ' + done.choiceDesc + ')';
+    document.getElementById('alreadyMsg').style.display = 'block';
+  }
+}
+
+function selC(c) {
+  selChoice = c;
+  document.getElementById('btnA').className = 'choice-btn' + (c === 'A' ? ' sel-a' : '');
+  document.getElementById('btnB').className = 'choice-btn' + (c === 'B' ? ' sel-b' : '');
+  document.getElementById('submitBtn').disabled = false;
+}
+
+function changeQ(d) {
+  cQ = Math.max(0, Math.min(QS.length - 1, cQ + d));
+  renderQ();
+}
+
+// ─── 투표 제출 ───────────────────────────────────────
+async function submitVote() {
+  if (!selChoice) return;
+  const q = QS[cQ];
+  const done = localVotes.find(v => v.qNum === q.num && v.name === user.name);
+  if (done) {
+    document.getElementById('voteMsg').textContent = '이미 투표하셨습니다';
+    document.getElementById('voteMsg').style.display = 'block';
+    return;
+  }
+  const data = {
+    time: new Date().toLocaleString('ko-KR'),
+    name: user.name, cohort: user.cohort,
+    qNum: q.num, choice: selChoice,
+    choiceDesc: selChoice === 'A' ? q.a : q.b,
+    comment: document.getElementById('commentInput').value.trim()
+  };
+  localVotes.push(data);
+  localStorage.setItem('es_local_votes', JSON.stringify(localVotes));
+  await sendToSheet(data);
+  document.getElementById('successTitle').textContent = user.name + '님 · ' + q.num + ' 완료';
+  document.getElementById('successSub').textContent = selChoice + '. ' + data.choiceDesc;
+  document.getElementById('successNextBtn').style.display = cQ < QS.length - 1 ? 'inline-block' : 'none';
+  document.getElementById('voteCard').style.display = 'none';
+  document.getElementById('successCard').style.display = 'block';
+}
+
+function goNext() {
+  if (cQ < QS.length - 1) { cQ++; showVoteCard(); }
+}
+
+// ─── 관리자 ──────────────────────────────────────────
+function toggleAdmin() {
+  const p = document.getElementById('adminPanel');
+  p.style.display = (p.style.display === 'none' || p.style.display === '') ? 'block' : 'none';
+}
+function checkPw() {
+  if (document.getElementById('pwInput').value === PW) {
+    document.getElementById('adminLock').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+    document.getElementById('clearBtn').style.display = 'block';
+    loadAdmin();
+  } else { document.getElementById('pwError').style.display = 'block'; }
+}
+function switchTab(t) {
+  document.getElementById('tabS').className = 'tab-btn' + (t === 's' ? ' active' : '');
+  document.getElementById('tabD').className = 'tab-btn' + (t === 'd' ? ' active' : '');
+  document.getElementById('summaryView').style.display = t === 's' ? 'block' : 'none';
+  document.getElementById('detailView').style.display = t === 'd' ? 'block' : 'none';
+}
+
+async function loadAdmin() {
+  showLoading(true);
+  let rows = null;
+  if (sheetUrl) { rows = await fetchFromSheet(); }
+  showLoading(false);
+  if (!rows) { renderAdminFromLocal(); return; }
+  const votes = rows.slice(1).map(r => ({
+    time: r[0], name: r[1], cohort: r[2], qNum: r[3],
+    choice: r[4], choiceDesc: r[5], comment: r[6]
+  }));
+  renderAdminData(votes);
+}
+
+function renderAdminFromLocal() { renderAdminData(localVotes); }
+
+function renderAdminData(votes) {
+  const sv = document.getElementById('summaryView');
+  const dv = document.getElementById('detailView');
+  if (!votes || !votes.length) {
+    sv.innerHTML = dv.innerHTML = '<div class="empty-state">아직 투표 데이터가 없습니다</div>';
+    return;
+  }
+  let sh = '';
+  QS.forEach(q => {
+    const qv = votes.filter(v => v.qNum === q.num);
+    if (!qv.length) return;
+    const aC = qv.filter(v => v.choice === 'A').length;
+    const bC = qv.length - aC;
+    const ap = Math.round(aC / qv.length * 100);
+    sh += '<div class="q-summary-row"><div class="q-summary-top">' +
+      '<div class="q-tag">' + q.num + '</div>' +
+      '<div class="q-counts">A ' + aC + '명 (' + ap + '%)&nbsp;&nbsp;/&nbsp;&nbsp;B ' + bC + '명 (' + (100-ap) + '%)</div>' +
+      '<div class="q-total">' + qv.length + '명</div></div>' +
+      '<div class="bar-wrap"><div class="bar-a" style="width:' + ap + '%"></div><div class="bar-b" style="width:' + (100-ap) + '%"></div></div></div>';
+  });
+  sv.innerHTML = sh || '<div class="empty-state">집계 데이터가 없습니다</div>';
+
+  let dh = '<table class="rtable"><thead><tr><th>이름</th><th>기수</th><th>문항</th><th>선택</th><th>이유</th><th>시간</th></tr></thead><tbody>';
+  [...votes].reverse().forEach(v => {
+    dh += '<tr><td>' + v.name + '</td>' +
+      '<td><span class="cpill">' + v.cohort + '</span></td>' +
+      '<td>' + v.qNum + '</td>' +
+      '<td><span class="badge badge-' + (v.choice||'').toLowerCase() + '">' + v.choice + ' ' + v.choiceDesc + '</span></td>' +
+      '<td style="font-size:12px;color:rgba(255,255,255,0.42);">' + (v.comment || '—') + '</td>' +
+      '<td style="font-size:11px;color:rgba(255,255,255,0.26);">' + v.time + '</td></tr>';
+  });
+  dh += '</tbody></table>';
+  dv.innerHTML = dh;
+}
+
+function clearSheetData() {
+  if (confirm('로컬 데이터를 초기화할까요?\n(구글 시트 데이터는 시트에서 직접 삭제해주세요)')) {
+    localVotes = [];
+    localStorage.setItem('es_local_votes', JSON.stringify(localVotes));
+    renderAdminData([]);
+  }
+}
+
+// ─── 지구본 ──────────────────────────────────────────
+function initGlobe() {
+  const canvas = document.getElementById('gc');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setClearColor(0x0a0e1a, 1);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+  camera.position.z = 2.8;
+
+  scene.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1, 64, 64),
+    new THREE.MeshPhongMaterial({ color: 0x0d3a6e, transparent: true, opacity: 0.85, shininess: 60 })
+  ));
+  scene.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1.01, 24, 24),
+    new THREE.MeshBasicMaterial({ color: 0x1a6abf, wireframe: true, transparent: true, opacity: 0.1 })
+  ));
+  scene.add(new THREE.Mesh(
+    new THREE.SphereGeometry(1.08, 32, 32),
+    new THREE.MeshBasicMaterial({ color: 0x1a5abf, transparent: true, opacity: 0.05, side: THREE.BackSide })
+  ));
+
+  const dg = new THREE.BufferGeometry(), dp = [];
+  for (let i = 0; i < 800; i++) {
+    const phi = Math.acos(-1 + 2 * i / 800), th = Math.sqrt(800 * Math.PI) * phi;
+    dp.push(1.015 * Math.sin(phi) * Math.cos(th), 1.015 * Math.sin(phi) * Math.sin(th), 1.015 * Math.cos(phi));
+  }
+  dg.setAttribute('position', new THREE.Float32BufferAttribute(dp, 3));
+  scene.add(new THREE.Points(dg, new THREE.PointsMaterial({ color: 0x4da6ff, size: 0.016, transparent: true, opacity: 0.65 })));
+  scene.add(Object.assign(new THREE.DirectionalLight(0x4488ff, 1.2), { position: new THREE.Vector3(5, 3, 5) }));
+  scene.add(new THREE.AmbientLight(0x112244, 2));
+  scene.add(Object.assign(new THREE.PointLight(0x0066ff, 0.8), { position: new THREE.Vector3(-3, -2, -3) }));
+
+  function resize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  (function anim() {
+    requestAnimationFrame(anim);
+    scene.children.forEach(c => { if (c.isMesh || c.isPoints) c.rotation.y += 0.0018; });
+    renderer.render(scene, camera);
+  })();
+}
+</script>
+</body>
+</html>
