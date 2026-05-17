@@ -86,6 +86,12 @@ body { padding:24px 32px 80px; }
 .closing-msg-box { background:rgba(165,180,252,0.08); border-left:3px solid rgba(165,180,252,0.55); border-radius:8px; padding:18px 22px; margin-top:8px; text-align:left; }
 .closing-msg-box .msg-label { font-size:11px; letter-spacing:0.12em; color:rgba(165,180,252,0.75); text-transform:uppercase; font-weight:600; margin-bottom:8px; }
 .closing-msg-box .msg-text { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.92); font-style:italic; }
+.closing-learn-box { background:rgba(251,191,36,0.06); border-left:3px solid rgba(251,191,36,0.5); border-radius:8px; padding:18px 22px; margin-top:14px; text-align:left; }
+.closing-learn-box .msg-label { font-size:11px; letter-spacing:0.12em; color:rgba(251,191,36,0.85); text-transform:uppercase; font-weight:600; margin-bottom:12px; }
+.closing-learn-list { display:flex; flex-direction:column; gap:8px; }
+.closing-learn-item { display:flex; align-items:center; gap:14px; padding:10px 14px; background:rgba(255,255,255,0.04); border-radius:8px; }
+.cli-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:8px; background:rgba(251,191,36,0.2); color:#fbbf24; font-weight:800; font-size:14px; flex-shrink:0; }
+.cli-text { font-size:14px; color:rgba(255,255,255,0.9); font-weight:500; }
 .closing-shuffle { background:rgba(129,140,248,0.18); border:0.5px solid rgba(129,140,248,0.45); color:#a5b4fc; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
 .closing-shuffle:hover { background:rgba(129,140,248,0.32); color:#fff; border-color:#a5b4fc; }
 
@@ -135,6 +141,11 @@ body { padding:24px 32px 80px; }
 .a-side .picked-cohort { color:#93c5fd; }
 .b-side .picked-cohort { color:#fbbf24; }
 .c-side .picked-cohort { color:#6ee7b7; }
+.picked-name { font-size:42px; font-weight:800; line-height:1.05; letter-spacing:-0.02em; color:#fff; }
+.picked-cohort-small { font-size:15px; font-weight:700; margin-top:6px; }
+.a-side .picked-cohort-small { color:#93c5fd; }
+.b-side .picked-cohort-small { color:#fbbf24; }
+.c-side .picked-cohort-small { color:#6ee7b7; }
 .picked-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-top:6px; }
 .picked-empty { font-size:14px; color:rgba(255,255,255,0.3); padding:18px 0; }
 
@@ -244,9 +255,10 @@ function getResponsesForQ(qn) {
   const a = [], b = [], c = [];
   votes.forEach(v => {
     const ch = String(v[5] || '').toUpperCase();
+    const name = String(v[2] || '').trim();
     const cohort = String(v[3] || '').trim();
     const reason = String(v[8] || '').trim();
-    const entry = { cohort, choice:ch, reason };
+    const entry = { name, cohort, choice:ch, reason };
     if (ch === 'A') a.push(entry);
     else if (ch === 'B') b.push(entry);
     else if (reason) c.push(entry);
@@ -268,15 +280,25 @@ function getAllUsers() {
   return Object.values(map);
 }
 
-// 메시지 보낸 학우 목록 (클로징용)
+// 메시지 보낸 학우 목록 (클로징용) - 도움된 질문 3개도 함께
 function getMessageSenders() {
   const msgs = allRows.filter(r => String(r[0]) === 'message');
-  return msgs.map(m => ({
-    name: String(m[2] || '').trim(),
-    cohort: String(m[3] || '').trim(),
-    text: String(m[9] || m[8] || m[5] || '').trim(),
-    time: String(m[1] || '').trim()
-  })).filter(m => m.name && m.text);
+  const learns = allRows.filter(r => String(r[0]) === 'learn');
+  return msgs.map(m => {
+    const name = String(m[2] || '').trim();
+    const cohort = String(m[3] || '').trim();
+    // 같은 이름+기수의 learn 응답 찾기 (가장 마지막 것 우선)
+    const myLearns = learns.filter(l => String(l[2] || '').trim() === name && String(l[3] || '').trim() === cohort);
+    const lastLearn = myLearns[myLearns.length - 1];
+    const learnNums = lastLearn ? String(lastLearn[4] || '').split(',').map(s => s.trim()).filter(Boolean) : [];
+    return {
+      name,
+      cohort,
+      text: String(m[9] || m[8] || m[5] || '').trim(),
+      time: String(m[1] || '').trim(),
+      learnNums
+    };
+  }).filter(m => m.name && m.text);
 }
 
 function renderNav() {
@@ -377,13 +399,38 @@ function renderClosing() {
 
 function buildClosingInner(picked) {
   if (!picked) return '<div class="empty" style="font-size:14px;color:rgba(255,255,255,0.3);padding:20px 0;">아직 메시지를 보낸 학우가 없습니다</div>';
+  // 도움된 질문 3개 카드
+  let learnHtml = '';
+  if (picked.learnNums && picked.learnNums.length) {
+    const items = picked.learnNums.map(n => {
+      const q = QS.find(x => x.n === String(n));
+      if (!q) return '';
+      return '<div class="closing-learn-item">' +
+        '<span class="cli-num">' + q.n + '</span>' +
+        '<span class="cli-text">' + escHtml(q.lb) + '</span>' +
+      '</div>';
+    }).filter(Boolean).join('');
+    learnHtml =
+      '<div class="closing-learn-box">' +
+        '<div class="msg-label">가장 도움된 질문 3개</div>' +
+        '<div class="closing-learn-list">' + items + '</div>' +
+      '</div>';
+  } else {
+    learnHtml =
+      '<div class="closing-learn-box">' +
+        '<div class="msg-label">가장 도움된 질문 3개</div>' +
+        '<div style="font-size:13px;color:rgba(255,255,255,0.3);padding:6px 0;">도움된 질문 투표를 아직 하지 않았습니다</div>' +
+      '</div>';
+  }
+
   return '<div class="label">선정된 학우</div>' +
     '<div class="name">' + escHtml(picked.name) + '</div>' +
     '<div class="cohort">' + escHtml(picked.cohort) + '</div>' +
     '<div class="closing-msg-box">' +
       '<div class="msg-label">교장님께 남긴 메시지</div>' +
       '<div class="msg-text">"' + escHtml(picked.text) + '"</div>' +
-    '</div>';
+    '</div>' +
+    learnHtml;
 }
 
 function shuffleClosing() {
@@ -429,7 +476,8 @@ function buildSide(side, q, list) {
   const optionText = side === 'a' ? q.a : side === 'b' ? q.b : '경우에 따라 다르다 (이유로 답변)';
   const picked = pickState[side];
   const pickedHtml = picked
-    ? '<div class="picked-cohort">' + escHtml(picked.cohort || '—') + '</div>' +
+    ? '<div class="picked-name">' + escHtml(picked.name || '—') + '</div>' +
+      '<div class="picked-cohort-small">' + escHtml(picked.cohort || '') + '</div>' +
       '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>'
     : '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>';
   return '<div class="disc-col ' + side + '-side">' +
@@ -438,7 +486,7 @@ function buildSide(side, q, list) {
       '<button class="disc-shuffle" onclick="shuffleSide(\'' + side + '\')">🎲 다시 추첨</button>' +
     '</div>' +
     '<div class="disc-option"><b>' + letter + '.</b>' + escHtml(optionText) + '</div>' +
-    '<div class="picked-box" id="picked-' + side + '"><div class="picked-label">선정된 토론자 (기수)</div>' + pickedHtml + '</div>' +
+    '<div class="picked-box" id="picked-' + side + '"><div class="picked-label">선정된 토론자</div>' + pickedHtml + '</div>' +
   '</div>';
 }
 
@@ -450,9 +498,10 @@ function shuffleSide(side) {
   const box = document.getElementById('picked-' + side);
   if (!box) return;
   const picked = pickState[side];
-  const html = '<div class="picked-label">선정된 토론자 (기수)</div>' + (
+  const html = '<div class="picked-label">선정된 토론자</div>' + (
     picked
-      ? '<div class="picked-cohort">' + escHtml(picked.cohort || '—') + '</div>' +
+      ? '<div class="picked-name">' + escHtml(picked.name || '—') + '</div>' +
+        '<div class="picked-cohort-small">' + escHtml(picked.cohort || '') + '</div>' +
         '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>'
       : '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>'
   );
