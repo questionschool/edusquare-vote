@@ -46,6 +46,9 @@ body { padding:24px 32px 80px; }
 
 /* 오프닝/클로징 버튼 행 */
 .open-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+.stage-row { margin-bottom:14px; }
+.stage-row .open-btn { width:100%; }
+.stage-divider { font-size:11px; letter-spacing:0.14em; color:rgba(255,255,255,0.4); font-weight:700; text-transform:uppercase; margin:14px 0 10px; padding-top:14px; border-top:0.5px dashed rgba(255,255,255,0.1); }
 
 /* 공통 버튼 */
 .open-btn { display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:11px; cursor:pointer; font-family:inherit; transition:all 0.15s; border:0.5px solid; }
@@ -75,6 +78,42 @@ body { padding:24px 32px 80px; }
 .opening-pick .empty { font-size:14px; color:rgba(255,255,255,0.3); padding:20px 0; }
 .opening-shuffle { background:rgba(244,114,182,0.18); border:0.5px solid rgba(244,114,182,0.45); color:#f9a8d4; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
 .opening-shuffle:hover { background:rgba(244,114,182,0.32); color:#fff; border-color:#f9a8d4; }
+
+/* 오프닝: 기수별 명단 그리드 */
+.op-cohort-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:22px; }
+.op-coh-card { background:rgba(255,255,255,0.025); border:0.5px solid rgba(244,114,182,0.2); border-radius:13px; padding:18px 18px 14px; }
+.op-coh-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; padding-bottom:10px; border-bottom:0.5px solid rgba(244,114,182,0.18); }
+.op-coh-name { font-size:14px; font-weight:800; color:#f9a8d4; letter-spacing:-0.01em; }
+.op-coh-cnt { font-size:11px; color:rgba(255,255,255,0.4); font-weight:600; }
+.op-coh-list { display:flex; flex-direction:column; gap:6px; max-height:520px; overflow-y:auto; padding-right:4px; }
+.op-coh-list::-webkit-scrollbar { width:5px; }
+.op-coh-list::-webkit-scrollbar-thumb { background:rgba(244,114,182,0.3); border-radius:3px; }
+
+.op-person { display:flex; justify-content:space-between; align-items:center; gap:8px; background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.08); border-radius:8px; padding:9px 12px; cursor:pointer; font-family:inherit; transition:all 0.12s; }
+.op-person:hover { background:rgba(244,114,182,0.14); border-color:rgba(244,114,182,0.5); }
+.op-person-name { font-size:14px; font-weight:600; color:rgba(255,255,255,0.92); }
+.op-person-invite { font-size:11px; color:rgba(249,168,212,0.7); font-weight:600; opacity:0; transition:opacity 0.12s; }
+.op-person:hover .op-person-invite { opacity:1; }
+
+.op-empty { font-size:12px; color:rgba(255,255,255,0.25); padding:14px 4px; text-align:center; }
+
+/* 초대된 학우 카드 */
+.op-invited { transition:all 0.3s; }
+.opening-pick .invited-cohort { font-size:22px; font-weight:700; color:#f9a8d4; margin-bottom:6px; }
+
+/* 랜덤 초대 박스 */
+.op-random-box { background:linear-gradient(135deg, rgba(244,114,182,0.08), rgba(168,85,247,0.04)); border:0.5px solid rgba(244,114,182,0.3); border-radius:14px; padding:22px 26px; margin-bottom:22px; }
+.op-random-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.op-random-title { font-size:15px; font-weight:700; color:#f9a8d4; letter-spacing:-0.01em; }
+.op-random-pick { background:rgba(255,255,255,0.04); border:0.5px solid rgba(244,114,182,0.25); border-radius:11px; padding:28px 24px; text-align:center; transition:all 0.3s; }
+.op-random-pick.flash { animation:flash 0.4s ease-out; }
+.op-random-empty { font-size:13px; color:rgba(255,255,255,0.3); padding:10px 0; }
+.op-random-cohort { font-size:18px; font-weight:700; color:#f9a8d4; margin-bottom:8px; }
+.op-random-name { font-size:44px; font-weight:800; line-height:1.05; letter-spacing:-0.025em; color:#fff; }
+
+@media (max-width:1100px) {
+  .op-cohort-grid { grid-template-columns:repeat(2, 1fr); }
+}
 
 /* 클로징 메인 카드 (인디고 톤) */
 .closing-card { background:linear-gradient(135deg, rgba(129,140,248,0.1), rgba(99,102,241,0.06)); border:0.5px solid rgba(129,140,248,0.3); border-radius:18px; padding:48px 40px; text-align:center; }
@@ -108,6 +147,21 @@ body { padding:24px 32px 80px; }
 /* 토론자 카드 (그룹) */
 .discuss-area { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
 .discuss-area.has-c { grid-template-columns:1fr 1fr 1fr; }
+
+/* 선택안 카드 (질문과 추첨 사이) */
+.options-card { background:rgba(255,255,255,0.025); border:0.5px solid rgba(255,255,255,0.1); border-radius:14px; padding:22px 26px; margin-bottom:18px; }
+.options-head { font-size:12px; letter-spacing:0.14em; color:rgba(255,255,255,0.5); text-transform:uppercase; font-weight:700; margin-bottom:14px; }
+.options-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.options-grid.has-c { grid-template-columns:1fr 1fr 1fr; }
+.opt { display:flex; align-items:flex-start; gap:14px; padding:16px 18px; border-radius:11px; }
+.opt-letter { font-size:24px; font-weight:800; line-height:1; flex-shrink:0; }
+.opt-text { font-size:15px; line-height:1.5; color:rgba(255,255,255,0.92); font-weight:500; padding-top:2px; }
+.opt-a { background:rgba(59,130,246,0.1); border:0.5px solid rgba(59,130,246,0.35); }
+.opt-a .opt-letter { color:#93c5fd; }
+.opt-b { background:rgba(251,191,36,0.08); border:0.5px solid rgba(251,191,36,0.35); }
+.opt-b .opt-letter { color:#fbbf24; }
+.opt-c { background:rgba(110,231,183,0.08); border:0.5px solid rgba(110,231,183,0.35); }
+.opt-c .opt-letter { color:#6ee7b7; }
 .disc-col { background:rgba(255,255,255,0.025); border:0.5px solid rgba(255,255,255,0.1); border-radius:14px; padding:24px 26px; display:flex; flex-direction:column; gap:16px; }
 .disc-col.a-side { border-top:3px solid rgba(59,130,246,0.7); }
 .disc-col.b-side { border-top:3px solid rgba(251,191,36,0.75); }
@@ -148,6 +202,11 @@ body { padding:24px 32px 80px; }
 .c-side .picked-cohort-small { color:#6ee7b7; }
 .picked-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-top:6px; }
 .picked-empty { font-size:14px; color:rgba(255,255,255,0.3); padding:18px 0; }
+.picked-locked { padding:20px 0; }
+.picked-locked .lock-emoji { font-size:40px; opacity:0.45; margin-bottom:10px; }
+.picked-locked .lock-text { font-size:13px; color:rgba(255,255,255,0.45); line-height:1.5; }
+.disc-shuffle:disabled { opacity:0.35; cursor:not-allowed; }
+.disc-shuffle:disabled:hover { background:rgba(255,255,255,0.06); color:rgba(255,255,255,0.75); border-color:rgba(255,255,255,0.2); }
 
 .empty-card { text-align:center; padding:60px 30px; color:rgba(255,255,255,0.3); font-size:14px; }
 .loading { text-align:center; padding:30px; color:rgba(255,255,255,0.5); font-size:13px; }
@@ -158,6 +217,10 @@ body { padding:24px 32px 80px; }
   100% { transform:scale(1); opacity:1; }
 }
 .picked-box.flash { animation:flash 0.4s ease-out; }
+
+/* 포스터 */
+.poster-wrap { margin-bottom:32px; text-align:center; }
+.poster-img { max-width:540px; width:100%; height:auto; border-radius:16px; box-shadow:0 12px 48px rgba(0,0,0,0.5), 0 0 0 0.5px rgba(255,255,255,0.08); display:block; margin:0 auto; }
 </style>
 </head>
 <body>
@@ -166,7 +229,7 @@ body { padding:24px 32px 80px; }
 <div class="topbar">
   <div>
     <div class="brand-tag">EDUSQUARE 2026 · 철학포럼</div>
-    <div class="brand-title">토론 참여자 추첨<span class="brand-sub">오프닝 · 문항별 토론 · 클로징</span></div>
+    <div class="brand-title">고승재 되기<span class="brand-sub">오프닝 · 문항별 토론 · 클로징</span></div>
   </div>
   <div class="controls">
     <span class="last-update" id="lastUpd"></span>
@@ -174,27 +237,41 @@ body { padding:24px 32px 80px; }
   </div>
 </div>
 
-<!-- Q 번호 그리드 -->
+<!-- 포스터 -->
+<div class="poster-wrap">
+  <img src="poster.png" alt="고승재 되기 — 철학포럼 포스터" class="poster-img" onerror="this.style.display='none';">
+</div>
+
+<!-- 진행 단계 네비 -->
 <div class="q-nav">
   <div class="q-nav-title">🎤 진행 단계를 선택하세요</div>
-  <div class="open-row">
+
+  <!-- 1단계: 오프닝 -->
+  <div class="stage-row">
     <button class="open-btn opening" id="openBtn" onclick="selectOpening()">
       <span class="open-ico">✨</span>
-      <span class="open-label">오프닝 — 학우 초대하기</span>
+      <span class="open-label">오프닝 — 인사 나누기</span>
       <span class="open-cnt" id="openCnt">— 명</span>
     </button>
+  </div>
+
+  <!-- 2단계: 문항별 토론 -->
+  <div class="stage-divider">2단계 · 문항별 토론</div>
+  <div class="q-nav-grid" id="qNavGrid"><div class="loading" style="grid-column:1/-1;">로딩 중...</div></div>
+
+  <!-- 3단계: 클로징 -->
+  <div class="stage-row" style="margin-top:18px;">
     <button class="open-btn closing" id="closeBtn" onclick="selectClosing()">
       <span class="open-ico">🌙</span>
       <span class="open-label">클로징 — 소감 나누기</span>
       <span class="open-cnt" id="closeCnt">— 명</span>
     </button>
   </div>
-  <div class="q-nav-grid" id="qNavGrid"><div class="loading" style="grid-column:1/-1;">로딩 중...</div></div>
 </div>
 
 <!-- 본 문항 카드 -->
 <div id="mainArea">
-  <div class="empty-card">위에서 문항 번호를 클릭하세요.</div>
+  <div class="empty-card">위에서 진행 단계 또는 문항 번호를 클릭하세요.</div>
 </div>
 
 <script>
@@ -280,31 +357,41 @@ function getAllUsers() {
   return Object.values(map);
 }
 
-// 메시지 보낸 학우 목록 (클로징용) - 도움된 질문 3개도 함께
-function getMessageSenders() {
+// 클로징 후보 — 참가자 전원 (vote 한 적 있는 모든 학우)
+// 메시지/도움된 질문이 있으면 함께 가져옴
+function getClosingCandidates() {
+  const votes = allRows.filter(r => String(r[0]) === 'vote');
   const msgs = allRows.filter(r => String(r[0]) === 'message');
   const learns = allRows.filter(r => String(r[0]) === 'learn');
-  return msgs.map(m => {
-    const name = String(m[2] || '').trim();
-    const cohort = String(m[3] || '').trim();
-    // 같은 이름+기수의 learn 응답 찾기 (가장 마지막 것 우선)
-    const myLearns = learns.filter(l => String(l[2] || '').trim() === name && String(l[3] || '').trim() === cohort);
+
+  const map = {};
+  votes.forEach(v => {
+    const name = String(v[2] || '').trim();
+    const cohort = String(v[3] || '').trim();
+    if (!name) return;
+    const key = name + '|' + cohort;
+    if (!map[key]) map[key] = { name, cohort };
+  });
+
+  Object.values(map).forEach(u => {
+    // 본인 메시지 (가장 최근 것)
+    const myMsgs = msgs.filter(m => String(m[2] || '').trim() === u.name && String(m[3] || '').trim() === u.cohort);
+    const lastMsg = myMsgs[myMsgs.length - 1];
+    u.text = lastMsg ? String(lastMsg[9] || lastMsg[8] || lastMsg[5] || '').trim() : '';
+    u.time = lastMsg ? String(lastMsg[1] || '').trim() : '';
+    // 본인 도움된 질문 (가장 최근 것)
+    const myLearns = learns.filter(l => String(l[2] || '').trim() === u.name && String(l[3] || '').trim() === u.cohort);
     const lastLearn = myLearns[myLearns.length - 1];
-    const learnNums = lastLearn ? String(lastLearn[4] || '').split(',').map(s => s.trim()).filter(Boolean) : [];
-    return {
-      name,
-      cohort,
-      text: String(m[9] || m[8] || m[5] || '').trim(),
-      time: String(m[1] || '').trim(),
-      learnNums
-    };
-  }).filter(m => m.name && m.text);
+    u.learnNums = lastLearn ? String(lastLearn[4] || '').split(',').map(s => s.trim()).filter(Boolean) : [];
+  });
+
+  return Object.values(map);
 }
 
 function renderNav() {
   // 오프닝/클로징 버튼 카운트
   document.getElementById('openCnt').textContent = getAllUsers().length + '명';
-  document.getElementById('closeCnt').textContent = getMessageSenders().length + '명';
+  document.getElementById('closeCnt').textContent = getClosingCandidates().length + '명';
 
   // 활성 표시
   document.getElementById('openBtn').classList.toggle('act', currentView === 'opening');
@@ -354,51 +441,109 @@ let closingPick = null;
 // === 오프닝 ===
 function renderOpening() {
   const users = getAllUsers();
-  openingPick = pickOne(users);
+  openingPick = null;
+
+  // 기수별로 그룹핑 (이름 가나다 정렬)
+  const cohortOrder = ['1기', '2기', '3기', '운영팀'];
+  const byCoh = {};
+  cohortOrder.forEach(c => byCoh[c] = []);
+  const others = []; // 정의되지 않은 기수
+  users.forEach(u => {
+    if (byCoh[u.cohort]) byCoh[u.cohort].push(u);
+    else others.push(u);
+  });
+  Object.values(byCoh).forEach(list => list.sort((a, b) => a.name.localeCompare(b.name, 'ko')));
+  others.sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+
+  const cohortHtml = cohortOrder.map(c => {
+    const list = byCoh[c];
+    const items = list.length
+      ? list.map(u => '<button class="op-person" onclick="invitePerson(\'' + escAttr(u.name) + '\', \'' + escAttr(u.cohort) + '\')">' +
+          '<span class="op-person-name">' + escHtml(u.name) + '</span>' +
+          '<span class="op-person-invite">초대하기 →</span>' +
+        '</button>').join('')
+      : '<div class="op-empty">아직 없음</div>';
+    return '<div class="op-coh-card">' +
+      '<div class="op-coh-head"><span class="op-coh-name">' + c + '</span><span class="op-coh-cnt">' + list.length + '명</span></div>' +
+      '<div class="op-coh-list">' + items + '</div>' +
+    '</div>';
+  }).join('') + (others.length ? '<div class="op-coh-card"><div class="op-coh-head"><span class="op-coh-name">기타</span><span class="op-coh-cnt">' + others.length + '명</span></div><div class="op-coh-list">' + others.map(u => '<button class="op-person" onclick="invitePerson(\'' + escAttr(u.name) + '\', \'' + escAttr(u.cohort) + '\')"><span class="op-person-name">' + escHtml(u.name) + '</span><span class="op-person-invite">초대하기 →</span></button>').join('') + '</div></div>' : '');
+
   document.getElementById('mainArea').innerHTML =
     '<div class="opening-card">' +
       '<div class="opening-tag">✨ OPENING</div>' +
-      '<div class="opening-title">오프닝 — 학우 초대하기</div>' +
-      '<div class="opening-sub">함께해주신 학우 한 분을 무대로 초대합니다 · 총 ' + users.length + '명 참여</div>' +
-      '<div class="opening-pick" id="openingPick">' + buildOpeningInner(openingPick, users.length) + '</div>' +
-      '<button class="opening-shuffle" onclick="shuffleOpening()">🎲 다시 추첨</button>' +
-    '</div>';
+      '<div class="opening-title">오프닝 — 인사 나누기</div>' +
+      '<div class="opening-sub">고승재 되기 앱에 접속한 학우들 · 총 ' + users.length + '명 참여</div>' +
+    '</div>' +
+    '<div class="op-cohort-grid">' + cohortHtml + '</div>' +
+    '<div class="op-random-box">' +
+      '<div class="op-random-head">' +
+        '<div class="op-random-title">🎲 랜덤 초대</div>' +
+        '<button class="opening-shuffle" onclick="randomInvite()">랜덤으로 한 명 뽑기</button>' +
+      '</div>' +
+      '<div class="op-random-pick" id="opRandom"><div class="op-random-empty">버튼을 누르면 무작위로 한 명이 초대됩니다</div></div>' +
+    '</div>' +
+    '<div class="op-invited" id="opInvited"></div>';
 }
 
-function buildOpeningInner(picked, total) {
-  if (!picked) return '<div class="empty">아직 응답한 학우가 없습니다</div>';
-  return '<div class="label">선정된 학우</div>' +
-    '<div class="name">' + escHtml(picked.name) + '</div>' +
-    '<div class="cohort">' + escHtml(picked.cohort) + '</div>';
-}
-
-function shuffleOpening() {
+// 랜덤 한 명 뽑아 op-random 영역에 표시
+function randomInvite() {
   const users = getAllUsers();
-  openingPick = pickOne(users);
-  const box = document.getElementById('openingPick');
+  const picked = pickOne(users);
+  const box = document.getElementById('opRandom');
   if (!box) return;
-  box.innerHTML = buildOpeningInner(openingPick, users.length);
+  if (!picked) {
+    box.innerHTML = '<div class="op-random-empty">아직 응답한 학우가 없습니다</div>';
+    return;
+  }
+  openingPick = picked;
+  box.innerHTML =
+    '<div class="op-random-cohort">' + escHtml(picked.cohort) + '</div>' +
+    '<div class="op-random-name">' + escHtml(picked.name) + '</div>';
   box.classList.remove('flash');
   void box.offsetWidth;
   box.classList.add('flash');
 }
 
+// 따옴표 이스케이프 (onclick 속성용)
+function escAttr(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');
+}
+
+// 특정 학우 초대 카드 띄우기
+function invitePerson(name, cohort) {
+  openingPick = { name, cohort };
+  const box = document.getElementById('opInvited');
+  if (!box) return;
+  box.innerHTML =
+    '<div class="opening-pick">' +
+      '<div class="label">초대된 학우</div>' +
+      '<div class="invited-cohort">' + escHtml(cohort) + '</div>' +
+      '<div class="name">' + escHtml(name) + '</div>' +
+    '</div>';
+  box.classList.remove('flash');
+  void box.offsetWidth;
+  box.classList.add('flash');
+  // 스크롤을 카드 위치로
+  box.scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
 // === 클로징 ===
 function renderClosing() {
-  const senders = getMessageSenders();
+  const senders = getClosingCandidates();
   closingPick = pickOne(senders);
   document.getElementById('mainArea').innerHTML =
     '<div class="closing-card">' +
       '<div class="closing-tag">🌙 CLOSING</div>' +
       '<div class="opening-title">클로징 — 소감 나누기</div>' +
-      '<div class="opening-sub">교장님께 메시지를 보낸 학우 한 분께 소감을 청합니다 · 총 ' + senders.length + '명' + '</div>' +
+      '<div class="opening-sub">참가한 학우 한 분께 소감을 청합니다 · 총 ' + senders.length + '명 참여' + '</div>' +
       '<div class="closing-pick" id="closingPick">' + buildClosingInner(closingPick) + '</div>' +
       '<button class="closing-shuffle" onclick="shuffleClosing()">🎲 다시 추첨</button>' +
     '</div>';
 }
 
 function buildClosingInner(picked) {
-  if (!picked) return '<div class="empty" style="font-size:14px;color:rgba(255,255,255,0.3);padding:20px 0;">아직 메시지를 보낸 학우가 없습니다</div>';
+  if (!picked) return '<div class="empty" style="font-size:14px;color:rgba(255,255,255,0.3);padding:20px 0;">아직 참가한 학우가 없습니다</div>';
   // 도움된 질문 3개 카드
   let learnHtml = '';
   if (picked.learnNums && picked.learnNums.length) {
@@ -423,18 +568,23 @@ function buildClosingInner(picked) {
       '</div>';
   }
 
+  // 메시지 박스 (없으면 안내)
+  const msgInner = picked.text
+    ? '<div class="msg-text">"' + escHtml(picked.text) + '"</div>'
+    : '<div style="font-size:13px;color:rgba(255,255,255,0.3);padding:6px 0;">교장님께 메시지를 남기지 않았습니다</div>';
+
   return '<div class="label">선정된 학우</div>' +
     '<div class="name">' + escHtml(picked.name) + '</div>' +
     '<div class="cohort">' + escHtml(picked.cohort) + '</div>' +
     '<div class="closing-msg-box">' +
       '<div class="msg-label">교장님께 남긴 메시지</div>' +
-      '<div class="msg-text">"' + escHtml(picked.text) + '"</div>' +
+      msgInner +
     '</div>' +
     learnHtml;
 }
 
 function shuffleClosing() {
-  const senders = getMessageSenders();
+  const senders = getClosingCandidates();
   closingPick = pickOne(senders);
   const box = document.getElementById('closingPick');
   if (!box) return;
@@ -451,42 +601,65 @@ function renderMain(qn) {
   const r = getResponsesForQ(qn);
   const showC = q.ans === 'C';
 
-  pickState = {
-    a: pickOne(r.a),
-    b: pickOne(r.b),
-    c: showC ? pickOne(r.c) : null
-  };
+  pickState = { a:null, b:null, c:null };
 
-  const html =
+  // ① 질문 카드
+  const questionCard =
     '<div class="main-card">' +
       '<div class="q-tag">Q' + q.n + ' · ' + escHtml(q.lb) + '</div>' +
       '<div class="q-title">' + escHtml(q.lb) + '</div>' +
       '<div class="q-situation">' + escHtml(q.q) + '</div>' +
-    '</div>' +
-    '<div class="discuss-area' + (showC ? ' has-c' : '') + '" id="discussArea">' +
-      buildSide('a', q, r.a) +
-      buildSide('b', q, r.b) +
-      (showC ? buildSide('c', q, r.c) : '') +
     '</div>';
-  document.getElementById('mainArea').innerHTML = html;
+
+  // ② 선택안 카드
+  const optionsCard =
+    '<div class="options-card">' +
+      '<div class="options-head">선택안</div>' +
+      '<div class="options-grid' + (showC ? ' has-c' : '') + '">' +
+        '<div class="opt opt-a"><span class="opt-letter">A</span><span class="opt-text">' + escHtml(q.a) + '</span></div>' +
+        '<div class="opt opt-b"><span class="opt-letter">B</span><span class="opt-text">' + escHtml(q.b) + '</span></div>' +
+        (showC ? '<div class="opt opt-c"><span class="opt-letter">C</span><span class="opt-text">경우에 따라 다르다 (이유로 답변)</span></div>' : '') +
+      '</div>' +
+    '</div>';
+
+  // ③ 토론자 추첨 카드
+  const discussCard =
+    '<div class="options-head" style="margin-top:6px;">토론자 추첨</div>' +
+    '<div class="discuss-area' + (showC ? ' has-c' : '') + '" id="discussArea">' +
+      buildSide('a', r.a) +
+      buildSide('b', r.b) +
+      (showC ? buildSide('c', r.c) : '') +
+    '</div>';
+
+  document.getElementById('mainArea').innerHTML = questionCard + optionsCard + discussCard;
 }
 
-function buildSide(side, q, list) {
+function buildSide(side, list) {
   const letter = side.toUpperCase();
-  const optionText = side === 'a' ? q.a : side === 'b' ? q.b : '경우에 따라 다르다 (이유로 답변)';
   const picked = pickState[side];
-  const pickedHtml = picked
-    ? '<div class="picked-name">' + escHtml(picked.name || '—') + '</div>' +
+  let innerHtml, btnLabel;
+  if (picked) {
+    // 이미 한 번 이상 추첨한 상태
+    innerHtml =
+      '<div class="picked-name">' + escHtml(picked.name || '—') + '</div>' +
       '<div class="picked-cohort-small">' + escHtml(picked.cohort || '') + '</div>' +
-      '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>'
-    : '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>';
+      '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>';
+    btnLabel = '🎲 다시 추첨';
+  } else if (list.length === 0) {
+    // 응답자 없음
+    innerHtml = '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>';
+    btnLabel = '🎲 추첨하기';
+  } else {
+    // 잠금 상태 — 응답자는 있지만 아직 추첨 전
+    innerHtml = '<div class="picked-locked"><div class="lock-emoji">🔒</div><div class="lock-text">추첨하기 버튼을 누르면 토론자가 공개됩니다</div></div>';
+    btnLabel = '🎲 추첨하기';
+  }
   return '<div class="disc-col ' + side + '-side">' +
     '<div class="disc-head">' +
       '<div class="disc-letter"><span class="dl-big">' + letter + '</span><span class="dl-count">' + list.length + '명 선택</span></div>' +
-      '<button class="disc-shuffle" onclick="shuffleSide(\'' + side + '\')">🎲 다시 추첨</button>' +
+      '<button class="disc-shuffle" onclick="shuffleSide(\'' + side + '\')"' + (list.length === 0 ? ' disabled' : '') + '>' + btnLabel + '</button>' +
     '</div>' +
-    '<div class="disc-option"><b>' + letter + '.</b>' + escHtml(optionText) + '</div>' +
-    '<div class="picked-box" id="picked-' + side + '"><div class="picked-label">선정된 토론자</div>' + pickedHtml + '</div>' +
+    '<div class="picked-box" id="picked-' + side + '"><div class="picked-label">선정된 토론자</div>' + innerHtml + '</div>' +
   '</div>';
 }
 
@@ -494,21 +667,25 @@ function shuffleSide(side) {
   if (!currentView || currentView === 'opening' || currentView === 'closing') return;
   const r = getResponsesForQ(currentView);
   const list = side === 'a' ? r.a : side === 'b' ? r.b : r.c;
+  if (list.length === 0) return; // 응답자 없으면 무효
   pickState[side] = pickOne(list);
   const box = document.getElementById('picked-' + side);
   if (!box) return;
   const picked = pickState[side];
-  const html = '<div class="picked-label">선정된 토론자</div>' + (
-    picked
-      ? '<div class="picked-name">' + escHtml(picked.name || '—') + '</div>' +
-        '<div class="picked-cohort-small">' + escHtml(picked.cohort || '') + '</div>' +
-        '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>'
-      : '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>'
-  );
+  const html = '<div class="picked-label">선정된 토론자</div>' +
+    '<div class="picked-name">' + escHtml(picked.name || '—') + '</div>' +
+    '<div class="picked-cohort-small">' + escHtml(picked.cohort || '') + '</div>' +
+    '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>';
   box.innerHTML = html;
   box.classList.remove('flash');
   void box.offsetWidth;
   box.classList.add('flash');
+  // 버튼 라벨을 '다시 추첨'으로 변경
+  const col = box.closest('.disc-col');
+  if (col) {
+    const btn = col.querySelector('.disc-shuffle');
+    if (btn) btn.textContent = '🎲 다시 추첨';
+  }
 }
 
 window.addEventListener('load', () => {
