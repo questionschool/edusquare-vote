@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>EDUSQUARE 철학포럼 — 토론 참여자</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { background:#0a0e1a; color:rgba(255,255,255,0.88); font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif; min-height:100vh; }
+body { padding:24px 32px 80px; }
+
+/* 헤더 */
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; padding-bottom:18px; border-bottom:0.5px solid rgba(255,255,255,0.1); }
+.brand-tag { font-size:11px; letter-spacing:0.22em; color:rgba(147,197,253,0.75); font-weight:600; }
+.brand-title { font-size:24px; font-weight:800; letter-spacing:-0.02em; }
+.brand-sub { font-size:13px; color:rgba(255,255,255,0.4); margin-left:8px; }
+.controls { display:flex; gap:12px; align-items:center; }
+.ctrl-btn { background:rgba(255,255,255,0.06); border:0.5px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.85); padding:8px 16px; border-radius:8px; font-size:13px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.ctrl-btn:hover { background:rgba(255,255,255,0.12); }
+.last-update { font-size:11px; color:rgba(255,255,255,0.35); margin-right:8px; }
+
+/* 로그인 게이트 */
+.gate { position:fixed; inset:0; background:#0a0e1a; display:flex; align-items:center; justify-content:center; z-index:100; }
+.gate-box { background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.12); border-radius:14px; padding:38px 42px; width:340px; }
+.gate-title { font-size:20px; font-weight:700; margin-bottom:8px; }
+.gate-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:22px; }
+.gate-in { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:11px 14px; color:#fff; font-size:14px; outline:none; font-family:inherit; margin-bottom:12px; }
+.gate-in:focus { border-color:rgba(100,180,255,0.5); }
+.gate-btn { width:100%; background:#3b82f6; border:none; color:#fff; padding:12px; border-radius:9px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+.gate-err { color:#f87171; font-size:12px; margin-top:8px; display:none; }
+
+/* Q 번호 그리드 */
+.q-nav { background:rgba(255,255,255,0.025); border:0.5px solid rgba(255,255,255,0.08); border-radius:14px; padding:20px 22px; margin-bottom:26px; }
+.q-nav-title { font-size:13px; color:rgba(255,255,255,0.55); font-weight:600; margin-bottom:14px; letter-spacing:-0.01em; }
+.q-nav-grid { display:grid; grid-template-columns:repeat(15, 1fr); gap:10px; }
+.q-btn { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.12); border-radius:11px; color:rgba(255,255,255,0.6); cursor:pointer; transition:all 0.15s; font-family:inherit; padding:6px; }
+.q-btn:hover { background:rgba(100,180,255,0.1); border-color:rgba(100,180,255,0.35); color:#fff; }
+.q-btn .num { font-size:22px; font-weight:800; line-height:1; }
+.q-btn .lbl { font-size:10px; color:rgba(255,255,255,0.3); }
+.q-btn.act { background:rgba(59,130,246,0.22); border-color:#3b82f6; color:#fff; }
+.q-btn.act .lbl { color:rgba(147,197,253,0.85); }
+
+@media (max-width:1100px) {
+  .q-nav-grid { grid-template-columns:repeat(8, 1fr); }
+}
+
+/* 오프닝/클로징 버튼 행 */
+.open-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px; }
+
+/* 공통 버튼 */
+.open-btn { display:flex; align-items:center; gap:14px; padding:14px 18px; border-radius:11px; cursor:pointer; font-family:inherit; transition:all 0.15s; border:0.5px solid; }
+.open-ico { font-size:22px; }
+.open-label { flex:1; text-align:left; font-size:16px; font-weight:700; letter-spacing:-0.01em; }
+.open-cnt { font-size:12px; opacity:0.85; font-weight:600; }
+
+/* 오프닝 (핑크) */
+.open-btn.opening { background:linear-gradient(135deg, rgba(244,114,182,0.14), rgba(244,114,182,0.04)); border-color:rgba(244,114,182,0.35); color:#f9a8d4; }
+.open-btn.opening:hover { background:linear-gradient(135deg, rgba(244,114,182,0.22), rgba(244,114,182,0.08)); border-color:rgba(244,114,182,0.6); }
+.open-btn.opening.act { background:linear-gradient(135deg, rgba(244,114,182,0.32), rgba(244,114,182,0.12)); border-color:#f9a8d4; color:#fff; }
+
+/* 클로징 (인디고/보라) */
+.open-btn.closing { background:linear-gradient(135deg, rgba(129,140,248,0.14), rgba(129,140,248,0.04)); border-color:rgba(129,140,248,0.35); color:#a5b4fc; }
+.open-btn.closing:hover { background:linear-gradient(135deg, rgba(129,140,248,0.22), rgba(129,140,248,0.08)); border-color:rgba(129,140,248,0.6); }
+.open-btn.closing.act { background:linear-gradient(135deg, rgba(129,140,248,0.32), rgba(129,140,248,0.12)); border-color:#a5b4fc; color:#fff; }
+
+/* 오프닝 메인 카드 */
+.opening-card { background:linear-gradient(135deg, rgba(244,114,182,0.1), rgba(168,85,247,0.06)); border:0.5px solid rgba(244,114,182,0.3); border-radius:18px; padding:48px 40px; text-align:center; }
+.opening-tag { display:inline-block; background:rgba(244,114,182,0.18); border:0.5px solid rgba(244,114,182,0.4); color:#f9a8d4; padding:6px 16px; border-radius:14px; font-size:12px; font-weight:700; letter-spacing:0.06em; margin-bottom:18px; }
+.opening-title { font-size:28px; font-weight:800; letter-spacing:-0.015em; margin-bottom:10px; color:#fff; }
+.opening-sub { font-size:14px; color:rgba(255,255,255,0.55); margin-bottom:32px; }
+.opening-pick { background:rgba(255,255,255,0.04); border:0.5px solid rgba(244,114,182,0.35); border-radius:14px; padding:38px 30px; margin-bottom:22px; transition:all 0.3s; }
+.opening-pick .label { font-size:11px; letter-spacing:0.14em; color:rgba(249,168,212,0.7); text-transform:uppercase; font-weight:600; margin-bottom:18px; }
+.opening-pick .name { font-size:56px; font-weight:800; line-height:1.05; letter-spacing:-0.025em; color:#fff; margin-bottom:8px; }
+.opening-pick .cohort { font-size:24px; font-weight:700; color:#f9a8d4; }
+.opening-pick .empty { font-size:14px; color:rgba(255,255,255,0.3); padding:20px 0; }
+.opening-shuffle { background:rgba(244,114,182,0.18); border:0.5px solid rgba(244,114,182,0.45); color:#f9a8d4; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.opening-shuffle:hover { background:rgba(244,114,182,0.32); color:#fff; border-color:#f9a8d4; }
+
+/* 클로징 메인 카드 (인디고 톤) */
+.closing-card { background:linear-gradient(135deg, rgba(129,140,248,0.1), rgba(99,102,241,0.06)); border:0.5px solid rgba(129,140,248,0.3); border-radius:18px; padding:48px 40px; text-align:center; }
+.closing-tag { display:inline-block; background:rgba(129,140,248,0.18); border:0.5px solid rgba(129,140,248,0.4); color:#a5b4fc; padding:6px 16px; border-radius:14px; font-size:12px; font-weight:700; letter-spacing:0.06em; margin-bottom:18px; }
+.closing-pick { background:rgba(255,255,255,0.04); border:0.5px solid rgba(129,140,248,0.35); border-radius:14px; padding:38px 30px; margin-bottom:22px; transition:all 0.3s; }
+.closing-pick .label { font-size:11px; letter-spacing:0.14em; color:rgba(165,180,252,0.75); text-transform:uppercase; font-weight:600; margin-bottom:18px; }
+.closing-pick .name { font-size:56px; font-weight:800; line-height:1.05; letter-spacing:-0.025em; color:#fff; margin-bottom:8px; }
+.closing-pick .cohort { font-size:24px; font-weight:700; color:#a5b4fc; margin-bottom:22px; }
+.closing-msg-box { background:rgba(165,180,252,0.08); border-left:3px solid rgba(165,180,252,0.55); border-radius:8px; padding:18px 22px; margin-top:8px; text-align:left; }
+.closing-msg-box .msg-label { font-size:11px; letter-spacing:0.12em; color:rgba(165,180,252,0.75); text-transform:uppercase; font-weight:600; margin-bottom:8px; }
+.closing-msg-box .msg-text { font-size:17px; line-height:1.6; color:rgba(255,255,255,0.92); font-style:italic; }
+.closing-shuffle { background:rgba(129,140,248,0.18); border:0.5px solid rgba(129,140,248,0.45); color:#a5b4fc; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.closing-shuffle:hover { background:rgba(129,140,248,0.32); color:#fff; border-color:#a5b4fc; }
+
+@media (max-width:900px) {
+  .open-row { grid-template-columns:1fr; }
+}
+
+/* 본 문항 카드 */
+.main-card { background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border:0.5px solid rgba(255,255,255,0.1); border-radius:16px; padding:36px 40px; margin-bottom:22px; }
+.q-tag { display:inline-block; background:rgba(100,180,255,0.15); border:0.5px solid rgba(100,180,255,0.4); color:#93c5fd; padding:5px 14px; border-radius:14px; font-size:12px; font-weight:700; letter-spacing:0.06em; margin-bottom:14px; }
+.q-title { font-size:26px; font-weight:800; letter-spacing:-0.015em; margin-bottom:16px; color:#fff; }
+.q-situation { font-size:15px; line-height:1.65; color:rgba(255,255,255,0.78); padding:16px 20px; background:rgba(255,255,255,0.025); border-left:3px solid rgba(100,180,255,0.55); border-radius:6px; }
+
+/* 토론자 카드 (그룹) */
+.discuss-area { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:18px; }
+.discuss-area.has-c { grid-template-columns:1fr 1fr 1fr; }
+.disc-col { background:rgba(255,255,255,0.025); border:0.5px solid rgba(255,255,255,0.1); border-radius:14px; padding:24px 26px; display:flex; flex-direction:column; gap:16px; }
+.disc-col.a-side { border-top:3px solid rgba(59,130,246,0.7); }
+.disc-col.b-side { border-top:3px solid rgba(251,191,36,0.75); }
+.disc-col.c-side { border-top:3px solid rgba(110,231,183,0.75); }
+.disc-head { display:flex; justify-content:space-between; align-items:center; }
+.disc-letter { display:flex; align-items:baseline; gap:10px; }
+.dl-big { font-size:32px; font-weight:800; line-height:1; }
+.a-side .dl-big { color:#93c5fd; }
+.b-side .dl-big { color:#fbbf24; }
+.c-side .dl-big { color:#6ee7b7; }
+.dl-count { font-size:13px; color:rgba(255,255,255,0.45); font-weight:600; }
+.disc-shuffle { background:rgba(255,255,255,0.06); border:0.5px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.75); padding:6px 12px; border-radius:8px; font-size:12px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.disc-shuffle:hover { background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.35); }
+
+.disc-option { font-size:14px; line-height:1.5; color:rgba(255,255,255,0.85); padding:12px 14px; border-radius:9px; }
+.a-side .disc-option { background:rgba(59,130,246,0.1); border:0.5px solid rgba(59,130,246,0.3); }
+.b-side .disc-option { background:rgba(251,191,36,0.08); border:0.5px solid rgba(251,191,36,0.3); }
+.c-side .disc-option { background:rgba(110,231,183,0.08); border:0.5px solid rgba(110,231,183,0.3); }
+.disc-option b { font-weight:700; margin-right:4px; }
+.a-side .disc-option b { color:#93c5fd; }
+.b-side .disc-option b { color:#fbbf24; }
+.c-side .disc-option b { color:#6ee7b7; }
+
+/* 선정된 참여자 */
+.picked-box { background:rgba(255,255,255,0.04); border-radius:11px; padding:24px; text-align:center; transition:all 0.3s; }
+.a-side .picked-box { background:linear-gradient(180deg, rgba(59,130,246,0.12), rgba(59,130,246,0.04)); border:0.5px solid rgba(59,130,246,0.4); }
+.b-side .picked-box { background:linear-gradient(180deg, rgba(251,191,36,0.1), rgba(251,191,36,0.03)); border:0.5px solid rgba(251,191,36,0.4); }
+.c-side .picked-box { background:linear-gradient(180deg, rgba(110,231,183,0.1), rgba(110,231,183,0.03)); border:0.5px solid rgba(110,231,183,0.4); }
+.picked-label { font-size:11px; letter-spacing:0.12em; color:rgba(255,255,255,0.4); text-transform:uppercase; font-weight:600; margin-bottom:14px; }
+.picked-cohort { font-size:42px; font-weight:800; line-height:1.05; letter-spacing:-0.02em; }
+.a-side .picked-cohort { color:#93c5fd; }
+.b-side .picked-cohort { color:#fbbf24; }
+.c-side .picked-cohort { color:#6ee7b7; }
+.picked-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-top:6px; }
+.picked-empty { font-size:14px; color:rgba(255,255,255,0.3); padding:18px 0; }
+
+.empty-card { text-align:center; padding:60px 30px; color:rgba(255,255,255,0.3); font-size:14px; }
+.loading { text-align:center; padding:30px; color:rgba(255,255,255,0.5); font-size:13px; }
+
+@keyframes flash {
+  0% { transform:scale(0.97); opacity:0.6; }
+  60% { transform:scale(1.02); opacity:1; }
+  100% { transform:scale(1); opacity:1; }
+}
+.picked-box.flash { animation:flash 0.4s ease-out; }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="topbar">
+  <div>
+    <div class="brand-tag">EDUSQUARE 2026 · 철학포럼</div>
+    <div class="brand-title">토론 참여자 추첨<span class="brand-sub">오프닝 · 문항별 토론 · 클로징</span></div>
+  </div>
+  <div class="controls">
+    <span class="last-update" id="lastUpd"></span>
+    <button class="ctrl-btn" onclick="loadData()">↻ 응답자 데이터 새로고침</button>
+  </div>
+</div>
+
+<!-- Q 번호 그리드 -->
+<div class="q-nav">
+  <div class="q-nav-title">🎤 진행 단계를 선택하세요</div>
+  <div class="open-row">
+    <button class="open-btn opening" id="openBtn" onclick="selectOpening()">
+      <span class="open-ico">✨</span>
+      <span class="open-label">오프닝 — 학우 초대하기</span>
+      <span class="open-cnt" id="openCnt">— 명</span>
+    </button>
+    <button class="open-btn closing" id="closeBtn" onclick="selectClosing()">
+      <span class="open-ico">🌙</span>
+      <span class="open-label">클로징 — 소감 나누기</span>
+      <span class="open-cnt" id="closeCnt">— 명</span>
+    </button>
+  </div>
+  <div class="q-nav-grid" id="qNavGrid"><div class="loading" style="grid-column:1/-1;">로딩 중...</div></div>
+</div>
+
+<!-- 본 문항 카드 -->
+<div id="mainArea">
+  <div class="empty-card">위에서 문항 번호를 클릭하세요.</div>
+</div>
+
+<script>
+const SURL = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf6uq4OCY1BYnkEIEYRF4j6iA67uvrP8NotcltzpQF-UA/exec';
+const PWKEY = '0808';
+
+const QS = [
+  {n:'1',  lb:'인사발령 방식', q:'조직의 효율성을 위해 반드시 필요한 핵심 인재에 대한 발령이다. 해당 직원은 현재 맡은 업무에 만족하고 있으나, 새 직무가 회사 전체에는 훨씬 더 중요한 역할을 맡게 되는 상황이다.', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다', ans:'B'},
+  {n:'2',  lb:'업무비 비용청구 안 하는 직원', q:'회사 업무용도로 돈을 쓰고는 비용청구를 하지 않는다.', a:'칭찬한다', b:'혼낸다', ans:'B'},
+  {n:'3',  lb:'국가기관 인허가 불가 통보', q:'인허가 관련, 국가기관에서 안 된다는 답변이 왔다.', a:'국가의 법이니 받아들인다', b:'끝까지 방법을 찾아낸다', ans:'B'},
+  {n:'4',  lb:'지사(총판) 구조 도입 여부', q:'지점이 200개가 넘어가면서 "관리 효율을 위해 권역별 지사를 두자"는 제안이 나왔다.', a:'관리 효율을 위해 지사 구조를 도입한다', b:'지사를 두지 않는 현재 체제를 계속 유지한다', ans:'B'},
+  {n:'5',  lb:'유능한 리더의 겸임', q:'유능한 리더에게 여러 업무를 겸임하도록 하면 인건비 절약과 사업 진행 효율성이 높아질 것으로 예상되는 상황.', a:'맞다', b:'틀리다', ans:'B'},
+  {n:'6',  lb:'5대5 동업 가맹 신청', q:'5대5 지분으로 동업하여 지점을 개설하겠다는 2명의 가맹문의자가 나타났다.', a:'승인한다', b:'5대5는 안된다고 이야기한다', ans:'B'},
+  {n:'7',  lb:'본사 직원 FC 지점 개설 희망', q:'본사직원이 FC지점들이 잘 되는 것을 보고, 투자는 본인이 100% 해서 FC지점을 개설·소유하며 본사에서 계속 근무하고 싶다고 한다.', a:'허락한다', b:'허락하지 않는다', ans:'B'},
+  {n:'8',  lb:'적자 상황에서 별로인 가맹문의자', q:'적자가 예상되는 상황에서 가맹문의자 면접에 별로인 분이 문의를 했다.', a:'합격시킨다', b:'불합격시킨다', ans:'A'},
+  {n:'9',  lb:'원장연합회 압박(협박)', q:'원장연합회에서 매니저 기본봉 하한선을 낮추자고 주장하며, 거부 시 단체행동이나 대거 탈퇴를 하겠다고 협박한다.', a:'받아들인다', b:'거부한다', ans:'B'},
+  {n:'10', lb:'동료와 합심이 안 되는 멤버', q:'개인의 역량은 뛰어나나 동료들과 합심이 안 된다고 자주 피드백을 받는 멤버가 조직내에서 있다면?', a:'내보낸다', b:'둔다', ans:'A'},
+  {n:'11', lb:'정책을 위반하는 상위권 지점', q:'어느 FC 지점에서 표준 운영 방식에 위배되는 운영을 하고 있다는 사실이 밝혀졌다. 그런데 이 지점은 매출, 이익, 매니저 근속 등 모든 지표가 상위권이다.', a:'가맹계약서에 준하여 조치한다', b:'예외를 허용한다', ans:'C'},
+  {n:'12', lb:'마이크로 매니지먼트 중단 요청', q:'어느 본부장이 대표이사에게 왜 이렇게 마이크로 매니지먼트를 하냐면서, 좀 믿고 맡겨달라고 한다.', a:'믿고 맡긴다', b:'계속 마이크로 매니징을 한다', ans:'C'},
+  {n:'13', lb:'재무 위기 상황 공개 여부', q:'회사 재무 상황이 생각보다 심각하다. 대표는 3개월 안에 해결될 것이라 판단한다. 지금 이 사실을 직원들에게 공개하면 핵심 인재들이 이직할 수도 있다.', a:'지금은 말하지 않는다. 해결한 다음 투명하게 공유한다', b:"지금 말한다. 투명성의 원칙에는 '편할 때만'이라는 조건이 없다", ans:'B'},
+  {n:'14', lb:'의사결정 잘못했음을 깨달음', q:'어제 본부장 전체 회의에서 확신을 가지고 의사결정을 내렸다. 자기 전 곰곰이 생각해보니 내 의사결정이 잘못되었다는 생각이 들었다.', a:'그대로 밀어붙인다', b:'의사결정이 잘못되었음을 인정하고 결정을 번복한다', ans:'B'},
+  {n:'15', lb:'경영철학 탐구 TFT 참여 여부', q:'고승재 교장님이 에듀플렉스의 의사결정구조를 AI로 만들 프로젝트, \'경영철학 탐구 TFT\'를 만들고 싶어한다. 에듀스퀘어 학우로서 당신의 선택은?', a:'참여한다', b:'참여하지 않는다', ans:'A'}
+];
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+let allRows = [];
+// currentView: null | 'opening' | 'closing' | '1' | '2' | ... | '15'
+let currentView = null;
+
+async function fetchRows() {
+  try {
+    const r = await fetch(SURL + '?t=' + Date.now());
+    return await r.json();
+  } catch (e) { return null; }
+}
+
+async function loadData() {
+  const rows = await fetchRows();
+  if (!rows) {
+    document.getElementById('qNavGrid').innerHTML = '<div class="empty-card" style="grid-column:1/-1;">데이터를 불러올 수 없습니다</div>';
+    return;
+  }
+  allRows = rows;
+  renderNav();
+  if (currentView === 'opening') renderOpening();
+  else if (currentView === 'closing') renderClosing();
+  else if (currentView) renderMain(currentView);
+  const now = new Date();
+  document.getElementById('lastUpd').textContent = '마지막 업데이트 ' + String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0') + ':' + String(now.getSeconds()).padStart(2,'0');
+}
+
+// 문항별 응답자 모으기
+function getResponsesForQ(qn) {
+  const votes = allRows.filter(r => String(r[0]) === 'vote' && String(r[4]) === String(qn));
+  const a = [], b = [], c = [];
+  votes.forEach(v => {
+    const ch = String(v[5] || '').toUpperCase();
+    const cohort = String(v[3] || '').trim();
+    const reason = String(v[8] || '').trim();
+    const entry = { cohort, choice:ch, reason };
+    if (ch === 'A') a.push(entry);
+    else if (ch === 'B') b.push(entry);
+    else if (reason) c.push(entry);
+  });
+  return { a, b, c };
+}
+
+// 이름 입력한 유니크 학우 목록 (오프닝용)
+function getAllUsers() {
+  const votes = allRows.filter(r => String(r[0]) === 'vote');
+  const map = {};
+  votes.forEach(v => {
+    const name = String(v[2] || '').trim();
+    const cohort = String(v[3] || '').trim();
+    if (!name) return;
+    const key = name + '|' + cohort;
+    if (!map[key]) map[key] = { name, cohort };
+  });
+  return Object.values(map);
+}
+
+// 메시지 보낸 학우 목록 (클로징용)
+function getMessageSenders() {
+  const msgs = allRows.filter(r => String(r[0]) === 'message');
+  return msgs.map(m => ({
+    name: String(m[2] || '').trim(),
+    cohort: String(m[3] || '').trim(),
+    text: String(m[9] || m[8] || m[5] || '').trim(),
+    time: String(m[1] || '').trim()
+  })).filter(m => m.name && m.text);
+}
+
+function renderNav() {
+  // 오프닝/클로징 버튼 카운트
+  document.getElementById('openCnt').textContent = getAllUsers().length + '명';
+  document.getElementById('closeCnt').textContent = getMessageSenders().length + '명';
+
+  // 활성 표시
+  document.getElementById('openBtn').classList.toggle('act', currentView === 'opening');
+  document.getElementById('closeBtn').classList.toggle('act', currentView === 'closing');
+
+  // Q 그리드
+  const html = QS.map(q => {
+    const r = getResponsesForQ(q.n);
+    const total = r.a.length + r.b.length + r.c.length;
+    const actCls = currentView === q.n ? 'q-btn act' : 'q-btn';
+    return '<button class="' + actCls + '" onclick="selectQ(\'' + q.n + '\')">' +
+      '<span class="num">' + q.n + '</span>' +
+      '<span class="lbl">' + total + '명</span>' +
+    '</button>';
+  }).join('');
+  document.getElementById('qNavGrid').innerHTML = html;
+}
+
+function selectQ(qn) {
+  currentView = qn;
+  renderNav();
+  renderMain(qn);
+}
+
+function selectOpening() {
+  currentView = 'opening';
+  renderNav();
+  renderOpening();
+}
+
+function selectClosing() {
+  currentView = 'closing';
+  renderNav();
+  renderClosing();
+}
+
+// 랜덤 한 명 픽
+function pickOne(arr) {
+  if (!arr.length) return null;
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+let pickState = { a:null, b:null, c:null };
+let openingPick = null;
+let closingPick = null;
+
+// === 오프닝 ===
+function renderOpening() {
+  const users = getAllUsers();
+  openingPick = pickOne(users);
+  document.getElementById('mainArea').innerHTML =
+    '<div class="opening-card">' +
+      '<div class="opening-tag">✨ OPENING</div>' +
+      '<div class="opening-title">오프닝 — 학우 초대하기</div>' +
+      '<div class="opening-sub">함께해주신 학우 한 분을 무대로 초대합니다 · 총 ' + users.length + '명 참여</div>' +
+      '<div class="opening-pick" id="openingPick">' + buildOpeningInner(openingPick, users.length) + '</div>' +
+      '<button class="opening-shuffle" onclick="shuffleOpening()">🎲 다시 추첨</button>' +
+    '</div>';
+}
+
+function buildOpeningInner(picked, total) {
+  if (!picked) return '<div class="empty">아직 응답한 학우가 없습니다</div>';
+  return '<div class="label">선정된 학우</div>' +
+    '<div class="name">' + escHtml(picked.name) + '</div>' +
+    '<div class="cohort">' + escHtml(picked.cohort) + '</div>';
+}
+
+function shuffleOpening() {
+  const users = getAllUsers();
+  openingPick = pickOne(users);
+  const box = document.getElementById('openingPick');
+  if (!box) return;
+  box.innerHTML = buildOpeningInner(openingPick, users.length);
+  box.classList.remove('flash');
+  void box.offsetWidth;
+  box.classList.add('flash');
+}
+
+// === 클로징 ===
+function renderClosing() {
+  const senders = getMessageSenders();
+  closingPick = pickOne(senders);
+  document.getElementById('mainArea').innerHTML =
+    '<div class="closing-card">' +
+      '<div class="closing-tag">🌙 CLOSING</div>' +
+      '<div class="opening-title">클로징 — 소감 나누기</div>' +
+      '<div class="opening-sub">교장님께 메시지를 보낸 학우 한 분께 소감을 청합니다 · 총 ' + senders.length + '명' + '</div>' +
+      '<div class="closing-pick" id="closingPick">' + buildClosingInner(closingPick) + '</div>' +
+      '<button class="closing-shuffle" onclick="shuffleClosing()">🎲 다시 추첨</button>' +
+    '</div>';
+}
+
+function buildClosingInner(picked) {
+  if (!picked) return '<div class="empty" style="font-size:14px;color:rgba(255,255,255,0.3);padding:20px 0;">아직 메시지를 보낸 학우가 없습니다</div>';
+  return '<div class="label">선정된 학우</div>' +
+    '<div class="name">' + escHtml(picked.name) + '</div>' +
+    '<div class="cohort">' + escHtml(picked.cohort) + '</div>' +
+    '<div class="closing-msg-box">' +
+      '<div class="msg-label">교장님께 남긴 메시지</div>' +
+      '<div class="msg-text">"' + escHtml(picked.text) + '"</div>' +
+    '</div>';
+}
+
+function shuffleClosing() {
+  const senders = getMessageSenders();
+  closingPick = pickOne(senders);
+  const box = document.getElementById('closingPick');
+  if (!box) return;
+  box.innerHTML = buildClosingInner(closingPick);
+  box.classList.remove('flash');
+  void box.offsetWidth;
+  box.classList.add('flash');
+}
+
+// === 문항별 메인 (기존 로직) ===
+function renderMain(qn) {
+  const q = QS.find(x => x.n === qn);
+  if (!q) return;
+  const r = getResponsesForQ(qn);
+  const showC = q.ans === 'C';
+
+  pickState = {
+    a: pickOne(r.a),
+    b: pickOne(r.b),
+    c: showC ? pickOne(r.c) : null
+  };
+
+  const html =
+    '<div class="main-card">' +
+      '<div class="q-tag">Q' + q.n + ' · ' + escHtml(q.lb) + '</div>' +
+      '<div class="q-title">' + escHtml(q.lb) + '</div>' +
+      '<div class="q-situation">' + escHtml(q.q) + '</div>' +
+    '</div>' +
+    '<div class="discuss-area' + (showC ? ' has-c' : '') + '" id="discussArea">' +
+      buildSide('a', q, r.a) +
+      buildSide('b', q, r.b) +
+      (showC ? buildSide('c', q, r.c) : '') +
+    '</div>';
+  document.getElementById('mainArea').innerHTML = html;
+}
+
+function buildSide(side, q, list) {
+  const letter = side.toUpperCase();
+  const optionText = side === 'a' ? q.a : side === 'b' ? q.b : '경우에 따라 다르다 (이유로 답변)';
+  const picked = pickState[side];
+  const pickedHtml = picked
+    ? '<div class="picked-cohort">' + escHtml(picked.cohort || '—') + '</div>' +
+      '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>'
+    : '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>';
+  return '<div class="disc-col ' + side + '-side">' +
+    '<div class="disc-head">' +
+      '<div class="disc-letter"><span class="dl-big">' + letter + '</span><span class="dl-count">' + list.length + '명 선택</span></div>' +
+      '<button class="disc-shuffle" onclick="shuffleSide(\'' + side + '\')">🎲 다시 추첨</button>' +
+    '</div>' +
+    '<div class="disc-option"><b>' + letter + '.</b>' + escHtml(optionText) + '</div>' +
+    '<div class="picked-box" id="picked-' + side + '"><div class="picked-label">선정된 토론자 (기수)</div>' + pickedHtml + '</div>' +
+  '</div>';
+}
+
+function shuffleSide(side) {
+  if (!currentView || currentView === 'opening' || currentView === 'closing') return;
+  const r = getResponsesForQ(currentView);
+  const list = side === 'a' ? r.a : side === 'b' ? r.b : r.c;
+  pickState[side] = pickOne(list);
+  const box = document.getElementById('picked-' + side);
+  if (!box) return;
+  const picked = pickState[side];
+  const html = '<div class="picked-label">선정된 토론자 (기수)</div>' + (
+    picked
+      ? '<div class="picked-cohort">' + escHtml(picked.cohort || '—') + '</div>' +
+        '<div class="picked-sub">총 ' + list.length + '명 중 1명 추첨</div>'
+      : '<div class="picked-empty">해당 안을 선택한 학우가 아직 없습니다</div>'
+  );
+  box.innerHTML = html;
+  box.classList.remove('flash');
+  void box.offsetWidth;
+  box.classList.add('flash');
+}
+
+window.addEventListener('load', () => {
+  loadData();
+});
+</script>
+</body>
+</html>
