@@ -257,7 +257,14 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
         <button class="rfbtn" onclick="loadLearnRes()">↻ 새로고침</button>
       </div>
       <div id="lreslist"></div>
-      <button class="sbtn" style="margin-top:1.3rem;" onclick="showMsgCard()">다음 → 교장님께 메시지 💌</button>
+      <div style="display:flex;gap:8px;margin-top:1.3rem;">
+        <button class="nbtn" onclick="redoLearn()" style="padding:11px 16px;">↻ 다시 투표</button>
+        <button class="sbtn" style="flex:1;margin:0;" onclick="showMsgCard()">다음 → 교장님께 메시지 💌</button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.3rem;padding-top:1rem;border-top:0.5px solid rgba(255,255,255,0.08);">
+      <button class="nbtn" onclick="showFinal()">← 이전</button>
+      <button class="nbtn" id="learnNextBtn" onclick="showMsgCard()" disabled>다음 →</button>
     </div>
   </div>
 
@@ -275,8 +282,14 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
     <div class="oktitle" style="margin-bottom:0.5rem;">교장님께 한 줄 메시지</div>
     <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1rem;line-height:1.6;">철학포럼이 끝나고 고승재 교장님께 전하고 싶은 마음을 한 줄 남겨주세요.</div>
     <input class="minput" id="msgin" type="text" placeholder="교장님께 전하고 싶은 한 마디...">
-    <button class="sbtn" id="msgBtn" onclick="doMsg()">전달하기 💌</button>
+    <div style="display:flex;gap:8px;">
+      <button class="nbtn" id="msgRedoBtn" onclick="redoMsg()" style="padding:11px 16px;display:none;">↻ 다시 쓰기</button>
+      <button class="sbtn" id="msgBtn" style="flex:1;margin:0;" onclick="doMsg()">전달하기 💌</button>
+    </div>
     <div class="sentbox" id="sentbox">소중한 마음 잘 전달하겠습니다 💙<br><br>📅 <strong>6월 13일~14일 에듀스퀘어 리더십 캠프</strong>에서 다시 만나요!</div>
+    <div style="display:flex;justify-content:flex-start;align-items:center;margin-top:1.3rem;padding-top:1rem;border-top:0.5px solid rgba(255,255,255,0.08);">
+      <button class="nbtn" onclick="showLearnCard()">← 이전</button>
+    </div>
   </div>
 
   <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:1.6rem;">
@@ -402,7 +415,17 @@ function doStart() {
   showVote();
 }
 function doReset() {
-  user = null; localStorage.removeItem('es_user');
+  user = null;
+  localStorage.removeItem('es_user');
+  localStorage.removeItem('es_v5');
+  localStorage.removeItem('es_l6');
+  localStorage.removeItem('es_m5');
+  lVotes = [];
+  lLearn = null;
+  lMsg = '';
+  selLearn = [];
+  cQ = 0;
+  picked = null;
   cohortPick = null;
   ['c1','c2','c3','c4'].forEach(id => document.getElementById(id).className = 'cohort-btn');
   document.getElementById('nameIn').value = '';
@@ -518,9 +541,6 @@ function goSkipped() {
   if (skip >= 0) { cQ = skip; showVote(); }
   else showFinal();
 }
-function goPrev() {
-  if (cQ > 0) { cQ--; showVote(); }
-}
 
 async function loadResult() {
   const q = QS[cQ];
@@ -582,11 +602,13 @@ function showLearnCard() {
   if (lLearn) {
     document.getElementById('learnSec').style.display = 'none';
     document.getElementById('learnRes').style.display = 'block';
+    document.getElementById('learnNextBtn').disabled = false;
     loadLearnRes();
     return;
   }
   document.getElementById('learnSec').style.display = 'block';
   document.getElementById('learnRes').style.display = 'none';
+  document.getElementById('learnNextBtn').disabled = true;
   selLearn = [];
   document.getElementById('lhint').textContent = '0 / 3개 선택됨';
   document.getElementById('lsubBtn').disabled = true;
@@ -602,6 +624,13 @@ function showLearnCard() {
   });
 }
 
+function redoLearn() {
+  lLearn = null;
+  localStorage.removeItem('es_l6');
+  selLearn = [];
+  showLearnCard();
+}
+
 function showMsgCard() {
   hideAll();
   document.getElementById('msgCard').style.display = 'block';
@@ -610,8 +639,26 @@ function showMsgCard() {
     document.getElementById('msgin').value = lMsg;
     document.getElementById('msgin').disabled = true;
     document.getElementById('msgBtn').style.display = 'none';
+    document.getElementById('msgRedoBtn').style.display = 'block';
     document.getElementById('sentbox').style.display = 'block';
+  } else {
+    document.getElementById('msgin').value = '';
+    document.getElementById('msgin').disabled = false;
+    document.getElementById('msgBtn').style.display = 'block';
+    document.getElementById('msgRedoBtn').style.display = 'none';
+    document.getElementById('sentbox').style.display = 'none';
   }
+}
+
+function redoMsg() {
+  lMsg = '';
+  localStorage.removeItem('es_m5');
+  document.getElementById('msgin').value = '';
+  document.getElementById('msgin').disabled = false;
+  document.getElementById('msgin').focus();
+  document.getElementById('msgBtn').style.display = 'block';
+  document.getElementById('msgRedoBtn').style.display = 'none';
+  document.getElementById('sentbox').style.display = 'none';
 }
 
 function togLearn(n) {
@@ -636,6 +683,7 @@ async function doLearn() {
   load(true); await post(data); load(false);
   document.getElementById('learnSec').style.display = 'none';
   document.getElementById('learnRes').style.display = 'block';
+  document.getElementById('learnNextBtn').disabled = false;
   loadLearnRes();
 }
 
@@ -663,6 +711,7 @@ async function doMsg() {
   load(true); await post(data); load(false);
   document.getElementById('msgin').disabled = true;
   document.getElementById('msgBtn').style.display = 'none';
+  document.getElementById('msgRedoBtn').style.display = 'block';
   document.getElementById('sentbox').style.display = 'block';
 }
 
