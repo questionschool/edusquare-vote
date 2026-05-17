@@ -65,11 +65,49 @@ body { padding:24px 32px 80px; }
 .qc-count.zero { color:rgba(255,255,255,0.25); }
 .qc-unit { font-size:13px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:3px; }
 
+/* 통합 문항 카드 (응답자수 + 정답률 한 줄에 병기) */
+.q-pair-list { display:flex; flex-direction:column; gap:14px; }
+.q-pair { display:grid; grid-template-columns:1fr 2fr; gap:14px; }
+.q-pair-num-badge { background:rgba(100,180,255,0.12); color:#93c5fd; border-radius:8px; padding:3px 10px; font-size:12px; font-weight:700; letter-spacing:0.08em; display:inline-block; }
+.qp-count { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:11px; padding:16px 20px; display:flex; flex-direction:column; justify-content:center; }
+.qp-count-label { font-size:13px; color:rgba(255,255,255,0.65); margin-top:8px; line-height:1.4; font-weight:500; }
+.qp-count-big { font-size:38px; font-weight:800; color:#fff; line-height:1; margin-top:10px; }
+.qp-count-big.zero { color:rgba(255,255,255,0.25); }
+.qp-count-unit { font-size:14px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:4px; }
+
+.qp-rate { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:11px; padding:16px 20px; cursor:pointer; transition:all 0.15s; }
+.qp-rate:hover { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.18); }
+.qp-rate.warn { border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.05); }
+.qp-rate.warn:hover { background:rgba(239,68,68,0.09); }
+.qp-rate-head { display:flex; justify-content:space-between; align-items:center; }
+.qp-rate-locked { font-size:14px; color:rgba(255,255,255,0.55); font-weight:500; }
+.qp-rate-locked .lock-ico { color:rgba(255,255,255,0.4); margin-right:6px; }
+.qp-hint { font-size:11px; color:rgba(255,255,255,0.4); }
+.qp-rate-body { display:none; margin-top:12px; }
+.qp-rate.expanded .qp-rate-body { display:block; }
+.qp-rate.expanded .qp-rate-locked { display:none; }
+.qp-big-rate { font-size:38px; font-weight:800; line-height:1; margin-bottom:8px; }
+.qp-big-rate.high { color:#6ee7b7; }
+.qp-big-rate.mid { color:#fbbf24; }
+.qp-big-rate.low { color:#f87171; }
+.qp-big-rate-unit { font-size:14px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:3px; }
+.qp-bar { height:8px; border-radius:4px; overflow:hidden; background:rgba(255,255,255,0.07); display:flex; margin:10px 0 10px; }
+.qp-bar > div { transition:width 0.4s; }
+.qp-dist { display:flex; gap:14px; font-size:12px; margin-bottom:10px; }
+.qp-dist span { font-weight:600; }
+.qp-dist .a { color:rgba(147,197,253,0.95); }
+.qp-dist .b { color:rgba(251,191,36,0.95); }
+.qp-dist .c { color:rgba(110,231,183,0.95); }
+.qp-ans-box { background:rgba(110,231,183,0.08); border-left:2px solid rgba(110,231,183,0.55); border-radius:6px; padding:8px 12px; margin-bottom:10px; font-size:12px; }
+.qp-ans-box b { color:rgba(110,231,183,0.95); font-weight:700; }
+.qp-ans-box .ans-val { color:rgba(255,255,255,0.85); }
+
 @media (max-width:1200px) {
   .q-count-grid { grid-template-columns:repeat(4, 1fr); }
 }
 @media (max-width:900px) {
   .q-count-grid { grid-template-columns:repeat(3, 1fr); }
+  .q-pair { grid-template-columns:1fr; }
 }
 
 .q-card { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:11px; padding:16px 18px; transition:all 0.15s; cursor:pointer; }
@@ -125,6 +163,8 @@ body { padding:24px 32px 80px; }
 .rank-cohort { width:90px; }
 .cpill { display:inline-block; padding:3px 9px; background:rgba(59,130,246,0.18); border:0.5px solid rgba(59,130,246,0.4); border-radius:11px; font-size:11px; color:#93c5fd; font-weight:600; }
 .rank-rate { text-align:right; font-weight:700; color:#6ee7b7; font-size:16px; width:120px; }
+.rank-prog-done { display:inline-block; padding:3px 9px; background:rgba(110,231,183,0.14); border:0.5px solid rgba(110,231,183,0.35); border-radius:11px; font-size:11px; color:#6ee7b7; font-weight:600; }
+.rank-prog-going { display:inline-block; padding:3px 9px; background:rgba(255,255,255,0.05); border:0.5px solid rgba(255,255,255,0.15); border-radius:11px; font-size:11px; color:rgba(255,255,255,0.5); font-weight:600; }
 
 /* 도움된 질문 */
 .learn-list { display:flex; flex-direction:column; gap:8px; }
@@ -206,39 +246,23 @@ body { padding:24px 32px 80px; }
   </div>
 </div>
 
-<!-- 1. 문항별 응답자 수 -->
+<!-- 1. 문항별 분석 (응답자수 + 정답률 병기) -->
 <div class="section">
   <div class="sec-head">
-    <div><span class="sec-title">📥 문항별 응답자 수</span><span class="sec-sub">각 문항에 몇 명이 응답했는지 한눈에</span></div>
+    <div><span class="sec-title">📊 문항별 분석</span><span class="sec-sub">응답자 수 + 정답률(클릭 시 펼침). 응답자 수만 항상 표시되고, 정답률·분포·정답·이유는 클릭해야 보입니다.</span></div>
   </div>
-  <div class="q-count-grid" id="qCountGrid"><div class="loading">로딩 중...</div></div>
-</div>
-
-<!-- 2. 문항별 정답률 -->
-<div class="section">
-  <div class="sec-head">
-    <div><span class="sec-title">📊 문항별 정답률</span><span class="sec-sub">카드를 클릭하면 정답과 선택 이유가 펼쳐집니다 · 정답률 50% 미만은 빨간 테두리</span></div>
-  </div>
-  <div class="q-grid" id="qGrid"><div class="loading">로딩 중...</div></div>
+  <div id="qPairList"><div class="loading">로딩 중...</div></div>
 </div>
 
 <!-- 2. 기수별 비교 -->
 <div class="section">
   <div class="sec-head">
-    <div><span class="sec-title">🎓 기수별 평균 일치율</span><span class="sec-sub">1기 · 2기 · 3기 (운영팀 제외)</span></div>
+    <div><span class="sec-title">🎓 기수별 '고승재 되기 — 선택 게임' 평균 일치율</span><span class="sec-sub">기수별로 CEO 고승재의 선택과 얼마나 일치하는지 (1기 · 2기 · 3기, 운영팀 제외)</span></div>
   </div>
   <div class="cohort-grid" id="cohortGrid"><div class="loading">로딩 중...</div></div>
 </div>
 
-<!-- 3. 개인별 랭킹 -->
-<div class="section">
-  <div class="sec-head">
-    <div><span class="sec-title">🏆 개인별 일치율 랭킹</span><span class="sec-sub">상위 순 · 일치율 높은 순서</span></div>
-  </div>
-  <div id="rankWrap"><div class="loading">로딩 중...</div></div>
-</div>
-
-<!-- 4. 도움된 질문 TOP -->
+<!-- 3. 도움된 질문 TOP -->
 <div class="section">
   <div class="sec-head">
     <div><span class="sec-title">⭐ 도움된 질문 TOP</span><span class="sec-sub">학우들이 가장 큰 배움을 얻은 질문</span></div>
@@ -246,17 +270,25 @@ body { padding:24px 32px 80px; }
   <div id="learnWrap"><div class="loading">로딩 중...</div></div>
 </div>
 
+<!-- 4. 개인별 랭킹 -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">🏆 개인별 '고승재 되기 — 선택 게임' 일치율 랭킹</span><span class="sec-sub">CEO 고승재의 선택과 가장 일치하는 학우 순서</span></div>
+  </div>
+  <div id="rankWrap"><div class="loading">로딩 중...</div></div>
+</div>
+
 <!-- 5. 교장님 메시지 월 -->
 <div class="section">
   <div class="sec-head">
-    <div><span class="sec-title">💌 교장님께 보내는 메시지 월</span><span class="sec-sub">학우들이 남긴 한 줄 메시지</span></div>
+    <div><span class="sec-title">💌 교장님께 보내는 메시지 월</span><span class="sec-sub">학우들이 남긴 한 줄 메시지 (익명)</span></div>
   </div>
   <div class="msg-wall" id="msgWall"><div class="loading">로딩 중...</div></div>
 </div>
 
 <script>
 const SURL = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf6uq4OCY1BYnkEIEYRF4j6iA67uvrP8NotcltzpQF-UA/exec';
-const PWKEY = 'edusquare0517';
+const PWKEY = '0808';
 
 const QS = [
   {n:'1',  lb:'인사발령 방식', ans:'B', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다'},
@@ -327,8 +359,8 @@ async function loadAll() {
   renderKPI();
   renderQGrid();
   renderCohort();
-  renderRank();
   renderLearn();
+  renderRank();
   renderMsg();
   const now = new Date();
   document.getElementById('lastUpd').textContent = '마지막 업데이트 ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
@@ -391,23 +423,9 @@ function renderKPI() {
   document.getElementById('kpiMsg').textContent = msgs.length;
 }
 
-// 문항별 카드 (응답자수 + 정답률 두 섹션 모두 렌더링)
+// 문항별 카드 (응답자수 + 정답률 한 줄에 병기)
 function renderQGrid() {
   const votes = allRows.filter(r => String(r[0]) === 'vote');
-
-  // === 섹션 1: 응답자 수만 ===
-  const countHtml = QS.map(q => {
-    const qv = votes.filter(v => String(v[4]) === String(q.n));
-    const cls = qv.length === 0 ? 'qc-count zero' : 'qc-count';
-    return '<div class="qc-card">' +
-      '<div class="qc-head"><span class="qc-num">Q' + q.n + '</span></div>' +
-      '<div class="qc-label">' + escHtml(q.lb) + '</div>' +
-      '<div class="' + cls + '">' + qv.length + '<span class="qc-unit">명 응답</span></div>' +
-    '</div>';
-  }).join('');
-  document.getElementById('qCountGrid').innerHTML = countHtml;
-
-  // === 섹션 2: 정답률 (정답/이유는 클릭 후 펼침) ===
   const html = QS.map(q => {
     const qv = votes.filter(v => String(v[4]) === String(q.n));
     const aC = qv.filter(v => String(v[5]) === 'A').length;
@@ -432,40 +450,53 @@ function renderQGrid() {
     });
     const rate = qv.length ? Math.round(correctScore / qv.length) : 0;
     const rateCls = rate >= 70 ? 'high' : rate >= 50 ? 'mid' : 'low';
-    const cardCls = (qv.length > 0 && rate < 50) ? 'q-card warn' : 'q-card';
+    const cardCls = (qv.length > 0 && rate < 50) ? 'qp-rate warn' : 'qp-rate';
 
-    // 정답 표기 (펼침 안쪽에만 표시)
+    // 정답 표기
     const ansTxt = q.ans === 'C' ? 'C. 경우에 따라 다르다 (이유 작성 시 정답)' : (q.ans + '. ' + (q.ans === 'A' ? q.a : q.b));
 
     // 이유 목록
     const reasons = qv.filter(v => String(v[8] || '').trim());
-    const reasonsHtml = reasons.length ? reasons.map(v => {
+    const reasonsHtml = reasons.length ? '<div style="margin-top:6px;">' + reasons.map(v => {
       const ch = String(v[5] || '');
       const meta = (ch ? (ch + '. ' + String(v[6] || '')) : '— (이유로 답변)') + ' · ' + escHtml(v[2]) + ' · ' + escHtml(v[3]);
       return '<div class="r-item"><div class="r-meta">' + escHtml(meta) + '</div><div class="r-text">' + escHtml(v[8]) + '</div></div>';
-    }).join('') : '<div class="r-empty">아직 선택 이유가 없습니다</div>';
+    }).join('') + '</div>' : '<div class="r-empty">아직 선택 이유가 없습니다</div>';
 
-    return '<div class="' + cardCls + '" onclick="this.classList.toggle(\'expanded\')">' +
-      '<div class="q-head"><span class="q-num">Q' + q.n + '</span><span class="q-count">' + qv.length + '명 응답 · 클릭하여 펼치기</span></div>' +
-      '<div class="q-label">' + escHtml(q.lb) + '</div>' +
-      '<div class="q-rate ' + rateCls + '">' + rate + '<span class="q-rate-unit">% 정답률</span></div>' +
-      '<div class="q-bar">' +
-        '<div style="width:' + ap + '%;background:rgba(59,130,246,0.6);"></div>' +
-        '<div style="width:' + bp + '%;background:rgba(251,191,36,0.6);"></div>' +
-        (cC > 0 ? '<div style="width:' + cp + '%;background:rgba(110,231,183,0.7);"></div>' : '') +
+    const countCls = qv.length === 0 ? 'qp-count-big zero' : 'qp-count-big';
+
+    return '<div class="q-pair">' +
+      // 왼쪽: 응답자 수
+      '<div class="qp-count">' +
+        '<span class="q-pair-num-badge">Q' + q.n + '</span>' +
+        '<div class="qp-count-label">' + escHtml(q.lb) + '</div>' +
+        '<div class="' + countCls + '">' + qv.length + '<span class="qp-count-unit">명 응답</span></div>' +
       '</div>' +
-      '<div class="q-dist">' +
-        '<span class="a">A ' + aC + '명 (' + ap + '%)</span>' +
-        '<span class="b">B ' + bC + '명 (' + bp + '%)</span>' +
-        (cC > 0 ? '<span class="c">C ' + cC + '명 (' + cp + '%)</span>' : '') +
-      '</div>' +
-      '<div class="q-reasons">' +
-        '<div class="q-rate-meta" style="margin-bottom:10px;padding:6px 10px;background:rgba(110,231,183,0.08);border-radius:6px;border-left:2px solid rgba(110,231,183,0.5);"><b style="color:rgba(110,231,183,0.95);">CEO 고승재의 선택:</b> ' + escHtml(ansTxt) + '</div>' +
-        reasonsHtml +
+      // 오른쪽: 정답률 (클릭 펼침)
+      '<div class="' + cardCls + '" onclick="this.classList.toggle(\'expanded\')">' +
+        '<div class="qp-rate-head">' +
+          '<div class="qp-rate-locked"><span class="lock-ico">🔒</span>정답률 · A/B 분포는 클릭하면 보입니다</div>' +
+          '<div class="qp-hint">' + qv.length + '명 응답</div>' +
+        '</div>' +
+        '<div class="qp-rate-body">' +
+          '<div class="qp-big-rate ' + rateCls + '">' + rate + '<span class="qp-big-rate-unit">% 정답률</span></div>' +
+          '<div class="qp-bar">' +
+            '<div style="width:' + ap + '%;background:rgba(59,130,246,0.6);"></div>' +
+            '<div style="width:' + bp + '%;background:rgba(251,191,36,0.6);"></div>' +
+            (cC > 0 ? '<div style="width:' + cp + '%;background:rgba(110,231,183,0.7);"></div>' : '') +
+          '</div>' +
+          '<div class="qp-dist">' +
+            '<span class="a">A ' + aC + '명 (' + ap + '%)</span>' +
+            '<span class="b">B ' + bC + '명 (' + bp + '%)</span>' +
+            (cC > 0 ? '<span class="c">C ' + cC + '명 (' + cp + '%)</span>' : '') +
+          '</div>' +
+          '<div class="qp-ans-box"><b>CEO 고승재의 선택:</b> <span class="ans-val">' + escHtml(ansTxt) + '</span></div>' +
+          reasonsHtml +
+        '</div>' +
       '</div>' +
     '</div>';
   }).join('');
-  document.getElementById('qGrid').innerHTML = html;
+  document.getElementById('qPairList').innerHTML = '<div class="q-pair-list">' + html + '</div>';
 }
 
 // 기수별 비교 (운영팀 제외)
@@ -496,20 +527,30 @@ function renderCohort() {
 function renderRank() {
   const users = getUserVotes();
   const ranked = users
-    .filter(u => u.votes.length === QS.length)
-    .map(u => ({ name: u.name, cohort: u.cohort, rate: calcRateForUser(u.votes) }))
-    .sort((a, b) => b.rate - a.rate);
+    .map(u => ({
+      name: u.name,
+      cohort: u.cohort,
+      rate: calcRateForUser(u.votes),
+      done: u.votes.length,
+      total: QS.length
+    }))
+    .sort((a, b) => b.rate - a.rate || b.done - a.done);
   if (!ranked.length) {
-    document.getElementById('rankWrap').innerHTML = '<div class="empty">아직 완주한 학우가 없습니다</div>';
+    document.getElementById('rankWrap').innerHTML = '<div class="empty">아직 응답한 학우가 없습니다</div>';
     return;
   }
-  let html = '<table class="rank-table"><thead><tr><th class="rank-pos">순위</th><th class="rank-cohort">기수</th><th>이름</th><th class="rank-rate">일치율</th></tr></thead><tbody>';
+  const completed = ranked.filter(u => u.done === u.total).length;
+  let html = '<div style="margin-bottom:12px;font-size:12px;color:rgba(255,255,255,0.45);">총 ' + ranked.length + '명 응답 (완주 ' + completed + '명 · 진행 중 ' + (ranked.length - completed) + '명)</div>';
+  html += '<table class="rank-table"><thead><tr><th class="rank-pos">순위</th><th class="rank-cohort">기수</th><th>이름</th><th>진행</th><th class="rank-rate">일치율</th></tr></thead><tbody>';
   ranked.forEach((u, i) => {
     const posCls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
     const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    const progCls = u.done === u.total ? 'rank-prog-done' : 'rank-prog-going';
+    const progTxt = u.done === u.total ? '✓ 완주' : (u.done + '/' + u.total);
     html += '<tr><td class="rank-pos ' + posCls + '">' + medal + '</td>' +
       '<td><span class="cpill">' + escHtml(u.cohort) + '</span></td>' +
       '<td class="rank-name">' + escHtml(u.name) + '</td>' +
+      '<td><span class="' + progCls + '">' + progTxt + '</span></td>' +
       '<td class="rank-rate">' + u.rate + '%</td></tr>';
   });
   html += '</tbody></table>';
@@ -541,7 +582,7 @@ function renderLearn() {
   document.getElementById('learnWrap').innerHTML = html;
 }
 
-// 메시지 월
+// 메시지 월 (익명 - 기수 + 시간만)
 function renderMsg() {
   const msgs = allRows.filter(r => String(r[0]) === 'message');
   if (!msgs.length) {
@@ -553,7 +594,7 @@ function renderMsg() {
   const html = sorted.map(m => {
     const text = m[9] || m[8] || m[5] || '';
     return '<div class="msg-card">' +
-      '<div class="msg-from">' + escHtml(m[2]) + ' · ' + escHtml(m[3]) + ' · ' + escHtml(m[1]) + '</div>' +
+      '<div class="msg-from">' + escHtml(m[3]) + ' · ' + escHtml(m[1]) + '</div>' +
       '<div class="msg-text">' + escHtml(text) + '</div>' +
     '</div>';
   }).join('');
