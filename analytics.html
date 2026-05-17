@@ -53,6 +53,25 @@ body { padding:24px 32px 80px; }
 
 /* 문항 그리드 */
 .q-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+
+/* 응답자 수 그리드 (5열로 더 컴팩트) */
+.q-count-grid { display:grid; grid-template-columns:repeat(5, 1fr); gap:12px; }
+.qc-card { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:10px; padding:14px 16px; transition:all 0.15s; }
+.qc-card:hover { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.18); }
+.qc-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
+.qc-num { font-size:11px; color:rgba(100,180,255,0.85); font-weight:700; letter-spacing:0.08em; }
+.qc-label { font-size:12px; font-weight:500; color:rgba(255,255,255,0.6); line-height:1.35; margin-bottom:10px; min-height:32px; }
+.qc-count { font-size:30px; font-weight:800; color:#fff; line-height:1; }
+.qc-count.zero { color:rgba(255,255,255,0.25); }
+.qc-unit { font-size:13px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:3px; }
+
+@media (max-width:1200px) {
+  .q-count-grid { grid-template-columns:repeat(4, 1fr); }
+}
+@media (max-width:900px) {
+  .q-count-grid { grid-template-columns:repeat(3, 1fr); }
+}
+
 .q-card { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:11px; padding:16px 18px; transition:all 0.15s; cursor:pointer; }
 .q-card:hover { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.18); }
 .q-card.warn { border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.05); }
@@ -187,10 +206,18 @@ body { padding:24px 32px 80px; }
   </div>
 </div>
 
-<!-- 1. 문항별 분석 -->
+<!-- 1. 문항별 응답자 수 -->
 <div class="section">
   <div class="sec-head">
-    <div><span class="sec-title">📊 문항별 분석</span><span class="sec-sub">카드를 클릭하면 선택 이유가 펼쳐집니다 · 정답률 50% 미만은 빨간 테두리</span></div>
+    <div><span class="sec-title">📥 문항별 응답자 수</span><span class="sec-sub">각 문항에 몇 명이 응답했는지 한눈에</span></div>
+  </div>
+  <div class="q-count-grid" id="qCountGrid"><div class="loading">로딩 중...</div></div>
+</div>
+
+<!-- 2. 문항별 정답률 -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">📊 문항별 정답률</span><span class="sec-sub">카드를 클릭하면 정답과 선택 이유가 펼쳐집니다 · 정답률 50% 미만은 빨간 테두리</span></div>
   </div>
   <div class="q-grid" id="qGrid"><div class="loading">로딩 중...</div></div>
 </div>
@@ -364,9 +391,23 @@ function renderKPI() {
   document.getElementById('kpiMsg').textContent = msgs.length;
 }
 
-// 문항별 카드
+// 문항별 카드 (응답자수 + 정답률 두 섹션 모두 렌더링)
 function renderQGrid() {
   const votes = allRows.filter(r => String(r[0]) === 'vote');
+
+  // === 섹션 1: 응답자 수만 ===
+  const countHtml = QS.map(q => {
+    const qv = votes.filter(v => String(v[4]) === String(q.n));
+    const cls = qv.length === 0 ? 'qc-count zero' : 'qc-count';
+    return '<div class="qc-card">' +
+      '<div class="qc-head"><span class="qc-num">Q' + q.n + '</span></div>' +
+      '<div class="qc-label">' + escHtml(q.lb) + '</div>' +
+      '<div class="' + cls + '">' + qv.length + '<span class="qc-unit">명 응답</span></div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('qCountGrid').innerHTML = countHtml;
+
+  // === 섹션 2: 정답률 (정답/이유는 클릭 후 펼침) ===
   const html = QS.map(q => {
     const qv = votes.filter(v => String(v[4]) === String(q.n));
     const aC = qv.filter(v => String(v[5]) === 'A').length;
@@ -376,7 +417,7 @@ function renderQGrid() {
     const bp = qv.length ? Math.round(bC / qv.length * 100) : 0;
     const cp = 100 - ap - bp;
 
-    // 정답률 계산 (C 문항은 무선택+이유 = 100점, 나머지는 일치)
+    // 정답률 계산
     let correctScore = 0;
     qv.forEach(v => {
       const ch = String(v[5] || '');
@@ -393,7 +434,7 @@ function renderQGrid() {
     const rateCls = rate >= 70 ? 'high' : rate >= 50 ? 'mid' : 'low';
     const cardCls = (qv.length > 0 && rate < 50) ? 'q-card warn' : 'q-card';
 
-    // 정답 표기
+    // 정답 표기 (펼침 안쪽에만 표시)
     const ansTxt = q.ans === 'C' ? 'C. 경우에 따라 다르다 (이유 작성 시 정답)' : (q.ans + '. ' + (q.ans === 'A' ? q.a : q.b));
 
     // 이유 목록
@@ -405,10 +446,9 @@ function renderQGrid() {
     }).join('') : '<div class="r-empty">아직 선택 이유가 없습니다</div>';
 
     return '<div class="' + cardCls + '" onclick="this.classList.toggle(\'expanded\')">' +
-      '<div class="q-head"><span class="q-num">Q' + q.n + '</span><span class="q-count">' + qv.length + '명 응답</span></div>' +
+      '<div class="q-head"><span class="q-num">Q' + q.n + '</span><span class="q-count">' + qv.length + '명 응답 · 클릭하여 펼치기</span></div>' +
       '<div class="q-label">' + escHtml(q.lb) + '</div>' +
       '<div class="q-rate ' + rateCls + '">' + rate + '<span class="q-rate-unit">% 정답률</span></div>' +
-      '<div class="q-rate-meta">정답: ' + ansTxt + '</div>' +
       '<div class="q-bar">' +
         '<div style="width:' + ap + '%;background:rgba(59,130,246,0.6);"></div>' +
         '<div style="width:' + bp + '%;background:rgba(251,191,36,0.6);"></div>' +
@@ -419,7 +459,10 @@ function renderQGrid() {
         '<span class="b">B ' + bC + '명 (' + bp + '%)</span>' +
         (cC > 0 ? '<span class="c">C ' + cC + '명 (' + cp + '%)</span>' : '') +
       '</div>' +
-      '<div class="q-reasons">' + reasonsHtml + '</div>' +
+      '<div class="q-reasons">' +
+        '<div class="q-rate-meta" style="margin-bottom:10px;padding:6px 10px;background:rgba(110,231,183,0.08);border-radius:6px;border-left:2px solid rgba(110,231,183,0.5);"><b style="color:rgba(110,231,183,0.95);">CEO 고승재의 선택:</b> ' + escHtml(ansTxt) + '</div>' +
+        reasonsHtml +
+      '</div>' +
     '</div>';
   }).join('');
   document.getElementById('qGrid').innerHTML = html;
