@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>EDUSQUARE 철학포럼 — 라이브 분석</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { background:#0a0e1a; color:rgba(255,255,255,0.88); font-family:'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif; min-height:100vh; }
+body { padding:24px 32px 80px; }
+
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; padding-bottom:18px; border-bottom:0.5px solid rgba(255,255,255,0.1); }
+.brand { display:flex; align-items:baseline; gap:14px; }
+.brand-tag { font-size:11px; letter-spacing:0.22em; color:rgba(147,197,253,0.75); font-weight:600; }
+.brand-title { font-size:24px; font-weight:800; letter-spacing:-0.02em; }
+.brand-sub { font-size:13px; color:rgba(255,255,255,0.4); margin-left:8px; }
+
+.controls { display:flex; gap:12px; align-items:center; }
+.ctrl-btn { background:rgba(255,255,255,0.06); border:0.5px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.85); padding:8px 16px; border-radius:8px; font-size:13px; cursor:pointer; font-family:inherit; transition:all 0.15s; }
+.ctrl-btn:hover { background:rgba(255,255,255,0.12); }
+.ctrl-btn.act { background:rgba(59,130,246,0.22); border-color:rgba(59,130,246,0.55); color:#93c5fd; }
+.live-dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; margin-right:6px; animation:pulse 1.6s ease-in-out infinite; vertical-align:middle; }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+.last-update { font-size:11px; color:rgba(255,255,255,0.35); margin-right:8px; }
+
+/* 로그인 게이트 */
+.gate { position:fixed; inset:0; background:#0a0e1a; display:flex; align-items:center; justify-content:center; z-index:100; }
+.gate-box { background:rgba(255,255,255,0.04); border:0.5px solid rgba(255,255,255,0.12); border-radius:14px; padding:38px 42px; width:340px; }
+.gate-title { font-size:20px; font-weight:700; margin-bottom:8px; }
+.gate-sub { font-size:13px; color:rgba(255,255,255,0.5); margin-bottom:22px; }
+.gate-in { width:100%; background:rgba(255,255,255,0.07); border:0.5px solid rgba(255,255,255,0.18); border-radius:9px; padding:11px 14px; color:#fff; font-size:14px; outline:none; font-family:inherit; margin-bottom:12px; }
+.gate-in:focus { border-color:rgba(100,180,255,0.5); }
+.gate-btn { width:100%; background:#3b82f6; border:none; color:#fff; padding:12px; border-radius:9px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+.gate-err { color:#f87171; font-size:12px; margin-top:8px; display:none; }
+
+/* KPI */
+.kpi-row { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-bottom:28px; }
+.kpi { background:linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)); border:0.5px solid rgba(255,255,255,0.1); border-radius:13px; padding:22px 24px; }
+.kpi-label { font-size:11px; letter-spacing:0.14em; color:rgba(255,255,255,0.4); text-transform:uppercase; font-weight:600; margin-bottom:10px; }
+.kpi-value { font-size:42px; font-weight:800; line-height:1.05; color:#fff; }
+.kpi-unit { font-size:16px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:4px; }
+.kpi-extra { font-size:12px; color:rgba(255,255,255,0.45); margin-top:8px; }
+.kpi.blue .kpi-value { color:#93c5fd; }
+.kpi.amber .kpi-value { color:#fbbf24; }
+.kpi.green .kpi-value { color:#6ee7b7; }
+.kpi.pink .kpi-value { color:#f9a8d4; }
+
+/* 섹션 */
+.section { background:rgba(255,255,255,0.025); border:0.5px solid rgba(255,255,255,0.08); border-radius:14px; padding:24px 26px; margin-bottom:24px; }
+.sec-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding-bottom:12px; border-bottom:0.5px solid rgba(255,255,255,0.08); }
+.sec-title { font-size:17px; font-weight:700; letter-spacing:-0.01em; }
+.sec-sub { font-size:12px; color:rgba(255,255,255,0.4); margin-left:10px; font-weight:400; }
+
+/* 문항 그리드 */
+.q-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+.q-card { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:11px; padding:16px 18px; transition:all 0.15s; cursor:pointer; }
+.q-card:hover { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.18); }
+.q-card.warn { border-color:rgba(239,68,68,0.5); background:rgba(239,68,68,0.05); }
+.q-card.warn:hover { background:rgba(239,68,68,0.09); }
+.q-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px; }
+.q-num { font-size:11px; color:rgba(100,180,255,0.85); font-weight:700; letter-spacing:0.08em; }
+.q-count { font-size:11px; color:rgba(255,255,255,0.35); }
+.q-label { font-size:14px; font-weight:600; color:rgba(255,255,255,0.92); margin-bottom:10px; line-height:1.4; }
+.q-rate { font-size:32px; font-weight:800; line-height:1; margin-bottom:8px; }
+.q-rate.high { color:#6ee7b7; }
+.q-rate.mid { color:#fbbf24; }
+.q-rate.low { color:#f87171; }
+.q-rate-unit { font-size:14px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:3px; }
+.q-rate-meta { font-size:11px; color:rgba(255,255,255,0.45); margin-bottom:10px; }
+.q-bar { height:6px; border-radius:3px; overflow:hidden; background:rgba(255,255,255,0.07); display:flex; margin-bottom:8px; }
+.q-bar > div { transition:width 0.4s; }
+.q-dist { display:flex; gap:10px; font-size:11px; }
+.q-dist span { font-weight:600; }
+.q-dist .a { color:rgba(147,197,253,0.85); }
+.q-dist .b { color:rgba(251,191,36,0.9); }
+.q-dist .c { color:rgba(110,231,183,0.95); }
+.q-ans { font-size:11px; color:rgba(110,231,183,0.7); margin-top:10px; padding-top:8px; border-top:0.5px dashed rgba(255,255,255,0.08); }
+.q-ans b { color:rgba(110,231,183,0.95); font-weight:700; }
+.q-reasons { margin-top:10px; padding-top:10px; border-top:0.5px solid rgba(255,255,255,0.06); display:none; }
+.q-card.expanded .q-reasons { display:block; }
+.r-item { padding:6px 10px; background:rgba(255,255,255,0.04); border-radius:6px; margin-bottom:4px; }
+.r-meta { font-size:10px; color:rgba(147,197,253,0.75); margin-bottom:2px; }
+.r-text { font-size:12px; color:rgba(255,255,255,0.7); line-height:1.45; }
+.r-empty { font-size:11px; color:rgba(255,255,255,0.3); text-align:center; padding:6px; }
+
+/* 기수별 비교 */
+.cohort-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:18px; }
+.cohort-card { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:12px; padding:22px 24px; }
+.coh-name { font-size:12px; letter-spacing:0.1em; color:rgba(147,197,253,0.85); font-weight:700; margin-bottom:8px; }
+.coh-rate { font-size:46px; font-weight:800; color:#fff; line-height:1; margin-bottom:6px; }
+.coh-rate-unit { font-size:18px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:3px; }
+.coh-count { font-size:12px; color:rgba(255,255,255,0.45); margin-bottom:14px; }
+.coh-bar { height:8px; border-radius:4px; background:rgba(255,255,255,0.06); overflow:hidden; }
+.coh-bar-fill { height:100%; background:linear-gradient(90deg, #3b82f6, #6ee7b7); transition:width 0.6s; }
+
+/* 랭킹 */
+.rank-table { width:100%; border-collapse:collapse; }
+.rank-table th { font-size:10px; letter-spacing:0.1em; color:rgba(255,255,255,0.4); text-transform:uppercase; font-weight:600; padding:10px 12px; text-align:left; border-bottom:0.5px solid rgba(255,255,255,0.1); }
+.rank-table td { padding:12px; border-bottom:0.5px solid rgba(255,255,255,0.05); font-size:14px; }
+.rank-table tr:hover td { background:rgba(255,255,255,0.02); }
+.rank-pos { font-weight:700; color:rgba(100,180,255,0.85); width:48px; }
+.rank-pos.top1 { color:#fbbf24; }
+.rank-pos.top2 { color:#cbd5e1; }
+.rank-pos.top3 { color:#f97316; }
+.rank-name { font-weight:600; color:#fff; }
+.rank-cohort { width:90px; }
+.cpill { display:inline-block; padding:3px 9px; background:rgba(59,130,246,0.18); border:0.5px solid rgba(59,130,246,0.4); border-radius:11px; font-size:11px; color:#93c5fd; font-weight:600; }
+.rank-rate { text-align:right; font-weight:700; color:#6ee7b7; font-size:16px; width:120px; }
+
+/* 도움된 질문 */
+.learn-list { display:flex; flex-direction:column; gap:8px; }
+.learn-item { display:flex; align-items:center; gap:14px; padding:10px 14px; background:rgba(255,255,255,0.03); border-radius:9px; border:0.5px solid rgba(255,255,255,0.06); }
+.learn-num { width:36px; height:36px; border-radius:9px; background:rgba(59,130,246,0.18); color:#93c5fd; font-weight:700; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+.learn-text { flex:1; font-size:14px; color:rgba(255,255,255,0.88); }
+.learn-bar { flex:1.6; height:10px; border-radius:5px; background:rgba(255,255,255,0.06); overflow:hidden; }
+.learn-bar-fill { height:100%; background:linear-gradient(90deg, #fbbf24, #f97316); transition:width 0.6s; }
+.learn-cnt { width:80px; text-align:right; font-weight:700; color:#fbbf24; font-size:14px; }
+
+/* 메시지 월 */
+.msg-wall { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
+.msg-card { background:linear-gradient(180deg, rgba(244,114,182,0.08), rgba(244,114,182,0.02)); border:0.5px solid rgba(244,114,182,0.25); border-radius:11px; padding:16px 18px; }
+.msg-from { font-size:11px; color:rgba(249,168,212,0.75); margin-bottom:8px; font-weight:600; }
+.msg-text { font-size:14px; color:rgba(255,255,255,0.9); line-height:1.55; }
+.msg-empty { grid-column:1/-1; text-align:center; padding:36px; color:rgba(255,255,255,0.3); font-size:13px; }
+
+.empty { text-align:center; padding:30px; color:rgba(255,255,255,0.3); font-size:13px; }
+.loading { text-align:center; padding:30px; color:rgba(255,255,255,0.5); font-size:13px; }
+
+@media (max-width:980px) {
+  body { padding:16px; }
+  .kpi-row { grid-template-columns:repeat(2, 1fr); }
+  .q-grid { grid-template-columns:repeat(2, 1fr); }
+  .cohort-grid { grid-template-columns:1fr; }
+  .msg-wall { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- 비밀번호 게이트 -->
+<div class="gate" id="gate">
+  <div class="gate-box">
+    <div class="gate-title">🔒 관리자 분석</div>
+    <div class="gate-sub">EDUSQUARE 철학포럼 라이브 분석 대시보드</div>
+    <input class="gate-in" id="pwin" type="password" placeholder="관리자 비밀번호" onkeydown="if(event.key==='Enter')chkPw()">
+    <button class="gate-btn" onclick="chkPw()">접속</button>
+    <div class="gate-err" id="pwerr">비밀번호가 일치하지 않습니다</div>
+  </div>
+</div>
+
+<!-- 헤더 -->
+<div class="topbar">
+  <div class="brand">
+    <div>
+      <div class="brand-tag">EDUSQUARE 2026 · 철학포럼</div>
+      <div class="brand-title">고승재 되기 — 라이브 분석<span class="brand-sub">관리자 전용</span></div>
+    </div>
+  </div>
+  <div class="controls">
+    <span class="last-update" id="lastUpd"></span>
+    <button class="ctrl-btn" id="autoBtn" onclick="toggleAuto()"><span class="live-dot" id="liveDot" style="display:none;"></span><span id="autoLbl">자동 새로고침</span></button>
+    <button class="ctrl-btn" onclick="loadAll()">↻ 지금 새로고침</button>
+  </div>
+</div>
+
+<!-- KPI -->
+<div class="kpi-row">
+  <div class="kpi blue">
+    <div class="kpi-label">총 참가자</div>
+    <div class="kpi-value"><span id="kpiUsers">—</span><span class="kpi-unit">명</span></div>
+    <div class="kpi-extra" id="kpiUsersSub">투표 시작 대기 중</div>
+  </div>
+  <div class="kpi green">
+    <div class="kpi-label">평균 일치율</div>
+    <div class="kpi-value"><span id="kpiRate">—</span><span class="kpi-unit">%</span></div>
+    <div class="kpi-extra" id="kpiRateSub">CEO 고승재와의 평균 일치도</div>
+  </div>
+  <div class="kpi amber">
+    <div class="kpi-label">도움된 질문 1위</div>
+    <div class="kpi-value" style="font-size:28px;line-height:1.2;" id="kpiLearn">—</div>
+    <div class="kpi-extra" id="kpiLearnSub"></div>
+  </div>
+  <div class="kpi pink">
+    <div class="kpi-label">교장님께 메시지</div>
+    <div class="kpi-value"><span id="kpiMsg">—</span><span class="kpi-unit">개</span></div>
+    <div class="kpi-extra">소중한 마음들</div>
+  </div>
+</div>
+
+<!-- 1. 문항별 분석 -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">📊 문항별 분석</span><span class="sec-sub">카드를 클릭하면 선택 이유가 펼쳐집니다 · 정답률 50% 미만은 빨간 테두리</span></div>
+  </div>
+  <div class="q-grid" id="qGrid"><div class="loading">로딩 중...</div></div>
+</div>
+
+<!-- 2. 기수별 비교 -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">🎓 기수별 평균 일치율</span><span class="sec-sub">1기 · 2기 · 3기 (운영팀 제외)</span></div>
+  </div>
+  <div class="cohort-grid" id="cohortGrid"><div class="loading">로딩 중...</div></div>
+</div>
+
+<!-- 3. 개인별 랭킹 -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">🏆 개인별 일치율 랭킹</span><span class="sec-sub">상위 순 · 일치율 높은 순서</span></div>
+  </div>
+  <div id="rankWrap"><div class="loading">로딩 중...</div></div>
+</div>
+
+<!-- 4. 도움된 질문 TOP -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">⭐ 도움된 질문 TOP</span><span class="sec-sub">학우들이 가장 큰 배움을 얻은 질문</span></div>
+  </div>
+  <div id="learnWrap"><div class="loading">로딩 중...</div></div>
+</div>
+
+<!-- 5. 교장님 메시지 월 -->
+<div class="section">
+  <div class="sec-head">
+    <div><span class="sec-title">💌 교장님께 보내는 메시지 월</span><span class="sec-sub">학우들이 남긴 한 줄 메시지</span></div>
+  </div>
+  <div class="msg-wall" id="msgWall"><div class="loading">로딩 중...</div></div>
+</div>
+
+<script>
+const SURL = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf6uq4OCY1BYnkEIEYRF4j6iA67uvrP8NotcltzpQF-UA/exec';
+const PWKEY = 'edusquare0517';
+
+const QS = [
+  {n:'1',  lb:'인사발령 방식', ans:'B', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다'},
+  {n:'2',  lb:'업무비 비용청구 안 하는 직원', ans:'B', a:'칭찬한다', b:'혼낸다'},
+  {n:'3',  lb:'국가기관 인허가 불가 통보', ans:'B', a:'국가의 법이니 받아들인다', b:'끝까지 방법을 찾아낸다'},
+  {n:'4',  lb:'지사(총판) 구조 도입 여부', ans:'B', a:'관리 효율을 위해 지사 구조를 도입한다', b:'지사를 두지 않는 현재 체제를 계속 유지한다'},
+  {n:'5',  lb:'유능한 리더의 겸임', ans:'B', a:'맞다', b:'틀리다'},
+  {n:'6',  lb:'5대5 동업 가맹 신청', ans:'B', a:'승인한다', b:'5대5는 안된다고 이야기한다'},
+  {n:'7',  lb:'본사 직원 FC 지점 개설 희망', ans:'B', a:'허락한다', b:'허락하지 않는다'},
+  {n:'8',  lb:'적자 상황에서 별로인 가맹문의자', ans:'A', a:'합격시킨다', b:'불합격시킨다'},
+  {n:'9',  lb:'원장연합회 압박(협박)', ans:'B', a:'받아들인다', b:'거부한다'},
+  {n:'10', lb:'동료와 합심이 안 되는 멤버', ans:'A', a:'내보낸다', b:'둔다'},
+  {n:'11', lb:'정책을 위반하는 상위권 지점', ans:'C', a:'가맹계약서에 준하여 조치한다', b:'예외를 허용한다'},
+  {n:'12', lb:'마이크로 매니지먼트 중단 요청', ans:'C', a:'믿고 맡긴다', b:'계속 마이크로 매니징을 한다'},
+  {n:'13', lb:'재무 위기 상황 공개 여부', ans:'B', a:'지금은 말하지 않는다. 해결한 다음 투명하게 공유한다', b:"지금 말한다. 투명성의 원칙에는 '편할 때만'이라는 조건이 없다"},
+  {n:'14', lb:'의사결정 잘못했음을 깨달음', ans:'B', a:'그대로 밀어붙인다', b:'의사결정이 잘못되었음을 인정하고 결정을 번복한다'},
+  {n:'15', lb:'경영철학 탐구 TFT 참여 여부', ans:'A', a:'참여한다', b:'참여하지 않는다'}
+];
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+async function fetchRows() {
+  try {
+    const r = await fetch(SURL + '?t=' + Date.now());
+    return await r.json();
+  } catch (e) { return null; }
+}
+
+function chkPw() {
+  if (document.getElementById('pwin').value === PWKEY) {
+    document.getElementById('gate').style.display = 'none';
+    loadAll();
+  } else {
+    document.getElementById('pwerr').style.display = 'block';
+  }
+}
+
+// 한 사람의 일치율 계산 (본 앱과 동일한 규칙)
+function calcRateForUser(votes) {
+  let total = 0;
+  votes.forEach(v => {
+    const q = QS.find(q => String(q.n) === String(v.n));
+    if (!q) return;
+    const hasChoice = !!(v.choice && String(v.choice).trim());
+    const hasReason = !!(v.comment && String(v.comment).trim());
+    if (q.ans === 'C') {
+      if (!hasChoice && hasReason) total += 100;
+      else if (hasChoice && hasReason) total += 70;
+      else if (hasChoice && !hasReason) total += 50;
+    } else {
+      if (String(q.ans) === String(v.choice)) total += 100;
+    }
+  });
+  return Math.round(total / (QS.length * 100) * 100);
+}
+
+let allRows = [];
+
+async function loadAll() {
+  const rows = await fetchRows();
+  if (!rows) {
+    document.getElementById('qGrid').innerHTML = '<div class="empty">데이터를 불러올 수 없습니다</div>';
+    return;
+  }
+  allRows = rows;
+  renderKPI();
+  renderQGrid();
+  renderCohort();
+  renderRank();
+  renderLearn();
+  renderMsg();
+  const now = new Date();
+  document.getElementById('lastUpd').textContent = '마지막 업데이트 ' + now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0') + ':' + now.getSeconds().toString().padStart(2,'0');
+}
+
+function getUserVotes() {
+  // name 기준으로 vote들을 묶음
+  const votes = allRows.filter(r => String(r[0]) === 'vote');
+  const userMap = {};
+  votes.forEach(v => {
+    const name = String(v[2] || '').trim();
+    const cohort = String(v[3] || '').trim();
+    if (!name) return;
+    const key = name + '|' + cohort;
+    if (!userMap[key]) userMap[key] = { name, cohort, votes:[] };
+    userMap[key].votes.push({
+      n: String(v[4]),
+      choice: String(v[5] || ''),
+      choiceDesc: String(v[6] || ''),
+      comment: String(v[8] || '')
+    });
+  });
+  return Object.values(userMap);
+}
+
+// KPI 렌더링
+function renderKPI() {
+  const users = getUserVotes();
+  document.getElementById('kpiUsers').textContent = users.length;
+  document.getElementById('kpiUsersSub').textContent = users.length ? '학우들의 선택이 진행 중' : '투표 시작 대기 중';
+
+  // 평균 일치율 (15문항 모두 답한 사람만 대상)
+  const completed = users.filter(u => u.votes.length === QS.length);
+  if (completed.length) {
+    const avg = Math.round(completed.reduce((s, u) => s + calcRateForUser(u.votes), 0) / completed.length);
+    document.getElementById('kpiRate').textContent = avg;
+    document.getElementById('kpiRateSub').textContent = '완주한 ' + completed.length + '명 기준';
+  } else {
+    document.getElementById('kpiRate').textContent = '—';
+    document.getElementById('kpiRateSub').textContent = '아직 완주자 없음';
+  }
+
+  // 도움된 질문 1위
+  const learns = allRows.filter(r => String(r[0]) === 'learn');
+  const cnt = {}; QS.forEach(q => cnt[q.n] = 0);
+  learns.forEach(r => {
+    String(r[4] || '').split(',').forEach(n => { const k = String(n).trim(); if (cnt[k] !== undefined) cnt[k]++; });
+  });
+  const ranked = QS.map(q => ({ ...q, c: cnt[q.n] })).sort((a, b) => b.c - a.c);
+  if (ranked[0] && ranked[0].c > 0) {
+    document.getElementById('kpiLearn').textContent = ranked[0].n + '번 ' + ranked[0].lb;
+    document.getElementById('kpiLearnSub').textContent = ranked[0].c + '표 · 총 ' + learns.length + '명 참여';
+  } else {
+    document.getElementById('kpiLearn').textContent = '—';
+    document.getElementById('kpiLearnSub').textContent = '아직 투표 없음';
+  }
+
+  // 메시지 수
+  const msgs = allRows.filter(r => String(r[0]) === 'message');
+  document.getElementById('kpiMsg').textContent = msgs.length;
+}
+
+// 문항별 카드
+function renderQGrid() {
+  const votes = allRows.filter(r => String(r[0]) === 'vote');
+  const html = QS.map(q => {
+    const qv = votes.filter(v => String(v[4]) === String(q.n));
+    const aC = qv.filter(v => String(v[5]) === 'A').length;
+    const bC = qv.filter(v => String(v[5]) === 'B').length;
+    const cC = qv.length - aC - bC;
+    const ap = qv.length ? Math.round(aC / qv.length * 100) : 0;
+    const bp = qv.length ? Math.round(bC / qv.length * 100) : 0;
+    const cp = 100 - ap - bp;
+
+    // 정답률 계산 (C 문항은 무선택+이유 = 100점, 나머지는 일치)
+    let correctScore = 0;
+    qv.forEach(v => {
+      const ch = String(v[5] || '');
+      const cm = String(v[8] || '').trim();
+      if (q.ans === 'C') {
+        if (!ch && cm) correctScore += 100;
+        else if (ch && cm) correctScore += 70;
+        else if (ch && !cm) correctScore += 50;
+      } else {
+        if (q.ans === ch) correctScore += 100;
+      }
+    });
+    const rate = qv.length ? Math.round(correctScore / qv.length) : 0;
+    const rateCls = rate >= 70 ? 'high' : rate >= 50 ? 'mid' : 'low';
+    const cardCls = (qv.length > 0 && rate < 50) ? 'q-card warn' : 'q-card';
+
+    // 정답 표기
+    const ansTxt = q.ans === 'C' ? 'C. 경우에 따라 다르다 (이유 작성 시 정답)' : (q.ans + '. ' + (q.ans === 'A' ? q.a : q.b));
+
+    // 이유 목록
+    const reasons = qv.filter(v => String(v[8] || '').trim());
+    const reasonsHtml = reasons.length ? reasons.map(v => {
+      const ch = String(v[5] || '');
+      const meta = (ch ? (ch + '. ' + String(v[6] || '')) : '— (이유로 답변)') + ' · ' + escHtml(v[2]) + ' · ' + escHtml(v[3]);
+      return '<div class="r-item"><div class="r-meta">' + escHtml(meta) + '</div><div class="r-text">' + escHtml(v[8]) + '</div></div>';
+    }).join('') : '<div class="r-empty">아직 선택 이유가 없습니다</div>';
+
+    return '<div class="' + cardCls + '" onclick="this.classList.toggle(\'expanded\')">' +
+      '<div class="q-head"><span class="q-num">Q' + q.n + '</span><span class="q-count">' + qv.length + '명 응답</span></div>' +
+      '<div class="q-label">' + escHtml(q.lb) + '</div>' +
+      '<div class="q-rate ' + rateCls + '">' + rate + '<span class="q-rate-unit">% 정답률</span></div>' +
+      '<div class="q-rate-meta">정답: ' + ansTxt + '</div>' +
+      '<div class="q-bar">' +
+        '<div style="width:' + ap + '%;background:rgba(59,130,246,0.6);"></div>' +
+        '<div style="width:' + bp + '%;background:rgba(251,191,36,0.6);"></div>' +
+        (cC > 0 ? '<div style="width:' + cp + '%;background:rgba(110,231,183,0.7);"></div>' : '') +
+      '</div>' +
+      '<div class="q-dist">' +
+        '<span class="a">A ' + aC + '명 (' + ap + '%)</span>' +
+        '<span class="b">B ' + bC + '명 (' + bp + '%)</span>' +
+        (cC > 0 ? '<span class="c">C ' + cC + '명 (' + cp + '%)</span>' : '') +
+      '</div>' +
+      '<div class="q-reasons">' + reasonsHtml + '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('qGrid').innerHTML = html;
+}
+
+// 기수별 비교 (운영팀 제외)
+function renderCohort() {
+  const users = getUserVotes().filter(u => u.votes.length === QS.length);
+  const targets = ['1기', '2기', '3기'];
+  const byCoh = {};
+  targets.forEach(c => byCoh[c] = []);
+  users.forEach(u => {
+    if (byCoh[u.cohort]) byCoh[u.cohort].push(calcRateForUser(u.votes));
+  });
+  const maxRate = Math.max(...targets.map(c => byCoh[c].length ? Math.round(byCoh[c].reduce((s, r) => s + r, 0) / byCoh[c].length) : 0), 1);
+  const html = targets.map(c => {
+    const rates = byCoh[c];
+    const avg = rates.length ? Math.round(rates.reduce((s, r) => s + r, 0) / rates.length) : 0;
+    const w = rates.length ? Math.round(avg / maxRate * 100) : 0;
+    return '<div class="cohort-card">' +
+      '<div class="coh-name">' + c + '</div>' +
+      '<div class="coh-rate">' + (rates.length ? avg : '—') + '<span class="coh-rate-unit">%</span></div>' +
+      '<div class="coh-count">' + (rates.length ? rates.length + '명 완주' : '완주자 없음') + '</div>' +
+      '<div class="coh-bar"><div class="coh-bar-fill" style="width:' + w + '%;"></div></div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('cohortGrid').innerHTML = html;
+}
+
+// 개인별 랭킹
+function renderRank() {
+  const users = getUserVotes();
+  const ranked = users
+    .filter(u => u.votes.length === QS.length)
+    .map(u => ({ name: u.name, cohort: u.cohort, rate: calcRateForUser(u.votes) }))
+    .sort((a, b) => b.rate - a.rate);
+  if (!ranked.length) {
+    document.getElementById('rankWrap').innerHTML = '<div class="empty">아직 완주한 학우가 없습니다</div>';
+    return;
+  }
+  let html = '<table class="rank-table"><thead><tr><th class="rank-pos">순위</th><th class="rank-cohort">기수</th><th>이름</th><th class="rank-rate">일치율</th></tr></thead><tbody>';
+  ranked.forEach((u, i) => {
+    const posCls = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+    const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    html += '<tr><td class="rank-pos ' + posCls + '">' + medal + '</td>' +
+      '<td><span class="cpill">' + escHtml(u.cohort) + '</span></td>' +
+      '<td class="rank-name">' + escHtml(u.name) + '</td>' +
+      '<td class="rank-rate">' + u.rate + '%</td></tr>';
+  });
+  html += '</tbody></table>';
+  document.getElementById('rankWrap').innerHTML = html;
+}
+
+// 도움된 질문
+function renderLearn() {
+  const learns = allRows.filter(r => String(r[0]) === 'learn');
+  const cnt = {}; QS.forEach(q => cnt[q.n] = 0);
+  learns.forEach(r => {
+    String(r[4] || '').split(',').forEach(n => { const k = String(n).trim(); if (cnt[k] !== undefined) cnt[k]++; });
+  });
+  const sorted = QS.map(q => ({ ...q, c: cnt[q.n] })).sort((a, b) => b.c - a.c);
+  const mx = sorted[0]?.c || 1;
+  if (!learns.length) {
+    document.getElementById('learnWrap').innerHTML = '<div class="empty">아직 투표가 없습니다</div>';
+    return;
+  }
+  const html = '<div style="margin-bottom:12px;font-size:12px;color:rgba(255,255,255,0.4);">총 ' + learns.length + '명 참여</div>' +
+    '<div class="learn-list">' + sorted.map(q =>
+      '<div class="learn-item">' +
+        '<div class="learn-num">' + q.n + '</div>' +
+        '<div class="learn-text">' + escHtml(q.lb) + '</div>' +
+        '<div class="learn-bar"><div class="learn-bar-fill" style="width:' + Math.round(q.c / mx * 100) + '%"></div></div>' +
+        '<div class="learn-cnt">' + q.c + '표</div>' +
+      '</div>'
+    ).join('') + '</div>';
+  document.getElementById('learnWrap').innerHTML = html;
+}
+
+// 메시지 월
+function renderMsg() {
+  const msgs = allRows.filter(r => String(r[0]) === 'message');
+  if (!msgs.length) {
+    document.getElementById('msgWall').innerHTML = '<div class="msg-empty">아직 메시지가 없습니다</div>';
+    return;
+  }
+  // 최신순
+  const sorted = [...msgs].reverse();
+  const html = sorted.map(m => {
+    const text = m[9] || m[8] || m[5] || '';
+    return '<div class="msg-card">' +
+      '<div class="msg-from">' + escHtml(m[2]) + ' · ' + escHtml(m[3]) + ' · ' + escHtml(m[1]) + '</div>' +
+      '<div class="msg-text">' + escHtml(text) + '</div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('msgWall').innerHTML = html;
+}
+
+// 자동 새로고침
+let autoTimer = null;
+function toggleAuto() {
+  const btn = document.getElementById('autoBtn');
+  const lbl = document.getElementById('autoLbl');
+  const dot = document.getElementById('liveDot');
+  if (autoTimer) {
+    clearInterval(autoTimer);
+    autoTimer = null;
+    btn.classList.remove('act');
+    lbl.textContent = '자동 새로고침';
+    dot.style.display = 'none';
+  } else {
+    autoTimer = setInterval(loadAll, 10000);
+    btn.classList.add('act');
+    lbl.textContent = '라이브 (10초)';
+    dot.style.display = 'inline-block';
+    loadAll();
+  }
+}
+
+// 페이지 로드 시 비밀번호 input 포커스
+window.addEventListener('load', () => {
+  document.getElementById('pwin').focus();
+});
+</script>
+</body>
+</html>
