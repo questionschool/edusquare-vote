@@ -173,11 +173,6 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
       </div>
       <div class="bchange" onclick="doReset()">변경</div>
     </div>
-    <div class="qnav">
-      <button class="nbtn" id="prevBtn" onclick="moveQ(-1)" disabled>← 이전</button>
-      <span class="qprog" id="qprog">1 / 15</span>
-      <button class="nbtn" id="nextBtn" onclick="moveQ(1)">다음 →</button>
-    </div>
     <div class="qbox">
       <div class="qnum" id="qnum"></div>
       <div class="qmain" id="qmain"></div>
@@ -187,6 +182,11 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
     <div class="slabel">② 선택 이유 (Why) — 선택사항</div>
     <textarea class="cinput" id="cinput" placeholder="왜 그렇게 선택하셨나요?"></textarea>
     <button class="sbtn" id="voteBtn" onclick="doVote()" disabled>투표하기</button>
+    <div class="qnav" style="margin-top:1rem;">
+      <button class="nbtn" id="prevBtn" onclick="moveQ(-1)" disabled>← 이전</button>
+      <span class="qprog" id="qprog">1번 / 15번</span>
+      <button class="nbtn" id="nextBtn" onclick="moveQ(1)" disabled>다음 →</button>
+    </div>
     <div class="mychbox" id="mychbox">
       <div class="myclabel">나의 선택</div>
       <div class="mycval" id="mycval"></div>
@@ -215,7 +215,7 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
     </div>
   </div>
 
-  <!-- 마무리 -->
+  <!-- 마무리 카드 1: 일치율 -->
   <div class="card" id="finalCard" style="display:none;">
     <div class="ubadge">
       <div class="avatar" id="fava"></div>
@@ -230,28 +230,53 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
       <div id="matchRateNum" style="font-size:48px; font-weight:800; color:#93c5fd; line-height:1.1; margin-bottom:0.4rem;">0%</div>
       <div style="font-size:13px; color:rgba(147,197,253,0.8);">당신은 고승재 대표님과 <span id="matchRateNum2" style="font-weight:700;color:#93c5fd;"></span> 일치된 선택을 해 주셨습니다. 🎯</div>
     </div>
-    <div class="divider"></div>
+    <button class="sbtn" id="goLearnBtn" onclick="showLearnCard()" style="display:none;">다음 → 도움된 질문 투표</button>
+  </div>
+
+  <!-- 마무리 카드 2: 도움된 질문 투표 -->
+  <div class="card" id="learnCard" style="display:none;">
+    <div class="ubadge">
+      <div class="avatar" id="lava"></div>
+      <div class="binfo">
+        <div class="bname" id="lname"></div>
+        <div class="bcohort" id="lcohort"></div>
+      </div>
+      <div class="bchange" onclick="doReset()">변경</div>
+    </div>
     <div id="learnSec">
-      <div class="okcheck">🎉</div>
-      <div class="oktitle" style="margin-bottom:0.5rem;">모든 문항 완료!</div>
-      <div class="oksub">경영자/리더로서 가장 큰 배움이 있었던 문항을 3개 선택해주세요.</div>
+      <div class="okcheck">🏆</div>
+      <div class="oktitle" style="margin-bottom:0.5rem;">경영자/리더로서 가장 큰 배움을 얻은 질문은?</div>
+      <div class="oksub">가장 도움이 된 질문 3개를 선택해주세요.</div>
       <div class="lhint" id="lhint" style="margin-top:1rem;">0 / 3개 선택됨</div>
       <div class="lgrid" id="lgrid" style="margin-top:0.6rem;"></div>
       <button class="sbtn" id="lsubBtn" onclick="doLearn()" disabled>선택 완료</button>
     </div>
     <div id="learnRes" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.9rem;">
-        <div class="slabel" style="margin-bottom:0;">경영자/리더로서 가장 큰 배움을 얻은 질문은?</div>
+        <div class="slabel" style="margin-bottom:0;">도움된 질문 순위</div>
         <button class="rfbtn" onclick="loadLearnRes()">↻ 새로고침</button>
       </div>
       <div id="lreslist"></div>
-      <div class="divider"></div>
-      <div class="slabel" style="margin-bottom:0.7rem;">교장님께 한 줄 메시지</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1rem;line-height:1.6;">철학포럼이 끝나고 고승재 교장님께 전하고 싶은 마음을 한 줄 남겨주세요.</div>
-      <input class="minput" id="msgin" type="text" placeholder="교장님께 전하고 싶은 한 마디...">
-      <button class="sbtn" id="msgBtn" onclick="doMsg()">전달하기 💌</button>
-      <div class="sentbox" id="sentbox">소중한 마음 잘 전달하겠습니다 💙<br><br>📅 <strong>6월 13일~14일 에듀스퀘어 리더십 캠프</strong>에서 다시 만나요!</div>
+      <button class="sbtn" style="margin-top:1.3rem;" onclick="showMsgCard()">다음 → 교장님께 메시지 💌</button>
     </div>
+  </div>
+
+  <!-- 마무리 카드 3: 교장님께 메시지 -->
+  <div class="card" id="msgCard" style="display:none;">
+    <div class="ubadge">
+      <div class="avatar" id="mava"></div>
+      <div class="binfo">
+        <div class="bname" id="mname"></div>
+        <div class="bcohort" id="mcohort"></div>
+      </div>
+      <div class="bchange" onclick="doReset()">변경</div>
+    </div>
+    <div class="okcheck">💌</div>
+    <div class="oktitle" style="margin-bottom:0.5rem;">교장님께 한 줄 메시지</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1rem;line-height:1.6;">철학포럼이 끝나고 고승재 교장님께 전하고 싶은 마음을 한 줄 남겨주세요.</div>
+    <input class="minput" id="msgin" type="text" placeholder="교장님께 전하고 싶은 한 마디...">
+    <button class="sbtn" id="msgBtn" onclick="doMsg()">전달하기 💌</button>
+    <div class="sentbox" id="sentbox">소중한 마음 잘 전달하겠습니다 💙<br><br>📅 <strong>6월 13일~14일 에듀스퀘어 리더십 캠프</strong>에서 다시 만나요!</div>
   </div>
 
   <div style="display:flex;gap:1.5rem;justify-content:center;margin-top:1.6rem;">
@@ -287,9 +312,9 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
       <div id="adminCon" style="display:none;">
         <div class="tabrow">
           <button class="tbtn act" id="tab-s" onclick="swTab('s')">문항별 요약</button>
-          <button class="tbtn" id="tab-d" onclick="swTab('d')">개별 응답</button>
-          <button class="tbtn" id="tab-l" onclick="swTab('l')">배움 투표</button>
-          <button class="tbtn" id="tab-m" onclick="swTab('m')">교장님 메시지</button>
+          <button class="tbtn" id="tab-d" onclick="swTab('d')">개인별 응답</button>
+          <button class="tbtn" id="tab-l" onclick="swTab('l')">도움된 질문</button>
+          <button class="tbtn" id="tab-m" onclick="swTab('m')">교장에게 보내는 메시지</button>
         </div>
         <div id="sv"></div>
         <div id="dv" style="display:none;"></div>
@@ -345,7 +370,7 @@ function txtW(ans, side) {
 let cQ = 0, picked = null, selLearn = [];
 let user = JSON.parse(localStorage.getItem('es_user') || 'null');
 let lVotes = JSON.parse(localStorage.getItem('es_v5') || '[]');
-let lLearn = JSON.parse(localStorage.getItem('es_l5') || 'null');
+let lLearn = null;
 let lMsg = localStorage.getItem('es_m5') || '';
 let cohortPick = null;
 
@@ -353,7 +378,7 @@ function load(v) { document.getElementById('loader').style.display = v ? 'flex' 
 async function post(d) { try { await fetch(SURL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}); } catch(e) {} }
 async function get() { try { const r = await fetch(SURL + '?t=' + Date.now()); return await r.json(); } catch(e) { return null; } }
 
-function hideAll() { ['loginCard','voteCard','doneCard','finalCard'].forEach(id => document.getElementById(id).style.display = 'none'); }
+function hideAll() { ['loginCard','voteCard','doneCard','finalCard','learnCard','msgCard'].forEach(id => document.getElementById(id).style.display = 'none'); }
 
 window.addEventListener('load', () => { if (user) showVote(); initGlobe(); });
 
@@ -404,8 +429,11 @@ function renderQ() {
   document.getElementById('qnum').textContent = q.n + '번 — ' + q.lb;
   document.getElementById('qmain').textContent = q.q;
   document.getElementById('qprog').textContent = QS[cQ].n + '번 / ' + QS.length + '번';
+  // 이전: cQ>0 이고 이전 문항을 투표했을 때만 활성
+  // 다음: cQ<마지막 이고 현재 문항을 투표했을 때만 활성
+  const curDone = !!lVotes.find(v => v.n === QS[cQ].n && v.name === user.name);
   document.getElementById('prevBtn').disabled = cQ === 0;
-  document.getElementById('nextBtn').disabled = cQ === QS.length - 1;
+  document.getElementById('nextBtn').disabled = cQ === QS.length-1 || !curDone;
   const done = lVotes.find(v => v.n === q.n && v.name === user.name);
   const dis = done ? ' disabled' : '';
   document.getElementById('crow').innerHTML =
@@ -426,6 +454,9 @@ function renderQ() {
     document.getElementById('mychbox').style.display = 'block';
     document.getElementById('mycval').textContent = done.choice + '. ' + done.choiceDesc;
     document.getElementById('myccmt').textContent = done.comment ? '💬 ' + done.comment : '';
+    // 투표 완료 상태: 이전/다음 모두 활성화 (범위 내에서)
+    document.getElementById('prevBtn').disabled = cQ === 0;
+    document.getElementById('nextBtn').disabled = cQ === QS.length - 1;
     loadResult();
   }
 }
@@ -523,13 +554,16 @@ function calcMatchRate() {
   return Math.round(total / (QS.length * 100) * 100);
 }
 
+function setBadge(avaId, nameId, cohortId) {
+  document.getElementById(avaId).textContent = user.name.slice(0,1);
+  document.getElementById(nameId).textContent = user.name;
+  document.getElementById(cohortId).textContent = user.cohort + ' · EDUSQUARE';
+}
+
 function showFinal() {
   hideAll();
   document.getElementById('finalCard').style.display = 'block';
-  document.getElementById('fava').textContent = user.name.slice(0,1);
-  document.getElementById('fname').textContent = user.name;
-  document.getElementById('fcohort').textContent = user.cohort + ' · EDUSQUARE';
-  // 일치율 표시
+  setBadge('fava','fname','fcohort');
   const rate = calcMatchRate();
   const rateEl = document.getElementById('matchRate');
   if (rateEl) {
@@ -538,7 +572,24 @@ function showFinal() {
     const n2 = document.getElementById('matchRateNum2');
     if (n2) n2.textContent = rate + '%';
   }
-  if (lLearn) { showLearnRes(); return; }
+  document.getElementById('goLearnBtn').style.display = 'block';
+}
+
+function showLearnCard() {
+  hideAll();
+  document.getElementById('learnCard').style.display = 'block';
+  setBadge('lava','lname','lcohort');
+  if (lLearn) {
+    document.getElementById('learnSec').style.display = 'none';
+    document.getElementById('learnRes').style.display = 'block';
+    loadLearnRes();
+    return;
+  }
+  document.getElementById('learnSec').style.display = 'block';
+  document.getElementById('learnRes').style.display = 'none';
+  selLearn = [];
+  document.getElementById('lhint').textContent = '0 / 3개 선택됨';
+  document.getElementById('lsubBtn').disabled = true;
   const lgrid = document.getElementById('lgrid');
   lgrid.innerHTML = '';
   QS.forEach(q => {
@@ -550,36 +601,49 @@ function showFinal() {
     lgrid.appendChild(btn);
   });
 }
-function togLearn(n) {
-  const idx = selLearn.indexOf(n);
-  if (idx >= 0) { selLearn.splice(idx,1); document.getElementById('lb'+n).className='lbtn'; }
-  else { if (selLearn.length >= 3) return; selLearn.push(n); document.getElementById('lb'+n).className='lbtn lsel'; }
-  document.getElementById('lhint').textContent = selLearn.length + ' / 3개 선택됨';
-  document.getElementById('lsubBtn').disabled = selLearn.length !== 3;
-}
-async function doLearn() {
-  if (selLearn.length !== 3) return;
-  const data = {type:'learn', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, selections:selLearn.join(',')};
-  lLearn = data; localStorage.setItem('es_l5', JSON.stringify(data));
-  load(true); await post(data); load(false);
-  showLearnRes();
-}
-function showLearnRes() {
-  document.getElementById('learnSec').style.display = 'none';
-  document.getElementById('learnRes').style.display = 'block';
+
+function showMsgCard() {
+  hideAll();
+  document.getElementById('msgCard').style.display = 'block';
+  setBadge('mava','mname','mcohort');
   if (lMsg) {
     document.getElementById('msgin').value = lMsg;
     document.getElementById('msgin').disabled = true;
     document.getElementById('msgBtn').style.display = 'none';
     document.getElementById('sentbox').style.display = 'block';
   }
+}
+
+function togLearn(n) {
+  const idx = selLearn.indexOf(n);
+  if (idx >= 0) {
+    selLearn.splice(idx, 1);
+    document.getElementById('lb' + n).className = 'lbtn';
+  } else {
+    if (selLearn.length >= 3) return;
+    selLearn.push(n);
+    document.getElementById('lb' + n).className = 'lbtn lsel';
+  }
+  document.getElementById('lhint').textContent = selLearn.length + ' / 3개 선택됨';
+  document.getElementById('lsubBtn').disabled = selLearn.length !== 3;
+}
+
+async function doLearn() {
+  if (selLearn.length !== 3) return;
+  const data = {type:'learn', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, selections:selLearn.join(',')};
+  lLearn = data;
+  localStorage.setItem('es_l6', JSON.stringify(data));
+  load(true); await post(data); load(false);
+  document.getElementById('learnSec').style.display = 'none';
+  document.getElementById('learnRes').style.display = 'block';
   loadLearnRes();
 }
+
 async function loadLearnRes() {
   const rows = await get();
   if (!rows) return;
   const learns = rows.filter(r => String(r[0])==='learn');
-  const cnt = {}; QS.forEach(q => cnt[q.n]=0);
+  const cnt = {}; QS.forEach(q => cnt[q.n] = 0);
   learns.forEach(r => { (r[4]||'').split(',').forEach(n => { if(cnt[n]!==undefined) cnt[n]++; }); });
   const sorted = QS.map(q => ({...q, c:cnt[q.n]})).sort((a,b) => b.c-a.c);
   const mx = sorted[0]?.c || 1;
@@ -589,18 +653,19 @@ async function loadLearnRes() {
     '<div class="lrcnt">'+q.c+'표</div></div>'
   ).join('');
 }
+
 async function doMsg() {
   const msg = document.getElementById('msgin').value.trim();
   if (!msg) return;
   const data = {type:'message', time:new Date().toLocaleString('ko-KR'), name:user.name, cohort:user.cohort, message:msg};
-  lMsg = msg; localStorage.setItem('es_m5', msg);
+  lMsg = msg;
+  localStorage.setItem('es_m5', msg);
   load(true); await post(data); load(false);
   document.getElementById('msgin').disabled = true;
   document.getElementById('msgBtn').style.display = 'none';
   document.getElementById('sentbox').style.display = 'block';
 }
 
-// 집계
 function togPub() { const p=document.getElementById('pubPanel'); const h=p.style.display==='none'||p.style.display===''; p.style.display=h?'block':'none'; if(h) loadPub(); }
 function togAdmin() { const p=document.getElementById('adminPanel'); p.style.display=(p.style.display==='none'||p.style.display==='')?'block':'none'; }
 function chkPw() {
