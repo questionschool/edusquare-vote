@@ -209,9 +209,8 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
     <div class="oktitle" id="doneTitle"></div>
     <div class="oksub" id="doneSub"></div>
     <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <button class="nbtn" id="donePrev" onclick="goPrev()" style="padding:11px 20px;">← 이전 문항</button>
       <button class="nbtn" id="doneNext" onclick="goNext()" style="padding:11px 20px;">다음 문항 →</button>
-      <button class="nbtn" id="doneSkip" onclick="goSkipped()" style="padding:11px 20px;display:none;">⚠️ 빠진 문항으로</button>
+      <button class="nbtn" id="doneSkip" onclick="goSkipped()" style="padding:11px 20px;display:none;">⚠️ 빠진 문항으로 →</button>
       <button class="nbtn" id="doneFinal" onclick="showFinal()" style="padding:11px 20px;display:none;">최종 설문 →</button>
     </div>
   </div>
@@ -226,7 +225,12 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
       </div>
       <div class="bchange" onclick="doReset()">변경</div>
     </div>
-    <div id="matchRate" style="display:none; background:rgba(59,130,246,0.12); border:0.5px solid rgba(59,130,246,0.35); border-radius:11px; padding:1rem 1.3rem; margin-bottom:1.3rem; font-size:15px; color:#93c5fd; font-weight:600; text-align:center; line-height:1.6;"></div>
+    <div id="matchRate" style="display:none; background:rgba(59,130,246,0.12); border:0.5px solid rgba(59,130,246,0.35); border-radius:11px; padding:1.2rem 1.3rem; margin-bottom:1.3rem; text-align:center;">
+      <div style="font-size:13px; color:rgba(147,197,253,0.8); margin-bottom:0.5rem;">고승재 되기 선택 게임의 결과</div>
+      <div id="matchRateNum" style="font-size:48px; font-weight:800; color:#93c5fd; line-height:1.1; margin-bottom:0.4rem;">0%</div>
+      <div style="font-size:13px; color:rgba(147,197,253,0.8);">당신은 고승재 대표님과 <span id="matchRateNum2" style="font-weight:700;color:#93c5fd;"></span> 일치된 선택을 해 주셨습니다. 🎯</div>
+    </div>
+    <div class="divider"></div>
     <div id="learnSec">
       <div class="okcheck">🎉</div>
       <div class="oktitle" style="margin-bottom:0.5rem;">모든 문항 완료!</div>
@@ -454,18 +458,22 @@ async function doVote() {
   document.getElementById('doneCard').style.display = 'block';
   document.getElementById('doneTitle').textContent = user.name + '님 · ' + q.n + '번 완료';
   document.getElementById('doneSub').textContent = picked + '. ' + data.choiceDesc;
-  // 버튼 상태 설정
-  document.getElementById('donePrev').style.display = cQ > 0 ? 'inline-block' : 'none';
-  document.getElementById('doneNext').style.display = cQ < QS.length-1 ? 'inline-block' : 'none';
-  const skipped = QS.findIndex(q2 => !lVotes.find(v => v.n === q2.n && v.name === user.name));
-  const hasSkip = skipped >= 0 && skipped !== cQ+1;
-  document.getElementById('doneSkip').style.display = hasSkip ? 'inline-block' : 'none';
-  // 모든 문항 완료시 배움 투표 버튼
+  // 마지막 문항(15번)이면 빠진 문항 or 최종설문으로
   const allOK = QS.every(q2 => lVotes.find(v => v.n === q2.n && v.name === user.name));
-  document.getElementById('doneFinal').style.display = allOK ? 'inline-block' : 'none';
+  const isLast = cQ === QS.length - 1;
+  const skipped = QS.findIndex(q2 => !lVotes.find(v => v.n === q2.n && v.name === user.name));
   if (allOK) {
     document.getElementById('doneNext').style.display = 'none';
     document.getElementById('doneSkip').style.display = 'none';
+    document.getElementById('doneFinal').style.display = 'inline-block';
+  } else if (isLast && skipped >= 0) {
+    document.getElementById('doneNext').style.display = 'none';
+    document.getElementById('doneSkip').style.display = 'inline-block';
+    document.getElementById('doneFinal').style.display = 'none';
+  } else {
+    document.getElementById('doneNext').style.display = cQ < QS.length-1 ? 'inline-block' : 'none';
+    document.getElementById('doneSkip').style.display = 'none';
+    document.getElementById('doneFinal').style.display = 'none';
   }
 }
 function goNext() {
@@ -478,6 +486,9 @@ function goSkipped() {
   const skip = QS.findIndex(q => !lVotes.find(v => v.n === q.n && v.name === user.name));
   if (skip >= 0) { cQ = skip; showVote(); }
   else showFinal();
+}
+function goPrev() {
+  if (cQ > 0) { cQ--; showVote(); }
 }
 
 async function loadResult() {
@@ -522,13 +533,22 @@ function showFinal() {
   const rate = calcMatchRate();
   const rateEl = document.getElementById('matchRate');
   if (rateEl) {
-    rateEl.textContent = '고승재 되기 선택 게임의 결과 : 당신은 고승재 대표님과 ' + rate + '% 일치된 선택을 해 주셨습니다. 🎯';
     rateEl.style.display = 'block';
+    document.getElementById('matchRateNum').textContent = rate + '%';
+    const n2 = document.getElementById('matchRateNum2');
+    if (n2) n2.textContent = rate + '%';
   }
   if (lLearn) { showLearnRes(); return; }
-  document.getElementById('lgrid').innerHTML = QS.map(q =>
-    '<button class="lbtn" id="lb'+q.n+'" onclick="togLearn(\''+q.n+'\')"><strong>'+q.n+'번</strong> '+q.lb+'<span class="lsub">'+q.q.slice(0,40)+'...</span></button>'
-  ).join('');
+  const lgrid = document.getElementById('lgrid');
+  lgrid.innerHTML = '';
+  QS.forEach(q => {
+    const btn = document.createElement('button');
+    btn.className = 'lbtn';
+    btn.id = 'lb' + q.n;
+    btn.innerHTML = '<strong>' + q.n + '번</strong> ' + q.lb + '<span class="lsub">' + q.q.slice(0,40) + '...</span>';
+    btn.addEventListener('click', function() { togLearn(q.n); });
+    lgrid.appendChild(btn);
+  });
 }
 function togLearn(n) {
   const idx = selLearn.indexOf(n);
