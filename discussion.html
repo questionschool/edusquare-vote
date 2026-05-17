@@ -133,6 +133,9 @@ body { padding:24px 32px 80px; }
 .cli-text { font-size:14px; color:rgba(255,255,255,0.9); font-weight:500; }
 .closing-shuffle { background:rgba(129,140,248,0.18); border:0.5px solid rgba(129,140,248,0.45); color:#a5b4fc; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; transition:all 0.15s; }
 .closing-shuffle:hover { background:rgba(129,140,248,0.32); color:#fff; border-color:#a5b4fc; }
+.closing-shuffle:disabled { opacity:0.4; cursor:not-allowed; }
+.closing-shuffle:disabled:hover { background:rgba(129,140,248,0.18); color:#a5b4fc; border-color:rgba(129,140,248,0.45); }
+.closing-locked { padding:40px 20px; }
 
 @media (max-width:900px) {
   .open-row { grid-template-columns:1fr; }
@@ -531,14 +534,19 @@ function invitePerson(name, cohort) {
 // === 클로징 ===
 function renderClosing() {
   const senders = getClosingCandidates();
-  closingPick = pickOne(senders);
+  closingPick = null; // 처음엔 비공개
+  const lockedHtml =
+    '<div class="closing-locked">' +
+      '<div class="lock-emoji" style="font-size:48px;opacity:0.5;margin-bottom:14px;">🔒</div>' +
+      '<div style="font-size:14px;color:rgba(255,255,255,0.5);line-height:1.5;">아래 버튼을 누르면 무작위로 한 분이 선정됩니다</div>' +
+    '</div>';
   document.getElementById('mainArea').innerHTML =
     '<div class="closing-card">' +
       '<div class="closing-tag">🌙 CLOSING</div>' +
       '<div class="opening-title">클로징 — 소감 나누기</div>' +
       '<div class="opening-sub">참가한 학우 한 분께 소감을 청합니다 · 총 ' + senders.length + '명 참여' + '</div>' +
-      '<div class="closing-pick" id="closingPick">' + buildClosingInner(closingPick) + '</div>' +
-      '<button class="closing-shuffle" onclick="shuffleClosing()">🎲 다시 추첨</button>' +
+      '<div class="closing-pick" id="closingPick">' + lockedHtml + '</div>' +
+      '<button class="closing-shuffle" id="closingShuffleBtn" onclick="shuffleClosing()"' + (senders.length === 0 ? ' disabled' : '') + '>🎲 랜덤으로 한 명 뽑기</button>' +
     '</div>';
 }
 
@@ -585,6 +593,7 @@ function buildClosingInner(picked) {
 
 function shuffleClosing() {
   const senders = getClosingCandidates();
+  if (senders.length === 0) return;
   closingPick = pickOne(senders);
   const box = document.getElementById('closingPick');
   if (!box) return;
@@ -592,6 +601,9 @@ function shuffleClosing() {
   box.classList.remove('flash');
   void box.offsetWidth;
   box.classList.add('flash');
+  // 버튼 라벨 변경
+  const btn = document.getElementById('closingShuffleBtn');
+  if (btn) btn.textContent = '🎲 다시 추첨';
 }
 
 // === 문항별 메인 (기존 로직) ===
@@ -599,7 +611,6 @@ function renderMain(qn) {
   const q = QS.find(x => x.n === qn);
   if (!q) return;
   const r = getResponsesForQ(qn);
-  const showC = q.ans === 'C';
 
   pickState = { a:null, b:null, c:null };
 
@@ -611,24 +622,22 @@ function renderMain(qn) {
       '<div class="q-situation">' + escHtml(q.q) + '</div>' +
     '</div>';
 
-  // ② 선택안 카드
+  // ② 선택안 카드 (A/B만)
   const optionsCard =
     '<div class="options-card">' +
       '<div class="options-head">선택안</div>' +
-      '<div class="options-grid' + (showC ? ' has-c' : '') + '">' +
+      '<div class="options-grid">' +
         '<div class="opt opt-a"><span class="opt-letter">A</span><span class="opt-text">' + escHtml(q.a) + '</span></div>' +
         '<div class="opt opt-b"><span class="opt-letter">B</span><span class="opt-text">' + escHtml(q.b) + '</span></div>' +
-        (showC ? '<div class="opt opt-c"><span class="opt-letter">C</span><span class="opt-text">경우에 따라 다르다 (이유로 답변)</span></div>' : '') +
       '</div>' +
     '</div>';
 
-  // ③ 토론자 추첨 카드
+  // ③ 토론자 추첨 카드 (A/B만)
   const discussCard =
     '<div class="options-head" style="margin-top:6px;">토론자 추첨</div>' +
-    '<div class="discuss-area' + (showC ? ' has-c' : '') + '" id="discussArea">' +
+    '<div class="discuss-area" id="discussArea">' +
       buildSide('a', r.a) +
       buildSide('b', r.b) +
-      (showC ? buildSide('c', r.c) : '') +
     '</div>';
 
   document.getElementById('mainArea').innerHTML = questionCard + optionsCard + discussCard;
