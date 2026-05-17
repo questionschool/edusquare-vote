@@ -458,8 +458,13 @@ function renderQGrid() {
     // 정답 표기
     const ansTxt = q.ans === 'C' ? 'C. 경우에 따라 다르다 (이유 작성 시 정답)' : (q.ans + '. ' + (q.ans === 'A' ? q.a : q.b));
 
-    // 이유 목록
-    const reasons = qv.filter(v => String(v[8] || '').trim());
+    // 이유 목록 (A → B → 무선택 순으로 그룹핑)
+    const reasons = qv.filter(v => String(v[8] || '').trim()).sort((a, b) => {
+      const ca = String(a[5] || ''), cb = String(b[5] || '');
+      // A < B < '' (무선택은 마지막)
+      const rank = c => c === 'A' ? 0 : c === 'B' ? 1 : 2;
+      return rank(ca) - rank(cb);
+    });
     const reasonsHtml = reasons.length ? '<div style="margin-top:6px;">' + reasons.map(v => {
       const ch = String(v[5] || '');
       const meta = (ch ? (ch + '. ' + String(v[6] || '')) : '— (이유로 답변)') + ' · ' + escHtml(v[2]) + ' · ' + escHtml(v[3]);
