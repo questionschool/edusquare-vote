@@ -74,6 +74,9 @@ body { padding:24px 32px 80px; }
 .qp-count-big { font-size:38px; font-weight:800; color:#fff; line-height:1; margin-top:10px; }
 .qp-count-big.zero { color:rgba(255,255,255,0.25); }
 .qp-count-unit { font-size:14px; font-weight:600; color:rgba(255,255,255,0.4); margin-left:4px; }
+.qp-refresh { background:rgba(100,180,255,0.1); border:0.5px solid rgba(100,180,255,0.3); color:#93c5fd; width:28px; height:28px; border-radius:7px; cursor:pointer; font-size:14px; font-family:inherit; line-height:1; padding:0; transition:all 0.15s; }
+.qp-refresh:hover { background:rgba(100,180,255,0.22); border-color:rgba(100,180,255,0.55); transform:rotate(180deg); }
+.qp-refresh:active { transform:rotate(360deg); }
 
 .qp-rate { background:rgba(255,255,255,0.03); border:0.5px solid rgba(255,255,255,0.1); border-radius:11px; padding:16px 20px; cursor:pointer; transition:all 0.15s; }
 .qp-rate:hover { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.18); }
@@ -468,7 +471,10 @@ function renderQGrid() {
     return '<div class="q-pair">' +
       // 왼쪽: 응답자 수
       '<div class="qp-count">' +
-        '<span class="q-pair-num-badge">Q' + q.n + '</span>' +
+        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">' +
+          '<span class="q-pair-num-badge">Q' + q.n + '</span>' +
+          '<button class="qp-refresh" onclick="event.stopPropagation(); loadAll();" title="진행 현황 새로고침">↻</button>' +
+        '</div>' +
         '<div class="qp-count-label">' + escHtml(q.lb) + '</div>' +
         '<div class="' + countCls + '">' + qv.length + '<span class="qp-count-unit">명 응답</span></div>' +
       '</div>' +
