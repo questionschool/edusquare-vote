@@ -179,8 +179,8 @@ canvas#gc { position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; }
     </div>
     <div class="slabel">① 선택</div>
     <div class="crow" id="crow"></div>
-    <div class="slabel">② 선택 이유 (Why) — 선택사항</div>
-    <textarea class="cinput" id="cinput" placeholder="왜 그렇게 선택하셨나요?"></textarea>
+    <div class="slabel" id="reasonLbl">② 선택 이유 (Why) — 선택사항</div>
+    <textarea class="cinput" id="cinput" placeholder="왜 그렇게 선택하셨나요?" oninput="updateVoteBtn()"></textarea>
     <button class="sbtn" id="voteBtn" onclick="doVote()" disabled>투표하기</button>
     <div class="qnav" style="margin-top:1rem;">
       <button class="nbtn" id="prevBtn" onclick="moveQ(-1)" disabled>← 이전</button>
@@ -344,21 +344,21 @@ const SURL = 'https://script.google.com/macros/s/AKfycbzPCS9MoGvwqxYZU_YEANPu9Hf
 const PWKEY = 'edusquare0517';
 
 const QS = [
-  {n:'1',  lb:'인사발령 방식',      q:'조직의 효율성을 위해 반드시 필요한 핵심 인재에 대한 발령이다. 해당 직원은 현재 맡은 업무에 만족하고 있으나, 새 직무가 회사 전체에는 훨씬 더 중요한 역할을 맡게 되는 상황이다.', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다', ans:'B', desc:'직원을 조직의 도구가 아닌 파트너로 대우해야 장기적 신뢰를 얻을 수 있다.'},
-  {n:'2',  lb:'업무비 비용청구',    q:'회사 업무용도로 돈을 쓰고는 비용청구를 하지 않는다.', a:'칭찬한다', b:'혼낸다', ans:'B', desc:'이것은 내 돈이 회사돈이고 회사돈이 내 돈이라는 식으로 흘러가게 된다. 회사돈과 개인 돈은 철저히 분리해야 한다.'},
-  {n:'3',  lb:'국가기관 인허가 불가', q:'인허가 관련, 국가기관에서 안 된다는 답변이 왔다.', a:'국가의 법이니 받아들인다', b:'끝까지 방법을 찾아낸다', ans:'B', desc:'2007년 메이코 개별지도 도입 시, 강남교육청의 불허 통보를 받고 서울시교육청까지 직접 찾아가 설득해 인허가를 받아냈다.'},
-  {n:'4',  lb:'지사 구조 도입',     q:'지점이 200개가 넘어가면서 "관리 효율을 위해 권역별 지사를 두자"는 제안이 나왔다.', a:'관리 효율을 위해 지사 구조를 도입한다', b:'지사를 두지 않는 현재 체제를 계속 유지한다', ans:'B', desc:'에듀플렉스·메이코 모두 지사를 두지 않는 전략으로 성공. 지사 구조는 점주와 본사 사이를 멀어지게 해 브랜드 수명을 단축시킨다.'},
-  {n:'5',  lb:'유능한 리더 겸임',   q:'유능한 리더는 겸임을 시키면 인건비도 절약되고 사업도 잘 진행된다.', a:'맞다', b:'틀리다', ans:'B', desc:'계속 겸임을 시키는 것은 경험상 결코 이득이 아니었다. 리더가 온전히 집중해서 제대로 결과를 내길 바란다면 겸임은 최대한 지양해야 한다.'},
-  {n:'6',  lb:'5대5 동업 가맹',    q:'5대5 동업으로 지점을 개설하겠다는 2명의 가맹문의자가 나타났다.', a:'승인한다', b:'5대5는 안된다고 이야기한다', ans:'B', desc:'5:5 구조는 의사결정 시 갈등 가능성이 매우 높다. 잘 되면 내 탓, 안 되면 니 탓이 되기 때문이다.'},
-  {n:'7',  lb:'본사 직원 FC 지점',  q:'본사직원이 FC지점들이 잘 되는 것을 보고, 투자는 본인이 100% 해서 FC지점을 개설·소유하며 본사에서 계속 근무하고 싶다고 한다.', a:'허락한다', b:'허락하지 않는다', ans:'B', desc:'본사 직원들이 자신이 소유한 지점에만 집중하고 FC 지점들을 공정하게 대하지 않아 결국 조직이 무너진 사례들이 있다.'},
-  {n:'8',  lb:'적자 상황 가맹문의자', q:'적자가 예상되는 상황에서 가맹문의자 면접에 별로인 분이 문의를 했다.', a:'합격시킨다', b:'불합격시킨다', ans:'A', desc:'22년간 철학과 원칙을 지키려 했지만, 절대절명의 위기에서 어쩔 수 없었던 경우가 아주 옛날에 한 번 있었다. 이런 상황이 되지 않게 만드는 것이 올바른 경영자의 역할이다.'},
-  {n:'9',  lb:'원장연합회 협박',    q:'원장연합회에서 매니저 기본봉 하한선을 낮추자고 주장하며, 거부 시 단체행동이나 대거 탈퇴를 하겠다고 협박한다.', a:'받아들인다', b:'거부한다', ans:'B', desc:'에듀플렉스 전체 역사에서 가장 후회하는 순간. 2005년. 지금도 꿈에 나올 정도로 후회된다. 단기 압박에 굴복하지 않고 원칙을 지켰으면 한다.'},
-  {n:'10', lb:'팀워크 안 되는 멤버', q:'역량은 뛰어나나 동료들과 합심이 안되는 멤버는?', a:'내보낸다', b:'둔다', ans:'A', desc:'기회는 여러 번 주겠지만, 그래도 개선되지 않는다면 결국 조직을 떠나는 수 밖에 없다. 조직은 개인의 역량으로만 성과가 나는 곳이 결코 아니기 때문이다.'},
-  {n:'11', lb:'정책 위반 최우수 지점', q:'어느 FC 지점에서 표준 운영 방식에 위배되는 운영이 밝혀졌다. 그런데 이 지점은 매출, 이익, 매니저 근속 등 모든 지표가 상위권이다.', a:'가맹계약서에 준하여 조치한다', b:'예외를 허용한다', ans:'C', desc:'의도성을 본다. 나쁜 의도는 엄벌. 좋은 의도로 표준에서 벗어난 시도는 예외를 두기도 한다. 단 표준 위반은 명확히 고지하고 파일럿 승인을 받도록 유도한다.'},
-  {n:'12', lb:'마이크로 매니지먼트', q:'어느 본부장이 대표이사에게 왜 이렇게 마이크로 매니지먼트를 하냐면서, 좀 믿고 맡겨달라고 한다.', a:'믿고 맡긴다', b:'계속 마이크로 매니징을 한다', ans:'C', desc:'믿고 맡겨달라고 해서 그냥 맡기는 것은 올바르지 않다. 맡겨도 된다는 판단이 설 때부터 믿고 맡긴다.'},
-  {n:'13', lb:'재무위기 공개',      q:'회사 재무 상황이 심각하다. 지금 공개하면 핵심 인재들이 먼저 이직할 수도 있다. 말해야 하는가?', a:'지금은 말하지 않는다. 해결 후 투명하게 공유한다', b:'지금 말한다. 투명성의 원칙에는 편할 때만이라는 조건이 없다', ans:'B', desc:'참모들에게 사실을 숨기지 않는 것이 좋다. 이런 상황에서 진짜와 가짜가 갈린다. 솔직하게 공유하고 같이 해결하자고 이야기한 것이 언제나 더 나았다.'},
-  {n:'14', lb:'어제 내린 결정 번복', q:'어제 본부장 전체 회의에서 확신을 가지고 의사결정을 내렸다. 자기 전 곰곰이 생각해보니 내 의사결정이 잘못되었다는 생각이 들었다.', a:'그대로 밀어붙인다', b:'의사결정이 잘못되었음을 인정하고 결정을 번복한다', ans:'B', desc:'중요한 것은 대표이사의 권위가 아니라 일이 올바른 방향으로 행해지는 것이다. 조변석개 하는 것을 두려워하지 않는 리더가 이런 AI 시대에 살아남을 수 있다.'},
-  {n:'15', lb:'마지막 질문',        q:'고승재 교장님이 에듀플렉스의 의사결정구조를 AI로 만들 프로젝트, \'경영철학 탐구 TFT\'를 만들고 싶어한다. 에듀스퀘어 학우로서 당신의 선택은?', a:'참여한다', b:'참여하지 않는다', ans:'A', desc:'함께 만들어가는 것이 에듀스퀘어의 정신입니다.'}
+  {n:'1',  lb:'인사발령 방식',      q:'조직의 효율성을 위해 반드시 필요한 핵심 인재에 대한 발령이다. 해당 직원은 현재 맡은 업무에 만족하고 있으나, 새 직무가 회사 전체에는 훨씬 더 중요한 역할을 맡게 되는 상황이다.', a:'인사발령은 회사의 권리이므로 그냥 공지한다', b:'인사발령 전 해당 직원과 사전에 충분히 논의한다', ans:'B', desc:'인사발령은 회사의 권리이기 이전에, 해당 직원의 삶과 역할에 대한 중요한 의사결정이다. 직원을 단순히 \'조직의 도구\'가 아닌 \'파트너\'로 대우해야 장기적인 신뢰를 얻을 수 있다.'},
+  {n:'2',  lb:'업무비 비용청구 안 하는 직원',    q:'회사 업무용도로 돈을 쓰고는 비용청구를 하지 않는다.', a:'칭찬한다', b:'혼낸다', ans:'B', desc:'회사의 업무용도로 돈을 쓰고 비용청구를 하지 않는 행위는 직원 개인의 \'헌신\'으로 보일 수 있으나, 이는 투명한 재무 프로세스를 무너뜨리고 내부 회계 기준에 혼란을 야기한다. 이것은 내 돈이 회사돈이고 회사돈이 내 돈이라는 식으로 흘러가게 된다. 회사돈을 개인용도로 유용하는 경우는 결코 용서하지 않는다.\n\n올해의 인물. 이병철 회장의 경우, 아들인 이건희 회장이 용인 자연농원 에버랜드의 골프장을 돈을 안 내고 이용했다는 이유로 엎드려 뻗쳐를 시키고 몽둥이 찜질을 했다는 일화가 있다. 그만큼 회사의 돈과 개인의 돈을 철저히 분리하라는 의미이다.'},
+  {n:'3',  lb:'국가기관 인허가 불가 통보', q:'인허가 관련, 국가기관에서 안 된다는 답변이 왔다.', a:'국가의 법이니 받아들인다', b:'끝까지 방법을 찾아낸다', ans:'B', desc:'2007년 메이코 개별지도를 처음 도입하려고 했을때, 강남교육청에서 학원으로 인허가 내줄 수 없다고 답변을 함. 고승재 대표이사는 강남교육청 담당자에게 확실히 모르겠고 자신 없으면, 자신을 직접 서울시교육청 담당자와 면담할 수 있게 해달라고 요청했고, 실제로 서울시교육청 담당자에게 설명 및 설득하여 학원 인허가가 가능하도록 만듬.'},
+  {n:'4',  lb:'지사(총판) 구조 도입 여부',     q:'지점이 200개가 넘어가면서 "관리 효율을 위해 권역별 지사를 두자"는 제안이 나왔다.', a:'관리 효율을 위해 지사 구조를 도입한다', b:'지사를 두지 않는 현재 체제를 계속 유지한다', ans:'B', desc:'"에듀플렉스·메이코 모두 지사를 두지 않는 전략으로 성공. 대부분 교육 프랜차이즈는 지사가 점주와 본사 사이를 멀어지게 해 브랜드 수명이 7~8년에 끝난다"는 20년 경험. 단기 효율이 장기 브랜드를 갉아먹는다.'},
+  {n:'5',  lb:'유능한 리더의 겸임',   q:'유능한 리더에게 여러 업무를 겸임하도록 하면 인건비 절약과 사업 진행 효율성이 높아질 것으로 예상되는 상황.', a:'맞다', b:'틀리다', ans:'B', desc:'이것도 후회하는 점 몇 가지 중의 하나인데, 해당 리더가 온전히 집중해서 제대로 결과를 내길 바란다면, 겸임은 최대한 지양해야 한다. 리더 중 한 명이 갑자기 공석이 되어 임시적으로 겸임을 해야 하는 경우는 어쩔 수 없다고 해도, 계속 겸임을 시키는 것은 내 경험상 결코 이득이 아니었다.'},
+  {n:'6',  lb:'5대5 동업 가맹 신청',    q:'5대5 지분으로 동업하여 지점을 개설하겠다는 2명의 가맹문의자가 나타났다.', a:'승인한다', b:'5대5는 안된다고 이야기한다', ans:'B', desc:'동업 형태, 특히 50:50의 지분 구조는 의사결정 시 갈등 발생 가능성이 매우 높으며, 이는 지점 운영의 불안정성과 장기적인 실패로 이어질 확률이 높다. 개별 지점의 실패는 브랜드 전체의 명성에 악영향을 미치기 때문에 근본적으로 불안정한 구조는 허용하지 않는다. 지점의 안정적인 성공을 위해서는 명확한 단독 오너십 또는 50%를 초과하는 주도적인 의사결정권자가 필수적이라고 판단한다.\n\n간혹 직영 : 프랜차이즈 5:5를 시도하는 회사들도 있으나 좋은 결과로 끝나는 모습을 결코 보지 못했다. 잘 되면 내 탓, 안 되면 니 탓이 되기 때문이다. 이런 식의 구조는 애시당초 만들지 않는 것이 좋다.'},
+  {n:'7',  lb:'본사 직원 FC 지점 개설 희망',  q:'본사직원이 FC지점들이 잘 되는 것을 보고, 투자는 본인이 100% 해서 FC지점을 개설·소유하며 본사에서 계속 근무하고 싶다고 한다.', a:'허락한다', b:'허락하지 않는다', ans:'B', desc:'에듀플렉스·메이코 모두 본사 직원의 FC 병행 운영을 허락하지 않는다. 신기하게도 이런 정책들은 사전에 논의된 것이 아니었다. 와타나베 회장님과 저의 결이 너무나도 맞는다고나 할까. 토즈 스터디센터 및 몇몇 외식업 프랜차이즈는 이를 허용하여 당장에는 이익을 봤지만, 본사 직원들이 자신이 소유한 지점에만 집중하고, FC 지점들을 공정하게 대하지 않아 결국 조직이 무너지고 사업을 접게 되었다. 다만 예외적인 경우가 있는데, 이미 뛰어난 성과를 보이고 있는 FC오너를 본부장급으로 영입할 때에는 허용한다. 본사가 먼저 제안한 것이기 때문이다. (2008년 지점관리팀 창설시 탁남진 원장님, 현재 홍지헌 본부장님의 케이스)'},
+  {n:'8',  lb:'적자 상황에서 별로인 가맹문의자', q:'적자가 예상되는 상황에서 가맹문의자 면접에 별로인 분이 문의를 했다.', a:'합격시킨다', b:'불합격시킨다', ans:'A', desc:'22년간 철학과 원칙을 지키기 위해 최선을 다하려고 노력했지만, 정말 절대절명의 위기에서 어쩔 수 없었던 경우가 아주 옛날에 한 번 있었다. 회사의 생존 앞에서는 철학과 원칙이 심각한 도전을 받는다. 이런 상황이 되지 않게 만드는 것이 올바른 경영자의 역할일 것이다.'},
+  {n:'9',  lb:'원장연합회 압박(협박)',    q:'원장연합회에서 매니저 기본봉 하한선을 낮추자고 주장하며, 거부 시 단체행동이나 대거 탈퇴를 하겠다고 협박한다.', a:'받아들인다', b:'거부한다', ans:'B', desc:'에듀플렉스 전체 역사에서 가장 후회하는 순간이다. 인생에서 되돌리고 싶은 순간이 다들 몇 번은 있을텐데, 나로서는 가장 되돌리고 싶은 순간이다. 2005년. 지금도 꿈에 나올 정도로 후회된다. 단체 행동이나 대거 탈퇴와 같은 단기적인 압박(협박)에 굴복하지 않고 원칙을 지켰으면 한다. 안 그러면 나중에 반드시 후회할 것이기에.'},
+  {n:'10', lb:'동료와 합심이 안 되는 멤버', q:'개인의 역량은 뛰어나나 동료들과 합심이 안 된다고 자주 피드백을 받는 멤버가 조직내에서 있다면?', a:'내보낸다', b:'둔다', ans:'A', desc:'기회는 여러 번 주겠지만, 그래도 개선되지 않는다면 결국 조직을 떠나는 수 밖에 없다. 조직은 개인의 역량으로만 성과가 나는 곳이 결코 아니기 때문이다.'},
+  {n:'11', lb:'정책을 위반하는 상위권 지점', q:'어느 FC 지점에서 표준 운영 방식에 위배되는 운영을 하고 있다는 사실이 밝혀졌다. 그런데 이 지점은 매출, 이익, 매니저 근속 등 모든 지표가 상위권이다.', a:'가맹계약서에 준하여 조치한다', b:'예외를 허용한다', ans:'C', desc:'무언가 잘못한 점이 발견되었을 때, 의도성을 본다. 철학을 무시하거나, 나쁜 의도를 가지고 행한 행위는 엄벌에 처한다. 그러나, 좋은 의도로 행한 행위에 대한 처벌수위는 달라져야 한다. 향후 전국 지점에 유익할 수 있는 방향으로 좋은 의도를 가지고 표준에서 벗어난 시도의 경우에는 예외를 두기도 한다. 그러나, 표준에서 벗어났다는 점은 명확히 고지하고, 파일럿 승인을 공식적으로 받도록 유도한다.'},
+  {n:'12', lb:'마이크로 매니지먼트 중단 요청', q:'어느 본부장이 대표이사에게 왜 이렇게 마이크로 매니지먼트를 하냐면서, 좀 믿고 맡겨달라고 한다.', a:'믿고 맡긴다', b:'계속 마이크로 매니징을 한다', ans:'C', desc:'대표이사는 어느 본부장에게는 어느 정도 범위까지 믿고 맡겨도 될지에 대해 명확한 기준을 가지고 본부장과 그 부서의 역량을 정확히 파악하고 있어야 한다. 믿고 맡겨달라고 해서, 그냥 그렇게 믿고 맡기는 것은 올바른 대표이사의 자세는 아니다. 믿고 맡겨도 된다고 판단이 될 때부터 믿고 맡긴다.'},
+  {n:'13', lb:'재무 위기 상황 공개 여부',      q:'회사 재무 상황이 생각보다 심각하다. 대표는 3개월 안에 해결될 것이라 판단한다. 지금 이 사실을 직원들에게 공개하면 핵심 인재들이 이직할 수도 있다.', a:'지금은 말하지 않는다. 해결한 다음 투명하게 공유한다', b:'지금 말한다. 투명성의 원칙에는 \'편할 때만\'이라는 조건이 없다', ans:'B', desc:'(A를 선택한 리더도 틀리지 않았다고 말하기 어렵지만) 결과적으로는 참모들에게 사실을 숨기지 않는 것이 좋다. 안 그러면 당신은 너무나도 외로운 리더가 될 것이다. 솔직하게 상황을 공유하고, 같이 해결하자고 이야기한 것이 언제나 더 나았던 것 같다. 그리고 이런 상황에서 진짜와 가짜가 갈린다. 진심이 아니었던 사람은 위기 상황에서 조직을 이탈하게 된다.'},
+  {n:'14', lb:'의사결정 잘못했음을 깨달음', q:'어제 본부장 전체 회의에서 확신을 가지고 의사결정을 내렸다. 자기 전 곰곰이 생각해보니 내 의사결정이 잘못되었다는 생각이 들었다.', a:'그대로 밀어붙인다', b:'의사결정이 잘못되었음을 인정하고 결정을 번복한다', ans:'B', desc:'중요한 것은 대표이사의 권위가 아니라, 일이 올바른 방향으로 행해지는 것이다. 잘못한 것은 잘못했다고 빨리 인정하고 방향을 수정하는 것이, 당장은 일관성없는 리더로 비춰질 수 있을지라도 장기적으로 봤을 때는 더 큰 신뢰를 얻을 수 있다. 특히나 이렇게 변화무쌍한 AI 시대에 장기 전략은 의미 없을 수도 있다. 조변석개 하는 것을 두려워 하지 않는 리더가 되어야만 이런 시대에 살아남을 수 있다.'},
+  {n:'15', lb:'경영철학 탐구 TFT 참여 여부',        q:'고승재 교장님이 에듀플렉스의 의사결정구조를 AI로 만들 프로젝트, \'경영철학 탐구 TFT\'를 만들고 싶어한다. 에듀스퀘어 학우로서 당신의 선택은?', a:'참여한다', b:'참여하지 않는다', ans:'A', desc:'(학장의 코멘트) 어떤 선택이든 당신을 존중합니다. 다만 함께 문제를 해결하고, 창조와 혁신을 실천하는 더 큰 우리가 되길 희망합니다. 고승재 대표이사님의 경영철학을 함께 탐구하는데 시간을 내어주셔서 감사합니다.'}
 ];
 
 // 정답 기반 색상 헬퍼
@@ -377,6 +377,11 @@ function txtColor(ans, side) {
 function txtW(ans, side) {
   if (ans === 'C') return '700';
   return ans === side ? '700' : '400';
+}
+
+// HTML 이스케이프 (해설/이유 등 사용자/문서 텍스트 표시 시)
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
 // 상태
@@ -465,6 +470,12 @@ function renderQ() {
     '<button class="cbtn" id="btnB"' + dis + ' onclick="pickAns(\'B\')">' +
     '<span class="cl">B</span><span class="cd">' + q.b + '</span></button>';
   picked = null;
+  // C 문항이면 이유 라벨 안내 변경
+  if (q.ans === 'C') {
+    document.getElementById('reasonLbl').innerHTML = '② 선택 이유 (Why) <span style="color:rgba(251,191,36,0.85);font-weight:600;">— A/B 외에 본인 의견이 있다면, 선택 없이 이유만 적어도 됩니다</span>';
+  } else {
+    document.getElementById('reasonLbl').textContent = '② 선택 이유 (Why) — 선택사항';
+  }
   document.getElementById('cinput').value = done ? (done.comment || '') : '';
   document.getElementById('cinput').disabled = !!done;
   document.getElementById('voteBtn').disabled = true;
@@ -475,7 +486,8 @@ function renderQ() {
     document.getElementById('btnA').className = 'cbtn' + (done.choice === 'A' ? ' sa' : '');
     document.getElementById('btnB').className = 'cbtn' + (done.choice === 'B' ? ' sb' : '');
     document.getElementById('mychbox').style.display = 'block';
-    document.getElementById('mycval').textContent = done.choice + '. ' + done.choiceDesc;
+    const chTxt = done.choice ? (done.choice + '. ' + done.choiceDesc) : '— (A/B 선택 없이 이유로 답변)';
+    document.getElementById('mycval').textContent = chTxt;
     document.getElementById('myccmt').textContent = done.comment ? '💬 ' + done.comment : '';
     // 투표 완료 상태: 이전/다음 모두 활성화 (범위 내에서)
     document.getElementById('prevBtn').disabled = cQ === 0;
@@ -484,26 +496,46 @@ function renderQ() {
   }
 }
 
+function updateVoteBtn() {
+  const q = QS[cQ];
+  const reason = document.getElementById('cinput').value.trim();
+  if (q.ans === 'C') {
+    // C 문항: A/B 선택 OR 이유 기술이면 활성화
+    document.getElementById('voteBtn').disabled = !(picked || reason);
+  } else {
+    // 일반 문항: A/B 선택만 보면 됨
+    document.getElementById('voteBtn').disabled = !picked;
+  }
+}
+
 function pickAns(c) {
   picked = c;
   document.getElementById('btnA').className = 'cbtn' + (c === 'A' ? ' sa' : '');
   document.getElementById('btnB').className = 'cbtn' + (c === 'B' ? ' sb' : '');
-  document.getElementById('voteBtn').disabled = false;
+  updateVoteBtn();
 }
 function moveQ(d) { cQ = Math.max(0, Math.min(QS.length-1, cQ+d)); renderQ(); }
 
 async function doVote() {
-  if (!picked) return;
   const q = QS[cQ];
+  const reason = document.getElementById('cinput').value.trim();
+  // C 문항: A/B 또는 이유 중 하나는 있어야 함
+  // 일반 문항: A/B 필수
+  if (q.ans === 'C') {
+    if (!picked && !reason) return;
+  } else {
+    if (!picked) return;
+  }
   if (lVotes.find(v => v.n === q.n && v.name === user.name)) return;
+  const choiceDesc = picked === 'A' ? q.a : picked === 'B' ? q.b : '';
   const data = {
     type:'vote', time:new Date().toLocaleString('ko-KR'),
     name:user.name, cohort:user.cohort,
     qNum:q.n, qLabel:q.lb,
-    choice:picked, choiceDesc:picked==='A'?q.a:q.b,
-    comment:document.getElementById('cinput').value.trim()
+    choice:picked || '', choiceDesc:choiceDesc,
+    comment:reason
   };
-  lVotes.push({n:q.n, name:user.name, choice:picked, choiceDesc:data.choiceDesc, comment:data.comment});
+  lVotes.push({n:q.n, name:user.name, choice:picked || '', choiceDesc:choiceDesc, comment:data.comment});
   localStorage.setItem('es_v5', JSON.stringify(lVotes));
   load(true); await post(data); load(false);
   const allDone = QS.every(q => lVotes.find(v => v.n === q.n && v.name === user.name));
@@ -511,7 +543,7 @@ async function doVote() {
   hideAll();
   document.getElementById('doneCard').style.display = 'block';
   document.getElementById('doneTitle').textContent = user.name + '님 · ' + q.n + '번 완료';
-  document.getElementById('doneSub').textContent = picked + '. ' + data.choiceDesc;
+  document.getElementById('doneSub').textContent = picked ? (picked + '. ' + choiceDesc) : '— (이유로 답변)';
   // 마지막 문항(15번)이면 빠진 문항 or 최종설문으로
   const allOK = QS.every(q2 => lVotes.find(v => v.n === q2.n && v.name === user.name));
   const isLast = cQ === QS.length - 1;
@@ -549,14 +581,27 @@ async function loadResult() {
   if (!rows) return;
   const vs = rows.filter(r => String(r[0])==='vote' && String(r[4])===String(q.n));
   const aC = vs.filter(v => String(v[5])==='A').length;
-  const bC = vs.length - aC;
+  const bC = vs.filter(v => String(v[5])==='B').length;
+  const cC = vs.length - aC - bC;
   const ap = vs.length ? Math.round(aC/vs.length*100) : 0;
-  document.getElementById('bars').innerHTML =
+  const bp = vs.length ? Math.round(bC/vs.length*100) : 0;
+  const cp = 100 - ap - bp;
+  let barsHtml =
     '<div class="barrow"><span class="barlbl barlbl-a">A</span><div class="bartrack"><div class="barfill-a" style="width:'+ap+'%"></div></div><span class="barpct">'+ap+'% ('+aC+'명)</span></div>' +
-    '<div class="barrow"><span class="barlbl barlbl-b">B</span><div class="bartrack"><div class="barfill-b" style="width:'+(100-ap)+'%"></div></div><span class="barpct">'+(100-ap)+'% ('+bC+'명)</span></div>';
+    '<div class="barrow"><span class="barlbl barlbl-b">B</span><div class="bartrack"><div class="barfill-b" style="width:'+bp+'%"></div></div><span class="barpct">'+bp+'% ('+bC+'명)</span></div>';
+  if (cC>0) {
+    barsHtml += '<div class="barrow"><span class="barlbl" style="background:rgba(110,231,183,0.18);color:rgba(110,231,183,0.95);">C</span><div class="bartrack"><div style="height:100%;background:rgba(110,231,183,0.65);width:'+cp+'%"></div></div><span class="barpct">'+cp+'% ('+cC+'명)</span></div>';
+  }
+  document.getElementById('bars').innerHTML = barsHtml;
   const reasons = vs.filter(v => v[8]);
   document.getElementById('rlist').innerHTML = reasons.length
-    ? reasons.map(v => '<div class="ritem"><div class="rmeta rmeta-'+String(v[5]).toLowerCase()+'">'+v[3]+' · '+v[5]+'. '+v[6]+'</div><div class="rtext">'+v[8]+'</div></div>').join('')
+    ? reasons.map(v => {
+        const ch = String(v[5]||'');
+        const chDesc = String(v[6]||'');
+        const cls = ch.toLowerCase() || 'c';
+        const meta = ch ? (escHtml(v[3])+' · '+ch+'. '+escHtml(chDesc)) : (escHtml(v[3])+' · — (이유로 답변)');
+        return '<div class="ritem"><div class="rmeta rmeta-'+cls+'">'+meta+'</div><div class="rtext">'+escHtml(v[8])+'</div></div>';
+      }).join('')
     : '<div style="font-size:12px;color:rgba(255,255,255,0.25);text-align:center;padding:0.8rem;">아직 선택 이유가 없습니다</div>';
 }
 
@@ -568,8 +613,18 @@ function calcMatchRate() {
   myVotes.forEach(v => {
     const q = QS.find(q => q.n === v.n);
     if (!q) return;
-    if (q.ans === 'C') total += 50;
-    else if (q.ans === v.choice) total += 100;
+    const hasChoice = !!v.choice;
+    const hasReason = !!(v.comment && v.comment.trim());
+    if (q.ans === 'C') {
+      // C 문항 채점
+      if (!hasChoice && hasReason) total += 100;       // A/B 미선택 + 이유 기술
+      else if (hasChoice && hasReason) total += 70;    // A/B 선택 + 이유 기술
+      else if (hasChoice && !hasReason) total += 50;   // A/B 선택만
+      // 둘 다 없는 경우는 시스템상 발생 불가 (투표 버튼 비활성)
+    } else {
+      // 일반 문항: 정답이면 100, 오답이면 0
+      if (q.ans === v.choice) total += 100;
+    }
   });
   return Math.round(total / (QS.length * 100) * 100);
 }
@@ -747,26 +802,37 @@ async function loadPub() {
   sorted.forEach(q => {
     const qv = votes.filter(v => String(v[4])===String(q.n));
     if (!qv.length) return;
-    const aC = qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
+    const aC = qv.filter(v=>String(v[5])==='A').length;
+    const bC = qv.filter(v=>String(v[5])==='B').length;
+    const cC = qv.length - aC - bC;
     const ap = qv.length ? Math.round(aC/qv.length*100) : 0;
+    const bp = qv.length ? Math.round(bC/qv.length*100) : 0;
+    const cp = 100 - ap - bp;
     h += '<div style="padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);">';
     h += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
     h += '<span style="font-size:11px;color:rgba(100,180,255,0.78);font-weight:600;width:36px;">'+q.n+'번</span>';
-    h += '<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;">'+q.lb+'</span>';
+    h += '<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;">'+escHtml(q.lb)+'</span>';
     h += '<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>';
-    h += '<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">';
+    h += '<div style="display:flex;align-items:center;gap:8px;margin-left:46px;flex-wrap:wrap;">';
     h += '<span style="font-size:12px;color:rgba(147,197,253,0.8);">A '+aC+'('+ap+'%)</span>';
-    h += '<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
+    h += '<div style="flex:1;min-width:80px;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
     h += '<div style="width:'+ap+'%;background:rgba(59,130,246,0.55);"></div>';
-    h += '<div style="width:'+(100-ap)+'%;background:rgba(251,191,36,0.55);"></div></div>';
-    h += '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+(100-ap)+'%)</span></div>';
+    h += '<div style="width:'+bp+'%;background:rgba(251,191,36,0.55);"></div>';
+    if (cC>0) h += '<div style="width:'+cp+'%;background:rgba(110,231,183,0.65);"></div>';
+    h += '</div>';
+    h += '<span style="font-size:12px;color:rgba(165,180,252,0.8);">B '+bC+' ('+bp+'%)</span>';
+    if (cC>0) h += '<span style="font-size:12px;color:rgba(110,231,183,0.95);font-weight:700;">C '+cC+' ('+cp+'%)</span>';
+    h += '</div>';
     const rs = qv.filter(v=>v[8]).sort((a,b)=>String(a[5])<String(b[5])?-1:String(a[5])>String(b[5])?1:0);
     if (rs.length) {
       h += '<div style="margin-top:6px;margin-left:46px;display:flex;flex-direction:column;gap:4px;">';
       rs.forEach(v => {
+        const ch = String(v[5]||'');
+        const chDesc = String(v[6]||'');
+        const meta = ch ? (v[3]+' · '+ch+'. '+chDesc) : (v[3]+' · — (이유로 답변)');
         h += '<div style="background:rgba(255,255,255,0.04);border-radius:6px;padding:6px 10px;">';
-        h += '<div style="font-size:11px;color:rgba(147,197,253,0.75);margin-bottom:2px;">'+v[3]+' · '+String(v[5])+'. '+String(v[6])+'</div>';
-        h += '<div style="font-size:12px;color:rgba(255,255,255,0.6);">'+v[8]+'</div></div>';
+        h += '<div style="font-size:11px;color:rgba(147,197,253,0.75);margin-bottom:2px;">'+escHtml(meta)+'</div>';
+        h += '<div style="font-size:12px;color:rgba(255,255,255,0.6);">'+escHtml(v[8])+'</div></div>';
       });
       h += '</div>';
     }
@@ -794,24 +860,32 @@ async function loadAdmin() {
   let sh='';
   sorted.forEach(q => {
     const qv=votes.filter(v=>String(v[4])===String(q.n)); if(!qv.length) return;
-    const aC=qv.filter(v=>String(v[5])==='A').length, bC=qv.length-aC;
+    const aC=qv.filter(v=>String(v[5])==='A').length;
+    const bC=qv.filter(v=>String(v[5])==='B').length;
+    const cC=qv.length - aC - bC;  // 무선택 (= C 정답 의도)
     const ap=Math.round(aC/qv.length*100);
+    const bp=Math.round(bC/qv.length*100);
+    const cp=100-ap-bp;
     const al=q.ans==='A'?'A. '+q.a:q.ans==='B'?'B. '+q.b:'C. 경우에 따라 다르다';
     sh+='<div style="padding:12px 0;border-bottom:0.5px solid rgba(255,255,255,0.06);">';
     sh+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
     sh+='<span style="font-size:11px;color:rgba(100,180,255,0.78);font-weight:600;width:36px;">'+q.n+'번</span>';
-    sh+='<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;font-weight:500;">'+q.lb+'</span>';
+    sh+='<span style="font-size:13px;color:rgba(255,255,255,0.8);flex:1;font-weight:500;">'+escHtml(q.lb)+'</span>';
     sh+='<span style="font-size:12px;color:rgba(255,255,255,0.3);">'+qv.length+'명</span></div>';
-    sh+='<div style="display:flex;align-items:center;gap:8px;margin-left:46px;">';
+    sh+='<div style="display:flex;align-items:center;gap:8px;margin-left:46px;flex-wrap:wrap;">';
     sh+='<span style="font-size:12px;color:'+txtColor(q.ans,'A')+';font-weight:'+txtW(q.ans,'A')+';">A '+aC+'('+ap+'%)</span>';
-    sh+='<div style="flex:1;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
+    sh+='<div style="flex:1;min-width:80px;height:5px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,0.07);display:flex;">';
     sh+='<div style="width:'+ap+'%;background:'+barColor(q.ans,'A')+';">&nbsp;</div>';
-    sh+='<div style="width:'+(100-ap)+'%;background:'+barColor(q.ans,'B')+';">&nbsp;</div></div>';
-    sh+='<span style="font-size:12px;color:'+txtColor(q.ans,'B')+';font-weight:'+txtW(q.ans,'B')+';">B '+bC+' ('+(100-ap)+'%)</span></div>';
+    sh+='<div style="width:'+bp+'%;background:'+barColor(q.ans,'B')+';">&nbsp;</div>';
+    if (cC>0) sh+='<div style="width:'+cp+'%;background:rgba(110,231,183,0.75);">&nbsp;</div>';
+    sh+='</div>';
+    sh+='<span style="font-size:12px;color:'+txtColor(q.ans,'B')+';font-weight:'+txtW(q.ans,'B')+';">B '+bC+' ('+bp+'%)</span>';
+    if (cC>0) sh+='<span style="font-size:12px;color:rgba(110,231,183,0.95);font-weight:700;">C '+cC+' ('+cp+'%)</span>';
+    sh+='</div>';
     sh+='<div class="ansbox" style="margin-left:46px;margin-top:8px;">';
     sh+='<div class="anslabel">CEO 고승재가 내린 선택은...</div>';
     sh+='<div class="ansval">'+al+'</div>';
-    sh+='<div class="ansdesc">'+q.desc+'</div></div></div>';
+    sh+='<div class="ansdesc">'+escHtml(q.desc).replace(/\n/g,'<br>')+'</div></div></div>';
   });
   document.getElementById('sv').innerHTML=sh||'<div class="empty">아직 투표 데이터가 없습니다</div>';
 
@@ -823,11 +897,17 @@ async function loadAdmin() {
   });
   let dh='<table class="dtable"><thead><tr><th>이름</th><th>기수</th><th>문항</th><th>선택</th><th>이유</th><th>시간</th></tr></thead><tbody>';
   sv.forEach(v=>{
-    const bc=String(v[6]||'').toLowerCase()==='a'?'ba':'bb';
-    dh+='<tr><td>'+v[2]+'</td><td><span class="cpill">'+v[3]+'</span></td><td>'+v[4]+'번</td>';
-    dh+='<td><span class="badge '+bc+'">'+v[7]+' · '+v[6]+'</span></td>';
-    dh+='<td style="font-size:12px;color:rgba(255,255,255,0.42);">'+(v[8]||'—')+'</td>';
-    dh+='<td style="font-size:11px;color:rgba(255,255,255,0.26);">'+v[1]+'</td></tr>';
+    const ch=String(v[5]||'').toUpperCase();
+    const bc=ch==='A'?'ba':ch==='B'?'bb':'';
+    const qLabel=String(v[7]||'');
+    const chDesc=String(v[6]||'');
+    let selTxt;
+    if (ch) selTxt = qLabel + ' · ' + chDesc;
+    else    selTxt = qLabel + ' · — (이유로 답변)';
+    dh+='<tr><td>'+escHtml(v[2])+'</td><td><span class="cpill">'+escHtml(v[3])+'</span></td><td>'+v[4]+'번</td>';
+    dh+='<td><span class="badge '+bc+'">'+escHtml(selTxt)+'</span></td>';
+    dh+='<td style="font-size:12px;color:rgba(255,255,255,0.42);">'+(escHtml(v[8])||'—')+'</td>';
+    dh+='<td style="font-size:11px;color:rgba(255,255,255,0.26);">'+escHtml(v[1])+'</td></tr>';
   });
   dh+='</tbody></table>';
   document.getElementById('dv').innerHTML=dh;
