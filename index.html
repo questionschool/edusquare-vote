@@ -825,7 +825,7 @@ async function loadAdmin() {
   sv.forEach(v=>{
     const bc=String(v[6]||'').toLowerCase()==='a'?'ba':'bb';
     dh+='<tr><td>'+v[2]+'</td><td><span class="cpill">'+v[3]+'</span></td><td>'+v[4]+'번</td>';
-    dh+='<td><span class="badge '+bc+'">'+v[6]+' '+v[7]+'</span></td>';
+    dh+='<td><span class="badge '+bc+'">'+v[7]+' · '+v[6]+'</span></td>';
     dh+='<td style="font-size:12px;color:rgba(255,255,255,0.42);">'+(v[8]||'—')+'</td>';
     dh+='<td style="font-size:11px;color:rgba(255,255,255,0.26);">'+v[1]+'</td></tr>';
   });
@@ -843,7 +843,7 @@ async function loadAdmin() {
 
   // 메시지
   document.getElementById('mv').innerHTML=msgs.length
-    ? msgs.map(m=>'<div class="msgcard"><div class="msgfrom">'+m[2]+' · '+m[3]+' · '+m[1]+'</div><div class="msgtxt">'+(m[8]||m[5]||'')+'</div></div>').join('')
+    ? msgs.map(m=>'<div class="msgcard"><div class="msgfrom">'+m[2]+' · '+m[3]+' · '+m[1]+'</div><div class="msgtxt">'+(m[9]||m[8]||m[5]||'')+'</div></div>').join('')
     : '<div class="empty">아직 메시지가 없습니다</div>';
 }
 
